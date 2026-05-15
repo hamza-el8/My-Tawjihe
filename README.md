@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MyTawjeh – AI Academic Orientation Platform
 
 A MERN stack web app for intelligent academic orientation for Moroccan students.
@@ -94,3 +95,7 @@ cd backend && npm run dev
 # Terminal 2 – Frontend
 cd frontend && npm run dev
 ```
+=======
+# mytawjeh
+orientation par ai
+>>>>>>> 92eec167cd695cb5fe50615735ce4c1406af4eec

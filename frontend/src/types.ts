@@ -5,8 +5,7 @@ export interface Translation {
   direction: Direction;
   nav: {
     home: string;
-    services: string;
-    courses: string;
+    news: string;
     testimonials: string;
     contact: string;
     login: string;
@@ -21,11 +20,10 @@ export interface Translation {
     buttonSecondary: string;
     stats: Array<{ value: string; label: string }>;
   };
-  services: {
+  news: {
     headingSmall: string;
     headingLarge: string;
-    description: string;
-    items: Array<{ icon: string; title: string; description: string; color: string }>;
+    items: Array<{ image: string; date: string; category: string; title: string; excerpt: string; id: number }>;
   };
   tabs: {
     headingSmall: string;

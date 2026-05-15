@@ -7,8 +7,7 @@ const translations: Record<Lang, Translation> = {
     direction: 'ltr',
     nav: {
       home: 'Accueil',
-      services: 'Services',
-      courses: 'Nos Services',
+      news: 'Actualités',
       testimonials: 'Avantages',
       contact: 'Contact',
       login: 'Connexion',
@@ -28,40 +27,13 @@ const translations: Record<Lang, Translation> = {
         { value: '50+', label: 'Filières couvertes' },
       ],
     },
-    services: {
-      headingSmall: 'NOS SERVICES',
-      headingLarge: 'Ce que vous pouvez obtenir',
-      description:
-        "Une plateforme intelligente qui combine orientation, apprentissage et suivi scolaire pour aider les étudiants à réussir.",
+    news: {
+      headingSmall: 'ACTUALITÉS',
+      headingLarge: 'Dernières nouvelles',
       items: [
-        {
-          icon: '🧭',
-          title: 'Orientation Intelligente',
-          description:
-            "Découvrez les filières et métiers adaptés à votre profil grâce à l'IA basée sur vos intérêts et compétences.",
-          color: 'from-purple-500 to-indigo-600',
-        },
-        {
-          icon: '📝',
-          title: 'Préparation Examens',
-          description:
-            'Accédez à des épreuves personnalisées, des corrections par IA et des plans de révision adaptés.',
-          color: 'from-blue-500 to-cyan-600',
-        },
-        {
-          icon: '📊',
-          title: 'Tracker Les Notes',
-          description:
-            'Suivez vos notes en temps réel avec calcul automatique des moyennes et alertes intelligentes.',
-          color: 'from-emerald-500 to-teal-600',
-        },
-        {
-          icon: '🎯',
-          title: 'Atteindre Vos Objectifs',
-          description:
-            "Définissez vos objectifs, recevez un plan d'action personnalisé et mesurez vos progrès.",
-          color: 'from-rose-500 to-pink-600',
-        },
+        { image: '/hero-illustration.png', date: '15 Jan 2026', category: 'Orientation', title: 'Nouvelle fonctionnalité IA pour le matching des filières', excerpt: 'Découvrez notre algorithme amélioré qui analyse plus de 500 métiers adaptés au contexte marocain.', id: 1 },
+        { image: '/cta-image.png', date: '10 Jan 2026', category: 'Examens', title: 'Préparation Bac 2026 : Nouveaux exercices disponibles', excerpt: 'Accédez à plus de 1000 exercices corrigés par IA pour toutes les matières du Baccalauréat.', id: 2 },
+        { image: '/hero-illustration.png', date: '5 Jan 2026', category: 'Succès', title: '95% de réussite pour nos utilisateurs', excerpt: 'Les étudiants utilisant MyTawjeh ont amélioré leurs résultats de 30% en moyenne.', id: 3 },
       ],
     },
     tabs: {
@@ -158,8 +130,7 @@ const translations: Record<Lang, Translation> = {
     direction: 'rtl',
     nav: {
       home: 'الرئيسية',
-      services: 'الخدمات',
-      courses: 'خدماتنا',
+      news: 'الأخبار',
       testimonials: 'المزايا',
       contact: 'تواصل معنا',
       login: 'تسجيل الدخول',
@@ -178,15 +149,13 @@ const translations: Record<Lang, Translation> = {
         { value: '+50', label: 'تخصص مغطى' },
       ],
     },
-    services: {
-      headingSmall: 'خدماتنا',
-      headingLarge: 'ما يمكنك الحصول عليه',
-      description: 'منصة ذكية تجمع بين التوجيه والتعلم والمتابعة الدراسية لمساعدة الطلاب على النجاح.',
+    news: {
+      headingSmall: 'الأخبار',
+      headingLarge: 'آخر الأخبار',
       items: [
-        { icon: '🧭', title: 'التوجيه الذكي', description: 'اكتشف التخصصات والمهن المناسبة لملفك الشخصي بفضل الذكاء الاصطناعي.', color: 'from-purple-500 to-indigo-600' },
-        { icon: '📝', title: 'التحضير للامتحانات', description: 'الوصول إلى اختبارات مخصصة وتصحيحات بالذكاء الاصطناعي وخطط مراجعة.', color: 'from-blue-500 to-cyan-600' },
-        { icon: '📊', title: 'متتبع الدرجات', description: 'تابع درجاتك في الوقت الفعلي مع حساب تلقائي للمعدلات والتنبيهات الذكية.', color: 'from-emerald-500 to-teal-600' },
-        { icon: '🎯', title: 'تحقيق أهدافك', description: 'حدد أهدافك الأكاديمية واحصل على خطة عمل شخصية وقِس تقدمك.', color: 'from-rose-500 to-pink-600' },
+        { image: '/hero-illustration.png', date: '15 يناير 2026', category: 'التوجيه', title: 'ميزة ذكاء اصطناعي جديدة لمطابقة التخصصات', excerpt: 'اكتشف خوارزميتنا المحسّنة التي تحلل أكثر من 500 مهنة متكيفة مع السياق المغربي.', id: 1 },
+        { image: '/cta-image.png', date: '10 يناير 2026', category: 'الامتحانات', title: 'تحضير البكالوريا 2026: تمارين جديدة متاحة', excerpt: 'الوصول إلى أكثر من 1000 تمرين مصحح بالذكاء الاصطناعي لجميع مواد البكالوريا.', id: 2 },
+        { image: '/hero-illustration.png', date: '5 يناير 2026', category: 'النجاح', title: '95% نسبة نجاح لمستخدمينا', excerpt: 'الطلاب الذين يستخدمون MyTawjeh حسّنوا نتائجهم بنسبة 30% في المتوسط.', id: 3 },
       ],
     },
     tabs: {
@@ -279,11 +248,7 @@ const CloseIcon = () => (
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
   </svg>
 );
-const CheckIcon = () => (
-  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-  </svg>
-);
+
 const SendIcon = () => (
   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -306,7 +271,7 @@ function SectionHeading({ small, large, accent, center = true }: { small: string
 }
 
 // ─── Navbar ──────────────────────────────────────────────────────────────────
-function Navbar({ language, setLanguage, t }: { language: Lang; setLanguage: (l: Lang) => void; t: Translation }) {
+function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModal }: { language: Lang; setLanguage: (l: Lang) => void; t: Translation; setShowLoginModal: (show: boolean) => void; setShowSignupModal: (show: boolean) => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('top');
@@ -319,8 +284,7 @@ function Navbar({ language, setLanguage, t }: { language: Lang; setLanguage: (l:
 
   const navLinks = [
     { href: '#top', label: t.nav.home, id: 'top' },
-    { href: '#services', label: t.nav.services, id: 'services' },
-    { href: '#how-it-works', label: t.nav.courses, id: 'how-it-works' },
+    { href: '#news', label: t.nav.news, id: 'news' },
     { href: '#advantages', label: t.nav.testimonials, id: 'advantages' },
     { href: '#contact', label: t.nav.contact, id: 'contact' },
   ];
@@ -377,18 +341,18 @@ function Navbar({ language, setLanguage, t }: { language: Lang; setLanguage: (l:
             >
               {language === 'fr' ? 'العربية' : 'Français'}
             </button>
-            <a
-              href="#contact" onClick={(e) => { e.preventDefault(); scrollTo('#contact', 'contact'); }}
+            <button
+              onClick={() => setShowLoginModal(true)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${scrolled ? 'text-purple-700 hover:bg-purple-50' : 'text-white/90 hover:bg-white/10'}`}
             >
               {t.nav.login}
-            </a>
-            <a
-              href="#contact" onClick={(e) => { e.preventDefault(); scrollTo('#contact', 'contact'); }}
+            </button>
+            <button
+              onClick={() => setShowSignupModal(true)}
               className="btn-gradient text-white px-5 py-2 rounded-full text-sm font-semibold shadow-lg"
             >
               {t.nav.signup}
-            </a>
+            </button>
           </div>
 
           {/* Mobile: lang + burger */}
@@ -421,12 +385,12 @@ function Navbar({ language, setLanguage, t }: { language: Lang; setLanguage: (l:
               </a>
             ))}
             <div className="pt-3 flex gap-2">
-              <a href="#contact" onClick={(e) => { e.preventDefault(); scrollTo('#contact', 'contact'); }} className="flex-1 text-center py-2 rounded-full border border-purple-300 text-purple-700 text-sm font-medium">
+              <button onClick={() => setShowLoginModal(true)} className="flex-1 text-center py-2 rounded-full border border-purple-300 text-purple-700 text-sm font-medium">
                 {t.nav.login}
-              </a>
-              <a href="#contact" onClick={(e) => { e.preventDefault(); scrollTo('#contact', 'contact'); }} className="flex-1 text-center py-2 rounded-full btn-gradient text-white text-sm font-semibold">
+              </button>
+              <button onClick={() => setShowSignupModal(true)} className="flex-1 text-center py-2 rounded-full btn-gradient text-white text-sm font-semibold">
                 {t.nav.signup}
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -467,7 +431,7 @@ function HeroSection({ t }: { t: Translation }) {
               <button onClick={() => scrollTo('contact')} className="btn-gradient text-white px-8 py-4 rounded-full font-bold text-base shadow-xl transition-all duration-300">
                 {t.hero.button} →
               </button>
-              <button onClick={() => scrollTo('how-it-works')} className="px-8 py-4 rounded-full font-bold text-base text-white border-2 border-white/30 hover:bg-white/10 transition-all duration-300">
+              <button onClick={() => scrollTo('news')} className="px-8 py-4 rounded-full font-bold text-base text-white border-2 border-white/30 hover:bg-white/10 transition-all duration-300">
                 {t.hero.buttonSecondary}
               </button>
             </div>
@@ -520,87 +484,70 @@ function HeroSection({ t }: { t: Translation }) {
   );
 }
 
-// ─── Services ────────────────────────────────────────────────────────────────
-function ServicesSection({ t }: { t: Translation }) {
-  return (
-    <section id="services" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading small={t.services.headingSmall} large={t.services.headingLarge} />
-        <p className="text-center text-gray-500 max-w-2xl mx-auto -mt-6 mb-16">{t.services.description}</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {t.services.items.map((item, i) => (
-            <div key={i} className="card-lift bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:border-purple-200">
-              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-2xl mb-5 shadow-lg`}>
-                {item.icon}
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+// ─── News Carousel ──────────────────────────────────────────────────────────
+function NewsCarousel({ t }: { t: Translation }) {
+  const [active, setActive] = useState(0);
+  const len = t.news.items.length;
+  const isRtl = t.direction === 'rtl';
 
-// ─── How It Works (Tabs) ──────────────────────────────────────────────────────
-function HowItWorksSection({ t }: { t: Translation }) {
-  const [activeTab, setActiveTab] = useState(0);
-  const tab = t.tabs.items[activeTab];
+  useEffect(() => {
+    const timer = setInterval(() => setActive((p) => (p + 1) % len), 5000);
+    return () => clearInterval(timer);
+  }, [len]);
 
   return (
-    <section id="how-it-works" className="py-24 bg-gradient-to-br from-gray-50 to-purple-50/50">
+    <section id="news" className="py-24 bg-gradient-to-br from-gray-50 to-blue-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading small={t.tabs.headingSmall} large={t.tabs.headingLarge} />
-        <p className="text-center text-gray-500 max-w-2xl mx-auto -mt-6 mb-12">{t.tabs.description}</p>
-
-        {/* Tab buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {t.tabs.items.map((item, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveTab(i)}
-              className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-semibold transition-all duration-300 ${
-                activeTab === i ? 'tab-active text-white shadow-lg scale-105' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 shadow-sm'
-              }`}
+        <SectionHeading small={t.news.headingSmall} large={t.news.headingLarge} />
+        
+        <div className="relative">
+          <div className="overflow-hidden rounded-3xl">
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(${isRtl ? active * 100 : -active * 100}%)` }}
             >
-              <span>{item.icon}</span>
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* Tab content */}
-        <div key={activeTab} className={`bg-gradient-to-br ${tab.bg} rounded-3xl p-8 md:p-12 border border-white shadow-xl animate-fade-in-up`}>
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${tab.color} flex items-center justify-center text-3xl mb-6 shadow-lg`}>
-                {tab.icon}
-              </div>
-              <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">{tab.title}</h3>
-              <p className="text-gray-600 leading-relaxed mb-8">{tab.description}</p>
-              <ul className="space-y-3">
-                {tab.features.map((f, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${tab.color} flex items-center justify-center flex-shrink-0`}>
-                      <CheckIcon />
+              {t.news.items.map((item, i) => (
+                <div key={i} className="min-w-full">
+                  <div className="grid md:grid-cols-2 gap-8 items-center p-8">
+                    <div className="order-2 md:order-1">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">{item.category}</span>
+                        <span className="text-gray-500 text-sm">{item.date}</span>
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">{item.title}</h3>
+                      <p className="text-gray-600 mb-6">{item.excerpt}</p>
+                      <a href="/news" className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors">
+                        {isRtl ? 'اقرأ المزيد →' : 'Lire la suite →'}
+                      </a>
                     </div>
-                    <span className="text-gray-700 font-medium text-sm">{f}</span>
-                  </li>
-                ))}
-              </ul>
+                    <div className="order-1 md:order-2">
+                      <div className="rounded-2xl overflow-hidden shadow-xl">
+                        <img src={item.image} alt={item.title} className="w-full h-64 md:h-80 object-cover hover:scale-105 transition-transform duration-500" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="hidden md:flex justify-center items-center">
-              <div className={`w-56 h-56 rounded-full bg-gradient-to-br ${tab.color} opacity-10 flex items-center justify-center`}>
-                <span className="text-8xl">{tab.icon}</span>
-              </div>
-            </div>
+          </div>
+          
+          {/* Dots */}
+          <div className="flex justify-center gap-2 mt-8">
+            {t.news.items.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                className={`transition-all duration-300 rounded-full ${active === i ? 'w-8 h-2.5 bg-blue-600' : 'w-2.5 h-2.5 bg-blue-200'}`}
+              />
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
 }
+
+
 
 // ─── CTA Section ─────────────────────────────────────────────────────────────
 function CTASection({ t }: { t: Translation }) {
@@ -623,7 +570,7 @@ function CTASection({ t }: { t: Translation }) {
                 <button onClick={() => scrollTo('contact')} className="bg-white text-purple-700 px-7 py-3.5 rounded-full font-bold shadow-xl hover:-translate-y-1 transition-all duration-300">
                   {t.cta.button}
                 </button>
-                <button onClick={() => scrollTo('how-it-works')} className="border-2 border-white/40 text-white px-7 py-3.5 rounded-full font-bold hover:bg-white/10 transition-all duration-300">
+                <button onClick={() => scrollTo('news')} className="border-2 border-white/40 text-white px-7 py-3.5 rounded-full font-bold hover:bg-white/10 transition-all duration-300">
                   {t.cta.buttonSecondary}
                 </button>
               </div>
@@ -832,6 +779,204 @@ function Footer({ t }: { t: Translation }) {
   );
 }
 
+// ─── Login Modal ──────────────────────────────────────────────────────────────
+function LoginModal({ isOpen, onClose, t, onSwitchToSignup }: { isOpen: boolean; onClose: () => void; t: Translation; onSwitchToSignup: () => void }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const isRtl = t.direction === 'rtl';
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    // Simulate API call
+    setTimeout(() => {
+      setLoading(false);
+      onClose();
+      alert(isRtl ? 'تم تسجيل الدخول بنجاح!' : 'Connexion réussie !');
+    }, 1500);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl max-w-md w-full p-8">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">{isRtl ? 'تسجيل الدخول' : 'Connexion'}</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              {isRtl ? 'البريد الإلكتروني' : 'Email'}
+            </label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={isRtl ? 'بريدك الإلكتروني' : 'Votre email'}
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              {isRtl ? 'كلمة المرور' : 'Mot de passe'}
+            </label>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={isRtl ? 'كلمة المرور' : 'Votre mot de passe'}
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-gradient w-full text-white py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg disabled:opacity-70"
+          >
+            {loading ? (isRtl ? 'جاري التسجيل...' : 'Connexion en cours...') : (isRtl ? 'تسجيل الدخول' : 'Se connecter')}
+          </button>
+        </form>
+        
+        <div className="mt-6 pt-6 border-t border-gray-200 text-center">
+          <p className="text-gray-600 text-sm mb-3">
+            {isRtl ? 'ليس لديك حساب؟' : 'Pas encore de compte ?'}
+          </p>
+          <button
+            onClick={() => {
+              onClose();
+              onSwitchToSignup();
+            }}
+            className="btn-gradient text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:shadow-lg transition-all duration-300"
+          >
+            {isRtl ? 'سجل الآن →' : 'S\'inscrire maintenant →'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Signup Modal ─────────────────────────────────────────────────────────────
+function SignupModal({ isOpen, onClose, t, onSwitchToLogin }: { isOpen: boolean; onClose: () => void; t: Translation; onSwitchToLogin?: () => void }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const isRtl = t.direction === 'rtl';
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert(isRtl ? 'كلمات المرور غير متطابقة' : 'Les mots de passe ne correspondent pas');
+      return;
+    }
+    setLoading(true);
+    // Simulate API call
+    setTimeout(() => {
+      setLoading(false);
+      onClose();
+      alert(isRtl ? 'تم إنشاء الحساب بنجاح!' : 'Compte créé avec succès !');
+    }, 1500);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl max-w-md w-full p-8">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">{isRtl ? 'إنشاء حساب' : 'Créer un compte'}</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              {isRtl ? 'الاسم الكامل' : 'Nom complet'}
+            </label>
+            <input
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder={isRtl ? 'الاسم الكامل' : 'Votre nom complet'}
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              {isRtl ? 'البريد الإلكتروني' : 'Email'}
+            </label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={isRtl ? 'بريدك الإلكتروني' : 'Votre email'}
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              {isRtl ? 'كلمة المرور' : 'Mot de passe'}
+            </label>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={isRtl ? 'كلمة المرور' : 'Votre mot de passe'}
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              {isRtl ? 'تأكيد كلمة المرور' : 'Confirmer le mot de passe'}
+            </label>
+            <input
+              type="password"
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder={isRtl ? 'تأكيد كلمة المرور' : 'Confirmer le mot de passe'}
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-gradient w-full text-white py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg disabled:opacity-70"
+          >
+            {loading ? (isRtl ? 'جاري الإنشاء...' : 'Création en cours...') : (isRtl ? 'إنشاء حساب' : 'Créer un compte')}
+          </button>
+        </form>
+        
+        <div className="mt-6 pt-6 border-t border-gray-200 text-center">
+          <p className="text-gray-600 text-sm mb-3">
+            {isRtl ? 'لديك حساب بالفعل؟' : 'Déjà un compte ?'}
+          </p>
+          <button
+            onClick={() => {
+              onClose();
+              if (onSwitchToLogin) onSwitchToLogin();
+            }}
+            className="border-2 border-purple-300 text-purple-600 px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-purple-50 transition-all duration-300"
+          >
+            {isRtl ? 'تسجيل الدخول ←' : 'Se connecter ←'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Language FAB ─────────────────────────────────────────────────────────────
 function LangFAB({ language, setLanguage }: { language: Lang; setLanguage: (l: Lang) => void }) {
   return (
@@ -848,6 +993,8 @@ function LangFAB({ language, setLanguage }: { language: Lang; setLanguage: (l: L
 // ─── App Root ─────────────────────────────────────────────────────────────────
 export default function App() {
   const [language, setLanguage] = useState<Lang>('fr');
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
   const t = translations[language];
 
   useEffect(() => {
@@ -857,11 +1004,16 @@ export default function App() {
 
   return (
     <div dir={t.direction} lang={language}>
-      <Navbar language={language} setLanguage={setLanguage} t={t} />
+      <Navbar 
+        language={language} 
+        setLanguage={setLanguage} 
+        t={t} 
+        setShowLoginModal={setShowLoginModal}
+        setShowSignupModal={setShowSignupModal}
+      />
       <main>
         <HeroSection t={t} />
-        <ServicesSection t={t} />
-        <HowItWorksSection t={t} />
+        <NewsCarousel t={t} />
         <CTASection t={t} />
         <AdvantagesSection t={t} />
         <TestimonialsSection t={t} />
@@ -869,6 +1021,25 @@ export default function App() {
       </main>
       <Footer t={t} />
       <LangFAB language={language} setLanguage={setLanguage} />
+      
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)} 
+        t={t} 
+        onSwitchToSignup={() => {
+          setShowLoginModal(false);
+          setShowSignupModal(true);
+        }}
+      />
+      <SignupModal 
+        isOpen={showSignupModal} 
+        onClose={() => setShowSignupModal(false)} 
+        t={t} 
+        onSwitchToLogin={() => {
+          setShowSignupModal(false);
+          setShowLoginModal(true);
+        }}
+      />
     </div>
   );
 }
