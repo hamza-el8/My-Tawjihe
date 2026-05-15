@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Inscription from './Inscription';
 import type { Translation, Lang } from './types';
 
 // ─── Translations ────────────────────────────────────────────────────────────
@@ -783,6 +784,7 @@ function Footer({ t }: { t: Translation }) {
 function LoginModal({ isOpen, onClose, t, onSwitchToSignup }: { isOpen: boolean; onClose: () => void; t: Translation; onSwitchToSignup: () => void }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const isRtl = t.direction === 'rtl';
 
@@ -791,7 +793,6 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup }: { isOpen: boolean;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call
     setTimeout(() => {
       setLoading(false);
       onClose();
@@ -800,177 +801,138 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup }: { isOpen: boolean;
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl max-w-md w-full p-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">{isRtl ? 'تسجيل الدخول' : 'Connexion'}</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ backgroundColor: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div className="relative flex w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl" style={{ minHeight: '420px' }}>
+
+        {/* ── Left panel: branding ── */}
+        <div
+          className="hidden md:flex flex-col justify-between w-5/12 p-8 text-white relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #3b1a6e 0%, #6d28d9 60%, #a855f7 100%)' }}
+        >
+          {/* decorative blobs */}
+          <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full opacity-20" style={{ background: 'radial-gradient(circle, #fff 0%, transparent 70%)' }} />
+          <div className="absolute -bottom-10 -right-10 w-52 h-52 rounded-full opacity-10" style={{ background: 'radial-gradient(circle, #fff 0%, transparent 70%)' }} />
+
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-8">
+              <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shadow">
+                <span className="text-white font-black text-lg">M</span>
+              </div>
+              <span className="font-black text-xl tracking-tight">MyTawjeh</span>
+            </div>
+            <div className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4"
+              style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)' }}>
+              {isRtl ? 'التوجيه الذكي' : 'Orientation Intelligente'}
+            </div>
+            <h2 className="text-2xl font-black leading-snug mb-3">
+              {isRtl ? 'مساحتك الشخصية' : 'Votre espace personnel'}
+            </h2>
+            <p className="text-white/70 text-sm leading-relaxed">
+              {isRtl
+                ? 'مسار مخصص، متابعة الأهداف وتوصيات الذكاء الاصطناعي — مصمم للطلاب في المغرب.'
+                : 'Parcours sur mesure, suivi des objectifs et recommandations IA — pensé pour les étudiants au Maroc.'}
+            </p>
+          </div>
+
+          <div className="relative z-10 text-white/40 text-xs">
+            {isRtl ? '© 2026 MyTawjeh' : '© 2026 MyTawjeh'}
+          </div>
         </div>
-        
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-              {isRtl ? 'البريد الإلكتروني' : 'Email'}
-            </label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={isRtl ? 'بريدك الإلكتروني' : 'Votre email'}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-              {isRtl ? 'كلمة المرور' : 'Mot de passe'}
-            </label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder={isRtl ? 'كلمة المرور' : 'Votre mot de passe'}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
-            />
-          </div>
+
+        {/* ── Right panel: form ── */}
+        <div className="flex-1 bg-white flex flex-col justify-center px-8 py-10 relative">
+          {/* Close button */}
           <button
-            type="submit"
-            disabled={loading}
-            className="btn-gradient w-full text-white py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg disabled:opacity-70"
+            onClick={onClose}
+            className="absolute top-4 right-4 w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-all text-lg leading-none"
+            aria-label="Fermer"
           >
-            {loading ? (isRtl ? 'جاري التسجيل...' : 'Connexion en cours...') : (isRtl ? 'تسجيل الدخول' : 'Se connecter')}
+            ×
           </button>
-        </form>
-        
-        <div className="mt-6 pt-6 border-t border-gray-200 text-center">
-          <p className="text-gray-600 text-sm mb-3">
-            {isRtl ? 'ليس لديك حساب؟' : 'Pas encore de compte ?'}
+
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">
+            {isRtl ? 'تسجيل الدخول' : 'Connexion'}
+          </h3>
+          <p className="text-sm text-purple-600 font-medium mb-6">
+            {isRtl ? 'وصول آمن إلى حسابك' : 'Accès sécurisé à votre compte'}
           </p>
-          <button
-            onClick={() => {
-              onClose();
-              onSwitchToSignup();
-            }}
-            className="btn-gradient text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:shadow-lg transition-all duration-300"
-          >
-            {isRtl ? 'سجل الآن →' : 'S\'inscrire maintenant →'}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
-// ─── Signup Modal ─────────────────────────────────────────────────────────────
-function SignupModal({ isOpen, onClose, t, onSwitchToLogin }: { isOpen: boolean; onClose: () => void; t: Translation; onSwitchToLogin?: () => void }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const isRtl = t.direction === 'rtl';
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                {isRtl ? 'البريد الإلكتروني' : 'E-MAIL PROFESSIONNEL OU PERSONNEL'}
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={isRtl ? 'بريدك الإلكتروني' : 'nom@domaine.com'}
+                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-gray-800 text-sm bg-white focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
+              />
+            </div>
 
-  if (!isOpen) return null;
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                {isRtl ? 'كلمة المرور' : 'MOT DE PASSE'}
+              </label>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-gray-800 text-sm bg-white focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
+              />
+            </div>
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      alert(isRtl ? 'كلمات المرور غير متطابقة' : 'Les mots de passe ne correspondent pas');
-      return;
-    }
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      onClose();
-      alert(isRtl ? 'تم إنشاء الحساب بنجاح!' : 'Compte créé avec succès !');
-    }, 1500);
-  };
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                  className="w-4 h-4 rounded accent-purple-600"
+                />
+                <span className="text-gray-600 text-xs">
+                  {isRtl ? 'تذكرني على هذا الجهاز' : 'Se souvenir de cet appareil'}
+                </span>
+              </label>
+              <button type="button" className="text-xs text-purple-600 hover:underline font-medium">
+                {isRtl ? 'نسيت كلمة المرور؟' : 'Mot de passe oublié ?'}
+              </button>
+            </div>
 
-  return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl max-w-md w-full p-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">{isRtl ? 'إنشاء حساب' : 'Créer un compte'}</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
-        </div>
-        
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-              {isRtl ? 'الاسم الكامل' : 'Nom complet'}
-            </label>
-            <input
-              type="text"
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder={isRtl ? 'الاسم الكامل' : 'Votre nom complet'}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-              {isRtl ? 'البريد الإلكتروني' : 'Email'}
-            </label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={isRtl ? 'بريدك الإلكتروني' : 'Votre email'}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-              {isRtl ? 'كلمة المرور' : 'Mot de passe'}
-            </label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder={isRtl ? 'كلمة المرور' : 'Votre mot de passe'}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-              {isRtl ? 'تأكيد كلمة المرور' : 'Confirmer le mot de passe'}
-            </label>
-            <input
-              type="password"
-              required
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder={isRtl ? 'تأكيد كلمة المرور' : 'Confirmer le mot de passe'}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-sm bg-gray-50 transition-all duration-200"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-gradient w-full text-white py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg disabled:opacity-70"
-          >
-            {loading ? (isRtl ? 'جاري الإنشاء...' : 'Création en cours...') : (isRtl ? 'إنشاء حساب' : 'Créer un compte')}
-          </button>
-        </form>
-        
-        <div className="mt-6 pt-6 border-t border-gray-200 text-center">
-          <p className="text-gray-600 text-sm mb-3">
-            {isRtl ? 'لديك حساب بالفعل؟' : 'Déjà un compte ?'}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 rounded-xl font-bold text-sm text-white shadow-lg disabled:opacity-70 transition-all duration-300 hover:-translate-y-0.5"
+              style={{ background: loading ? '#c084fc' : 'linear-gradient(90deg, #c084fc 0%, #e879f9 50%, #f472b6 100%)' }}
+            >
+              {loading
+                ? (isRtl ? 'جاري التسجيل...' : 'Connexion en cours...')
+                : (isRtl ? 'متابعة' : 'CONTINUER')}
+            </button>
+          </form>
+
+          <p className="mt-5 text-center text-xs text-gray-500">
+            {isRtl ? 'جديد على المنصة؟ ' : 'Nouveau sur la plateforme ? '}
+            <button
+              onClick={() => { onClose(); onSwitchToSignup(); }}
+              className="text-purple-600 font-semibold hover:underline"
+            >
+              {isRtl ? 'إنشاء حساب' : 'Créer un compte'}
+            </button>
           </p>
-          <button
-            onClick={() => {
-              onClose();
-              if (onSwitchToLogin) onSwitchToLogin();
-            }}
-            className="border-2 border-purple-300 text-purple-600 px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-purple-50 transition-all duration-300"
-          >
-            {isRtl ? 'تسجيل الدخول ←' : 'Se connecter ←'}
-          </button>
+          <p className="mt-2 text-center text-xs text-gray-400">
+            {isRtl
+              ? 'اتصال آمن — بتسجيل الدخول أنت توافق على شروط الاستخدام'
+              : 'Connexion sécurisée — en vous connectant vous acceptez'}
+          </p>
         </div>
       </div>
     </div>
@@ -1031,15 +993,16 @@ export default function App() {
           setShowSignupModal(true);
         }}
       />
-      <SignupModal 
-        isOpen={showSignupModal} 
-        onClose={() => setShowSignupModal(false)} 
-        t={t} 
-        onSwitchToLogin={() => {
-          setShowSignupModal(false);
-          setShowLoginModal(true);
-        }}
-      />
+      {showSignupModal && (
+        <Inscription
+          onClose={() => setShowSignupModal(false)}
+          onSwitchToLogin={() => {
+            setShowSignupModal(false);
+            setShowLoginModal(true);
+          }}
+          lang={language}
+        />
+      )}
     </div>
   );
 }
