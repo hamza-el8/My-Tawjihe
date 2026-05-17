@@ -1,9 +1,9 @@
 import Sidebar from './Sidebar';
 
-export default function Layout({ children }) {
+export default function Layout({ children, onRetakeOnet }) {
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <Sidebar onRetakeOnet={onRetakeOnet} />
       <main className="flex-1 p-8 overflow-auto">{children}</main>
     </div>
   );

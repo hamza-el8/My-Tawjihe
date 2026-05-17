@@ -484,7 +484,6 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup, onLoginSuccess }: {
 }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('eleve');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const isRtl = t.direction === 'rtl';
@@ -496,7 +495,8 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup, onLoginSuccess }: {
     setLoading(true);
     setError('');
     try {
-      await apiLogin(email, password, role);
+      // Role auto-detected by backend — no need to send it
+      await apiLogin(email, password);
       onClose();
       onLoginSuccess();
     } catch (err: any) {
@@ -505,13 +505,6 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup, onLoginSuccess }: {
       setLoading(false);
     }
   };
-
-  const roles = [
-    { value: 'eleve', label: isRtl ? 'طالب' : 'Étudiant' },
-    { value: 'parent', label: isRtl ? 'ولي الأمر' : 'Parent' },
-    { value: 'professeur', label: isRtl ? 'أستاذ' : 'Professeur' },
-    { value: 'admin', label: isRtl ? 'مدير' : 'Admin' },
-  ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)' }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
@@ -541,19 +534,6 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup, onLoginSuccess }: {
           <p className="text-sm text-purple-600 font-medium mb-5">{isRtl ? 'وصول آمن إلى حسابك' : 'Accès sécurisé à votre compte'}</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Role selector */}
-            <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">{isRtl ? 'نوع الحساب' : 'TYPE DE COMPTE'}</label>
-              <div className="grid grid-cols-4 gap-1 p-1 bg-gray-100 rounded-xl">
-                {roles.map((r) => (
-                  <button key={r.value} type="button" onClick={() => setRole(r.value)}
-                    className={`py-1.5 rounded-lg text-xs font-bold transition-all ${role === r.value ? 'bg-white text-purple-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
             <div>
               <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">{isRtl ? 'البريد الإلكتروني' : 'E-MAIL'}</label>
               <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="nom@domaine.com"
@@ -569,6 +549,22 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup, onLoginSuccess }: {
             {error && (
               <div className="px-3 py-2.5 rounded-lg bg-rose-50 border border-rose-200 text-sm text-rose-600 font-medium">{error}</div>
             )}
+
+            {/* Google Auth placeholder */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200" /></div>
+              <div className="relative flex justify-center text-xs"><span className="px-2 bg-white text-gray-400">{isRtl ? 'أو' : 'ou'}</span></div>
+            </div>
+            <button type="button" disabled className="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-gray-200 rounded-xl text-sm text-gray-400 bg-gray-50 cursor-not-allowed">
+              <svg width="16" height="16" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+              </svg>
+              {isRtl ? 'المتابعة مع Google' : 'Continuer avec Google'}
+              <span className="text-gray-300 text-xs">({isRtl ? 'قريباً' : 'bientôt'})</span>
+            </button>
 
             <button type="submit" disabled={loading}
               className="w-full py-3 rounded-xl font-bold text-sm text-white shadow-lg disabled:opacity-70 transition-all hover:-translate-y-0.5"
@@ -586,14 +582,27 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup, onLoginSuccess }: {
 
           {/* Test accounts hint */}
           <div className="mt-4 p-3 rounded-xl bg-gray-50 border border-gray-100">
-            <p className="text-xs text-gray-400 font-medium mb-1">Comptes de test (mot de passe: <strong>password</strong>)</p>
-            <div className="grid grid-cols-2 gap-1 text-xs text-gray-500">
-              <span>Étudiant: yassine@test.ma</span>
-              <span>Parent: parent@test.ma</span>
-              <span>Prof: hassan@test.ma</span>
-              <span>Admin: admin@mowajih.ma</span>
-            </div>
-          </div>
+  <p className="text-xs text-gray-400 font-medium mb-2">Comptes de test — mot de passe : <strong>password</strong></p>
+  <div className="space-y-1">
+    {[
+      { role: 'Étudiant',   email: 'yassine@test.ma',    color: '#7c3aed' },
+      { role: 'Parent',     email: 'parent@test.ma',     color: '#059669' },
+      { role: 'Professeur', email: 'hassan@test.ma',     color: '#2563eb' },
+      { role: 'Admin',      email: 'admin@mowajih.ma',   color: '#dc2626' },
+    ].map(a => (
+      <button
+        key={a.role}
+        type="button"
+        onClick={() => { setEmail(a.email); setPassword('password'); }}
+        className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white transition-all text-left border border-transparent hover:border-gray-200"
+      >
+        <span className="text-xs font-bold" style={{ color: a.color }}>{a.role}</span>
+        <span className="text-xs text-gray-400 font-mono">{a.email}</span>
+      </button>
+    ))}
+  </div>
+  <p className="text-xs text-gray-300 text-center mt-1">↑ Cliquer pour remplir automatiquement</p>
+</div>
         </div>
       </div>
     </div>

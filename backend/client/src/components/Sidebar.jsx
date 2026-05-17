@@ -1,5 +1,6 @@
-import { useAuth } from '../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import ProfilePopup from './ProfilePopup';
 
 const menus = {
   eleve: [
@@ -30,8 +31,8 @@ const menus = {
   ],
 };
 
-export default function Sidebar() {
-  const { user, logout } = useAuth();
+export default function Sidebar({ onRetakeOnet }) {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const links = menus[user?.role] || [];
@@ -42,28 +43,27 @@ export default function Sidebar() {
         <h1 className="text-xl font-black gold">Mowajih AI</h1>
         <p className="text-xs text-white/50 mt-1">Orientation Intelligente</p>
       </div>
-      <div className="p-4 border-b border-white/10">
-        <p className="text-sm font-semibold">{user?.nom}</p>
-        <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-300 capitalize">{user?.role}</span>
+
+      {/* Profile popup replaces the old static name block */}
+      <div className="p-4 border-b border-white/10" style={{ position: 'relative', zIndex: 100 }}>
+        <ProfilePopup onRetakeOnet={onRetakeOnet} />
       </div>
+
       <nav className="flex-1 p-4 space-y-1">
         {links.map(l => (
           <button
             key={l.path}
             onClick={() => navigate(l.path)}
             className={`w-full text-left px-4 py-2.5 rounded-lg text-sm transition-all ${
-              pathname === l.path ? 'bg-yellow-500/20 text-yellow-300 font-semibold' : 'text-white/70 hover:bg-white/10 hover:text-white'
+              pathname === l.path
+                ? 'bg-yellow-500/20 text-yellow-300 font-semibold'
+                : 'text-white/70 hover:bg-white/10 hover:text-white'
             }`}
           >
             {l.label}
           </button>
         ))}
       </nav>
-      <div className="p-4">
-        <button onClick={() => { logout(); navigate('/login'); }} className="w-full text-sm text-white/50 hover:text-white py-2">
-          🚪 Déconnexion
-        </button>
-      </div>
     </aside>
   );
 }

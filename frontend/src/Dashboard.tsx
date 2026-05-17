@@ -88,6 +88,558 @@ const icons = {
   menu: '☰',
 };
 
+// ─── ALL 60 ONET QUESTIONS ────────────────────────────────────────────────────
+const ONET_QUESTIONS = [
+  { id:1,cat:'R',fr:'Fabriquer des meubles de cuisine',en:'Build kitchen cabinets',ar:'صنع خزائن المطبخ' },
+  { id:2,cat:'R',fr:'Poser des briques ou carreaux',en:'Lay brick or tile',ar:'وضع الطوب أو البلاط' },
+  { id:3,cat:'R',fr:'Réparer des appareils ménagers',en:'Repair household appliances',ar:'إصلاح الأجهزة المنزلية' },
+  { id:4,cat:'R',fr:'Élever des poissons en pisciculture',en:'Raise fish in a hatchery',ar:'تربية الأسماك في مفرخ' },
+  { id:5,cat:'R',fr:'Assembler des composants électroniques',en:'Assemble electronic parts',ar:'تجميع قطع إلكترونية' },
+  { id:6,cat:'R',fr:'Conduire un camion pour livrer des colis',en:'Drive a truck to deliver packages',ar:'قيادة شاحنة لتوصيل الطرود' },
+  { id:7,cat:'R',fr:'Tester la qualité des pièces avant expédition',en:'Test quality of parts before shipment',ar:'اختبار جودة القطع قبل الشحن' },
+  { id:8,cat:'R',fr:'Réparer et installer des serrures',en:'Repair and install locks',ar:'إصلاح وتركيب الأقفال' },
+  { id:9,cat:'R',fr:'Configurer et opérer des machines',en:'Set up and operate machines',ar:'إعداد وتشغيل الآلات' },
+  { id:10,cat:'R',fr:'Pêcher avec filets ou lignes',en:'Catch fish using nets or lines',ar:'صيد الأسماك بالشباك أو الخيوط' },
+  { id:11,cat:'I',fr:'Étudier la structure du corps humain',en:'Study the structure of the human body',ar:'دراسة بنية جسم الإنسان' },
+  { id:12,cat:'I',fr:'Étudier le comportement animal',en:'Study animal behavior',ar:'دراسة سلوك الحيوانات' },
+  { id:13,cat:'I',fr:'Faire des recherches sur les plantes',en:'Do research on plants or animals',ar:'إجراء أبحاث على النباتات' },
+  { id:14,cat:'I',fr:"Enquêter sur les causes d'un incendie",en:'Investigate the cause of a fire',ar:'التحقيق في سبب حريق' },
+  { id:15,cat:'I',fr:'Développer un nouveau médicament',en:'Develop a new medicine',ar:'تطوير دواء جديد' },
+  { id:16,cat:'I',fr:"Étudier la réduction de la pollution de l'eau",en:'Study ways to reduce water pollution',ar:'دراسة طرق الحد من تلوث المياه' },
+  { id:17,cat:'I',fr:'Mener des expériences chimiques',en:'Conduct chemical experiments',ar:'إجراء تجارب كيميائية' },
+  { id:18,cat:'I',fr:'Étudier la personnalité des leaders',en:'Study the personalities of world leaders',ar:'دراسة شخصيات القادة العالميين' },
+  { id:19,cat:'I',fr:'Déterminer la distance exacte entre deux points',en:'Determine the exact distance between two points',ar:'تحديد المسافة الدقيقة بين نقطتين' },
+  { id:20,cat:'I',fr:'Examiner des échantillons au microscope',en:'Examine blood samples using a microscope',ar:'فحص عينات الدم بالمجهر' },
+  { id:21,cat:'A',fr:'Mettre en scène une pièce de théâtre',en:'Direct a play',ar:'إخراج مسرحية' },
+  { id:22,cat:'A',fr:'Créer des effets spéciaux pour films',en:'Create special effects for movies',ar:'إنشاء مؤثرات خاصة للأفلام' },
+  { id:23,cat:'A',fr:'Écrire des livres ou des pièces',en:'Write books or plays',ar:'كتابة الكتب أو المسرحيات' },
+  { id:24,cat:'A',fr:"Jouer d'un instrument de musique",en:'Play a musical instrument',ar:'العزف على آلة موسيقية' },
+  { id:25,cat:'A',fr:'Chanter dans une chorale',en:'Sing in a choir',ar:'الغناء في جوقة' },
+  { id:26,cat:'A',fr:'Faire des numéros comiques',en:'Perform comedy routines in front of an audience',ar:'تقديم عروض كوميدية أمام الجمهور' },
+  { id:27,cat:'A',fr:'Faire des cascades pour un film',en:'Perform stunts for a movie or TV show',ar:'القيام بمشاهد خطرة في الأفلام' },
+  { id:28,cat:'A',fr:'Concevoir des décors pour des pièces',en:'Design sets for plays or movies',ar:'تصميم الديكور للمسرحيات' },
+  { id:29,cat:'A',fr:'Dessiner des images',en:'Draw pictures',ar:'رسم الصور' },
+  { id:30,cat:'A',fr:'Peindre des décors pour des pièces',en:'Paint sets for plays',ar:'رسم الخلفيات للمسرحيات' },
+  { id:31,cat:'S',fr:'Apprendre aux enfants à lire',en:'Teach children how to read',ar:'تعليم الأطفال القراءة' },
+  { id:32,cat:'S',fr:'Aider les personnes avec des problèmes personnels',en:'Help people with personal or emotional problems',ar:'مساعدة الناس في مشاكلهم الشخصية' },
+  { id:33,cat:'S',fr:'Enseigner la langue des signes',en:'Teach a sign language class',ar:'تعليم لغة الإشارة' },
+  { id:34,cat:'S',fr:'Aider les personnes souffrant de dépendances',en:'Help people who have problems with drugs or alcohol',ar:'مساعدة الأشخاص الذين يعانون من إدمان' },
+  { id:35,cat:'S',fr:'Faire du bénévolat dans une ONG',en:'Do volunteer work at a non-profit organization',ar:'العمل التطوعي في منظمة غير ربحية' },
+  { id:36,cat:'S',fr:'Travailler avec des enfants handicapés',en:'Work with mentally disabled children',ar:'العمل مع الأطفال ذوي الإعاقة' },
+  { id:37,cat:'S',fr:'Enseigner en classe de primaire',en:'Teach an elementary school class',ar:'التدريس في فصل المرحلة الابتدائية' },
+  { id:38,cat:'S',fr:'Orienter les gens dans leur carrière',en:'Give career guidance to people',ar:'تقديم التوجيه المهني للناس' },
+  { id:39,cat:'S',fr:"Superviser les activités d'enfants en camp",en:'Supervise the activities of children at a camp',ar:'الإشراف على أنشطة الأطفال في المخيم' },
+  { id:40,cat:'S',fr:'Aider les familles à prendre soin de malades',en:'Help families care for ill relatives',ar:'مساعدة العائلات في رعاية ذويهم المرضى' },
+  { id:41,cat:'E',fr:'Acheter et vendre des actions et obligations',en:'Buy and sell stocks and bonds',ar:'شراء وبيع الأسهم والسندات' },
+  { id:42,cat:'E',fr:'Gérer un département dans une grande entreprise',en:'Manage a department within a large company',ar:'إدارة قسم في شركة كبيرة' },
+  { id:43,cat:'E',fr:'Exploiter un salon de coiffure',en:'Operate a beauty salon or barbershop',ar:'تشغيل صالون تجميل أو حلاقة' },
+  { id:44,cat:'E',fr:'Gérer un magasin de vêtements',en:'Manage a clothing store',ar:'إدارة متجر ملابس' },
+  { id:45,cat:'E',fr:'Vendre des marchandises par téléphone',en:'Sell merchandise over the telephone',ar:'بيع البضائع عبر الهاتف' },
+  { id:46,cat:'E',fr:'Gérer un magasin de jouets',en:'Run a toy store',ar:'إدارة متجر للألعاب' },
+  { id:47,cat:'E',fr:'Gérer un supermarché',en:'Manage a supermarket',ar:'إدارة سوبرماركت' },
+  { id:48,cat:'E',fr:'Représenter un client dans un procès',en:'Represent a client in a lawsuit',ar:'تمثيل عميل في دعوى قضائية' },
+  { id:49,cat:'E',fr:'Commercialiser un nouveau produit',en:'Market a new product',ar:'تسويق منتج جديد' },
+  { id:50,cat:'E',fr:'Négocier des contrats commerciaux',en:'Negotiate business contracts',ar:'التفاوض على العقود التجارية' },
+  { id:51,cat:'C',fr:'Créer un tableur avec un logiciel',en:'Develop a spreadsheet using computer software',ar:'تطوير جدول بيانات باستخدام برنامج' },
+  { id:52,cat:'C',fr:'Relire des dossiers ou des formulaires',en:'Proofread records or forms',ar:'مراجعة السجلات أو النماذج' },
+  { id:53,cat:'C',fr:'Charger des logiciels dans un réseau',en:'Load computer software into a large computer network',ar:'تحميل برامج الحاسوب في شبكة كبيرة' },
+  { id:54,cat:'C',fr:'Utiliser une calculatrice',en:'Operate a calculator',ar:'تشغيل آلة حاسبة' },
+  { id:55,cat:'C',fr:"Tenir les registres d'expédition",en:'Keep shipping and receiving records',ar:'الاحتفاظ بسجلات الشحن والاستلام' },
+  { id:56,cat:'C',fr:'Calculer les salaires des employés',en:'Calculate the wages of employees',ar:'حساب أجور الموظفين' },
+  { id:57,cat:'C',fr:'Enregistrer les informations clients',en:'Record information from customers',ar:'تسجيل معلومات العملاء' },
+  { id:58,cat:'C',fr:'Inventorier les fournitures avec un ordinateur',en:'Inventory supplies using a hand-held computer',ar:'جرد المستلزمات باستخدام حاسوب محمول' },
+  { id:59,cat:'C',fr:'Transférer des fonds entre comptes bancaires',en:'Transfer funds between bank accounts',ar:'تحويل الأموال بين الحسابات المصرفية' },
+  { id:60,cat:'C',fr:'Gérer les transactions bancaires des clients',en:"Handle customers' bank transactions",ar:'التعامل مع المعاملات المصرفية للعملاء' },
+];
+
+const CAT_INFO: Record<string, { fr: string; color: string; emoji: string }> = {
+  R: { fr: 'Réaliste',      color: '#ef4444', emoji: '🔧' },
+  I: { fr: 'Investigateur', color: '#3b82f6', emoji: '🔬' },
+  A: { fr: 'Artistique',    color: '#ec4899', emoji: '🎨' },
+  S: { fr: 'Social',        color: '#10b981', emoji: '🤝' },
+  E: { fr: 'Entreprenant',  color: '#f59e0b', emoji: '💼' },
+  C: { fr: 'Conventionnel', color: '#8b5cf6', emoji: '📊' },
+};
+
+const JOB_ZONES = [
+  { zone: 1, desc: 'Peu ou pas de préparation' },
+  { zone: 2, desc: 'Une certaine préparation' },
+  { zone: 3, desc: 'Préparation modérée' },
+  { zone: 4, desc: 'Bac+3/+5 nécessaire' },
+  { zone: 5, desc: 'Doctorat / expertise extensive' },
+];
+
+function selectOnetQuestions(level: number) {
+  if (level === 60) return ONET_QUESTIONS;
+  const cats = ['R','I','A','S','E','C'];
+  const perCat = level / 6;
+  const result: typeof ONET_QUESTIONS = [];
+  for (const cat of cats) {
+    const qs = ONET_QUESTIONS.filter(q => q.cat === cat);
+    const step = qs.length / perCat;
+    for (let i = 0; i < perCat; i++) result.push(qs[Math.floor(i * step)]);
+  }
+  return result;
+}
+
+function OnetTest({ onComplete, onSkip }: { onComplete: (r: any) => void; onSkip?: () => void }) {
+  const [step, setStep] = useState<'level'|'lang'|'test'|'results'|'extras'>('level');
+  const [level, setLevel] = useState(0);
+  const [lang, setLang] = useState<'fr'|'en'|'ar'>('fr');
+  const [questions, setQuestions] = useState<typeof ONET_QUESTIONS>([]);
+  const [answers, setAnswers] = useState<Record<number, boolean>>({});
+  const [cur, setCur] = useState(0);
+  const [scores, setScores] = useState<Record<string,number>>({});
+  const [jobZone, setJobZone] = useState(0);
+  const [dreamUni, setDreamUni] = useState('');
+  const [dreamJob, setDreamJob] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  const LEVELS = [
+    { n: 10, label: '⚡ Découverte',    time: '~3 min' },
+    { n: 30, label: '🔍 Exploration',   time: '~5 min' },
+    { n: 60, label: '🎯 Profil Complet',time: '~8 min' },
+  ];
+  const LANGS = [{ k: 'fr', label: 'Français', flag: '🇫🇷' },{ k: 'en', label: 'English', flag: '🇬🇧' },{ k: 'ar', label: 'العربية', flag: '🇲🇦' }];
+
+  const startTest = (n: number) => {
+    setLevel(n);
+    setQuestions(selectOnetQuestions(n));
+    setStep('lang');
+  };
+
+  const answer = (val: boolean) => {
+    const q = questions[cur];
+    const newAns = { ...answers, [q.id]: val };
+    setAnswers(newAns);
+    if (cur < questions.length - 1) {
+      setCur(c => c + 1);
+    } else {
+      const sc: Record<string, number> = { R:0,I:0,A:0,S:0,E:0,C:0 };
+      questions.forEach(qq => { if (newAns[qq.id]) sc[qq.cat]++; });
+      setScores(sc);
+      setStep('results');
+    }
+  };
+
+  const getRanked = () => Object.entries(scores).sort((a,b) => b[1]-a[1]);
+
+  const handleSave = async () => {
+    setSaving(true);
+    const ranked = getRanked();
+    try {
+      await apiFetch('/onet/save', { method: 'POST', body: JSON.stringify({
+        testLevel: level, scores,
+        primaryInterest: ranked[0]?.[0], secondaryInterest: ranked[1]?.[0], tertiaryInterest: ranked[2]?.[0],
+        jobZone, dreamUni: dreamUni || null, dreamJob: dreamJob || null, language: lang,
+      })});
+      onComplete({ scores, ranked, jobZone, dreamUni, dreamJob });
+    } catch { alert('Erreur lors de la sauvegarde'); }
+    finally { setSaving(false); }
+  };
+
+  const box: React.CSSProperties = {
+    background:'#fff', borderRadius:16, padding:32, maxWidth:540, margin:'0 auto',
+    boxShadow:'0 4px 24px rgba(15,32,68,0.12)',
+  };
+  const wrap: React.CSSProperties = {
+    minHeight:'100vh', background:'linear-gradient(135deg,#0f2044,#1a3a6e)',
+    display:'flex', alignItems:'center', justifyContent:'center', padding:24,
+  };
+
+  if (step === 'level') return (
+    <div style={wrap}>
+      <div style={{ ...box, maxWidth:560 }}>
+        <div style={{ textAlign:'center', marginBottom:24 }}>
+          <div style={{ fontSize:48 }}>🎯</div>
+          <h2 style={{ fontSize:22, fontWeight:800, color:'#0f2044', margin:'8px 0 4px' }}>Test O*NET</h2>
+          <p style={{ color:'#64748b', fontSize:13 }}>Découvrez votre profil RIASEC pour construire votre parcours idéal.</p>
+        </div>
+        <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom:16 }}>
+          {LEVELS.map(l => (
+            <button key={l.n} onClick={() => startTest(l.n)} style={{
+              padding:'16px 20px', borderRadius:12, border:'2px solid #e2e8f0', background:'#f8fafc',
+              cursor:'pointer', textAlign:'left', display:'flex', justifyContent:'space-between', alignItems:'center',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='#7c3aed'; (e.currentTarget as HTMLElement).style.background='#f5f3ff'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='#e2e8f0'; (e.currentTarget as HTMLElement).style.background='#f8fafc'; }}>
+              <div>
+                <div style={{ fontWeight:700, fontSize:16, color:'#0f2044' }}>{l.label}</div>
+                <div style={{ fontSize:12, color:'#64748b', marginTop:2 }}>{l.n} questions</div>
+              </div>
+              <div style={{ fontSize:12, color:'#7c3aed', fontWeight:700 }}>{l.time}</div>
+            </button>
+          ))}
+        </div>
+        {onSkip && <button onClick={onSkip} style={{ width:'100%', padding:10, background:'transparent', border:'1px solid #e2e8f0', borderRadius:8, color:'#94a3b8', fontSize:13, cursor:'pointer' }}>Plus tard →</button>}
+      </div>
+    </div>
+  );
+
+  if (step === 'lang') return (
+    <div style={wrap}>
+      <div style={box}>
+        <h2 style={{ fontSize:18, fontWeight:800, color:'#0f2044', textAlign:'center', marginBottom:20 }}>Choisissez votre langue</h2>
+        <div style={{ display:'flex', gap:12, justifyContent:'center', marginBottom:24 }}>
+          {LANGS.map(l => (
+            <button key={l.k} onClick={() => setLang(l.k as any)} style={{
+              padding:'14px 20px', borderRadius:12, border:`2px solid ${lang===l.k?'#7c3aed':'#e2e8f0'}`,
+              background:lang===l.k?'#f5f3ff':'#f8fafc', cursor:'pointer', fontSize:15, fontWeight:lang===l.k?700:500,
+            }}>{l.flag} {l.label}</button>
+          ))}
+        </div>
+        <button onClick={() => setStep('test')} style={{ width:'100%', padding:12, background:'linear-gradient(135deg,#7c3aed,#a855f7)', color:'#fff', border:'none', borderRadius:10, fontSize:15, fontWeight:700, cursor:'pointer' }}>
+          Commencer →
+        </button>
+      </div>
+    </div>
+  );
+
+  if (step === 'test') {
+    const q = questions[cur];
+    const cat = CAT_INFO[q.cat];
+    const progress = ((cur + 1) / questions.length) * 100;
+    return (
+      <div style={wrap} dir={lang==='ar'?'rtl':'ltr'}>
+        <div style={box}>
+          <div style={{ marginBottom:20 }}>
+            <div style={{ display:'flex', justifyContent:'space-between', fontSize:12, color:'#64748b', marginBottom:6 }}>
+              <span>{cur+1} / {questions.length}</span>
+              <span style={{ color:cat.color, fontWeight:700 }}>{cat.emoji} {cat.fr}</span>
+            </div>
+            <div style={{ height:6, background:'#f1f5f9', borderRadius:999 }}>
+              <div style={{ height:'100%', width:`${progress}%`, background:'linear-gradient(135deg,#7c3aed,#a855f7)', borderRadius:999, transition:'width .3s' }} />
+            </div>
+          </div>
+          <div style={{ textAlign:'center', marginBottom:32 }}>
+            <div style={{ fontSize:12, color:'#94a3b8', marginBottom:10 }}>
+              {lang==='ar'?'هل تودّ القيام بهذا؟':lang==='en'?'Would you like to do this activity?':'Aimeriez-vous faire cela ?'}
+            </div>
+            <p style={{ fontSize:20, fontWeight:700, color:'#0f2044', lineHeight:1.4, margin:0 }}>
+              {(q as any)[lang] || q.fr}
+            </p>
+          </div>
+          <div style={{ display:'flex', gap:12 }}>
+            <button onClick={() => answer(true)} style={{ flex:1, padding:14, borderRadius:12, border:'2px solid #10b981', background:'#f0fdf4', color:'#16a34a', fontWeight:700, fontSize:16, cursor:'pointer' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='#10b981'; (e.currentTarget as HTMLElement).style.color='#fff'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='#f0fdf4'; (e.currentTarget as HTMLElement).style.color='#16a34a'; }}>
+              {lang==='ar'?'✓ نعم':'✓ Oui'}
+            </button>
+            <button onClick={() => answer(false)} style={{ flex:1, padding:14, borderRadius:12, border:'2px solid #ef4444', background:'#fef2f2', color:'#dc2626', fontWeight:700, fontSize:16, cursor:'pointer' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='#ef4444'; (e.currentTarget as HTMLElement).style.color='#fff'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='#fef2f2'; (e.currentTarget as HTMLElement).style.color='#dc2626'; }}>
+              {lang==='ar'?'✗ لا':'✗ Non'}
+            </button>
+          </div>
+          {cur > 0 && <button onClick={() => setCur(c=>c-1)} style={{ marginTop:12, width:'100%', padding:8, background:'transparent', border:'none', color:'#94a3b8', fontSize:12, cursor:'pointer' }}>← Question précédente</button>}
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 'results') {
+    const ranked = getRanked();
+    const total = Math.round(level / 6);
+    return (
+      <div style={wrap}>
+        <div style={{ ...box, maxWidth:560 }}>
+          <div style={{ textAlign:'center', marginBottom:20 }}>
+            <div style={{ fontSize:40 }}>🎉</div>
+            <h2 style={{ fontSize:20, fontWeight:800, color:'#0f2044', margin:'8px 0 4px' }}>Votre profil RIASEC</h2>
+            <p style={{ color:'#64748b', fontSize:13 }}>Code : <strong style={{ color:'#7c3aed', fontSize:18 }}>{ranked[0]?.[0]}{ranked[1]?.[0]}{ranked[2]?.[0]}</strong></p>
+          </div>
+          <div style={{ marginBottom:20 }}>
+            {ranked.map(([cat, score], i) => {
+              const info = CAT_INFO[cat];
+              const pct = total > 0 ? (score / total) * 100 : 0;
+              return (
+                <div key={cat} style={{ marginBottom:10 }}>
+                  <div style={{ display:'flex', justifyContent:'space-between', fontSize:13, marginBottom:4 }}>
+                    <span style={{ fontWeight:i<3?700:500, color:i<3?info.color:'#94a3b8' }}>
+                      {info.emoji} {info.fr}
+                      {i===0&&<span style={{ fontSize:10, marginLeft:6, background:info.color, color:'#fff', padding:'1px 5px', borderRadius:4 }}>Primaire</span>}
+                    </span>
+                    <span style={{ color:'#64748b', fontSize:12 }}>{score}/{total}</span>
+                  </div>
+                  <div style={{ height:8, background:'#f1f5f9', borderRadius:999 }}>
+                    <div style={{ height:'100%', width:`${pct}%`, background:info.color, borderRadius:999 }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ marginBottom:16 }}>
+            <p style={{ fontSize:13, fontWeight:700, color:'#0f2044', marginBottom:8 }}>Niveau d'études visé :</p>
+            <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+              {JOB_ZONES.map(jz => (
+                <button key={jz.zone} onClick={() => setJobZone(jz.zone)} style={{
+                  padding:'9px 14px', borderRadius:8, border:`2px solid ${jobZone===jz.zone?'#7c3aed':'#e2e8f0'}`,
+                  background:jobZone===jz.zone?'#f5f3ff':'#f8fafc', cursor:'pointer', textAlign:'left',
+                  fontSize:13, fontWeight:jobZone===jz.zone?700:400, color:jobZone===jz.zone?'#0f2044':'#64748b',
+                }}>
+                  <strong>Zone {jz.zone}</strong> — {jz.desc}
+                </button>
+              ))}
+            </div>
+          </div>
+          <button onClick={() => setStep('extras')} disabled={!jobZone} style={{
+            width:'100%', padding:12, background:jobZone?'linear-gradient(135deg,#7c3aed,#a855f7)':'#e2e8f0',
+            color:jobZone?'#fff':'#94a3b8', border:'none', borderRadius:10, fontSize:14, fontWeight:700, cursor:jobZone?'pointer':'not-allowed',
+          }}>Continuer →</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 'extras') return (
+    <div style={wrap}>
+      <div style={box}>
+        <div style={{ textAlign:'center', marginBottom:24 }}>
+          <div style={{ fontSize:36 }}>💭</div>
+          <h2 style={{ fontSize:20, fontWeight:800, color:'#0f2044', margin:'8px 0 4px' }}>Vos rêves (optionnel)</h2>
+          <p style={{ color:'#64748b', fontSize:13 }}>Ces informations enrichiront votre roadmap IA.</p>
+        </div>
+        {[
+          { label:'🎓 Université de rêve', val:dreamUni, set:setDreamUni, placeholder:'ENSA, UCA, Mohamed V...' },
+          { label:'💼 Métier de rêve', val:dreamJob, set:setDreamJob, placeholder:'Ingénieur, Médecin, Architecte...' },
+        ].map(f => (
+          <div key={f.label} style={{ marginBottom:16 }}>
+            <label style={{ fontSize:12, fontWeight:700, color:'#64748b', textTransform:'uppercase', display:'block', marginBottom:6 }}>{f.label}</label>
+            <input type="text" value={f.val} onChange={e => f.set(e.target.value)} placeholder={f.placeholder}
+              style={{ width:'100%', padding:'10px 12px', border:'1px solid #e2e8f0', borderRadius:8, fontSize:14, boxSizing:'border-box', outline:'none' }} />
+          </div>
+        ))}
+        <button onClick={handleSave} disabled={saving} style={{
+          width:'100%', padding:13, background:saving?'#c4b5fd':'linear-gradient(135deg,#7c3aed,#a855f7)', color:'#fff',
+          border:'none', borderRadius:10, fontSize:15, fontWeight:700, cursor:saving?'not-allowed':'pointer', marginBottom:8,
+        }}>{saving?'Sauvegarde...':'✅ Terminer et sauvegarder'}</button>
+        <button onClick={handleSave} disabled={saving} style={{ width:'100%', padding:9, background:'transparent', border:'none', color:'#94a3b8', fontSize:12, cursor:'pointer' }}>Passer et terminer →</button>
+      </div>
+    </div>
+  );
+
+  return null;
+}
+
+// ─── PROFILE POPUP ────────────────────────────────────────────────────────────
+function PasswordTab({ pw, setPw, pwMsg, pwLoading, onSubmit }: {
+  pw: { current: string; next: string; confirm: string };
+  setPw: React.Dispatch<React.SetStateAction<{ current: string; next: string; confirm: string }>>;
+  pwMsg: { type: string; text: string } | null;
+  pwLoading: boolean;
+  onSubmit: (e: React.FormEvent) => void;
+}) {
+  const [showForm, setShowForm] = useState(false);
+
+  if (!showForm) return (
+    <div style={{ textAlign: 'center', padding: '8px 0' }}>
+      <div style={{ fontSize: 36, marginBottom: 10 }}>🔑</div>
+      <p style={{ fontSize: 13, color: '#64748b', marginBottom: 14 }}>
+        Modifiez votre mot de passe de connexion.
+      </p>
+      <button
+        onClick={() => setShowForm(true)}
+        style={{
+          width: '100%', padding: 10,
+          background: 'linear-gradient(135deg,#7c3aed,#a855f7)',
+          color: '#fff', border: 'none', borderRadius: 8,
+          fontSize: 13, fontWeight: 700, cursor: 'pointer',
+        }}
+      >
+        Changer le mot de passe
+      </button>
+    </div>
+  );
+
+  return (
+    <form onSubmit={onSubmit}>
+      {pwMsg && (
+        <div style={{
+          marginBottom: 10, padding: '8px 12px', borderRadius: 8, fontSize: 12,
+          background: pwMsg.type === 'success' ? '#f0fdf4' : '#fef2f2',
+          color: pwMsg.type === 'success' ? '#16a34a' : '#dc2626',
+        }}>{pwMsg.text}</div>
+      )}
+      {[
+        { k: 'current', l: 'Mot de passe actuel' },
+        { k: 'next',    l: 'Nouveau mot de passe' },
+        { k: 'confirm', l: 'Confirmer' },
+      ].map(f => (
+        <div key={f.k} style={{ marginBottom: 10 }}>
+          <label style={{ fontSize: 11, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>{f.l}</label>
+          <input
+            type="password"
+            value={pw[f.k as keyof typeof pw]}
+            onChange={e => setPw(p => ({ ...p, [f.k]: e.target.value }))}
+            required
+            placeholder="••••••••"
+            style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 13, outline: 'none', boxSizing: 'border-box' }}
+          />
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 8 }}>
+        <button type="button" onClick={() => setShowForm(false)} style={{ flex: 1, padding: 9, background: '#f1f5f9', color: '#64748b', border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+          Annuler
+        </button>
+        <button type="submit" disabled={pwLoading} style={{ flex: 2, padding: 9, background: pwLoading ? '#c4b5fd' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: '#fff', border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: pwLoading ? 'not-allowed' : 'pointer' }}>
+          {pwLoading ? 'Modification...' : 'Confirmer'}
+        </button>
+      </div>
+    </form>
+  );
+}
+function ProfilePopup({ user, onLogout, onRetakeOnet }: { user: User; onLogout: () => void; onRetakeOnet?: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState('password');
+  const [pw, setPw] = useState({ current:'', next:'', confirm:'' });
+  const [pwMsg, setPwMsg] = useState<{ type:string; text:string }|null>(null);
+  const [pwLoading, setPwLoading] = useState(false);
+  const [studentEmail, setStudentEmail] = useState('');
+  const [linkedEleve, setLinkedEleve] = useState<any>(null);
+  const [linkMsg, setLinkMsg] = useState<{ type:string; text:string }|null>(null);
+  const [linkLoading, setLinkLoading] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
+    if (open) {
+      document.addEventListener('mousedown', handler);
+      if (user.role === 'parent') {
+        apiFetch('/auth/linked-student').then(r => setLinkedEleve(r.eleve)).catch(() => {});
+      }
+    }
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open, user.role]);
+
+  const handleChangePw = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pw.next !== pw.confirm) { setPwMsg({ type:'error', text:'Les mots de passe ne correspondent pas' }); return; }
+    if (pw.next.length < 6) { setPwMsg({ type:'error', text:'Au moins 6 caractères requis' }); return; }
+    setPwLoading(true); setPwMsg(null);
+    try {
+      const r = await apiFetch('/auth/change-password', { method:'POST', body:JSON.stringify({ currentPassword:pw.current, newPassword:pw.next }) });
+      setPwMsg({ type:'success', text: r.message });
+      setPw({ current:'', next:'', confirm:'' });
+    } catch(e: any) { setPwMsg({ type:'error', text:e.message }); }
+    finally { setPwLoading(false); }
+  };
+
+  const handleLink = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLinkLoading(true); setLinkMsg(null);
+    try {
+      const r = await apiFetch('/auth/link-student', { method:'POST', body:JSON.stringify({ eleveEmail: studentEmail }) });
+      setLinkMsg({ type:'success', text:r.message });
+      setLinkedEleve(r.eleve);
+      setStudentEmail('');
+    } catch(e: any) { setLinkMsg({ type:'error', text:e.message }); }
+    finally { setLinkLoading(false); }
+  };
+
+  const roleColors: Record<string,string> = { eleve:'#7c3aed', parent:'#059669', professeur:'#2563eb', admin:'#dc2626' };
+  const roleLabels: Record<string,string> = { eleve:'Étudiant', parent:'Parent', professeur:'Professeur', admin:'Administrateur' };
+  const initials = user.nom.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+
+  const tabs = [
+    { k:'password', l:'🔑 Mot de passe' },
+    ...(user.role==='parent'?[{ k:'student', l:'👦 Lier un élève' }]:[]),
+    ...(user.role==='eleve'?[{ k:'onet', l:'🎯 O*NET' }]:[]),
+  ];
+
+  return (
+    <div ref={ref} style={{ position:'relative' }}>
+      {/* Trigger */}<div onClick={() => setOpen(o=>!o)} style={{ cursor:'pointer', display:'flex', alignItems:'center', gap:10 }}>
+        <div
+  onClick={() => setOpen(o=>!o)}
+  style={{ cursor:'pointer', display:'flex', alignItems:'center', gap:10, padding:'6px 10px', borderRadius:10, transition:'background .2s' }}
+  onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.1)'}
+  onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
+></div>
+        <div style={{
+          width:36, height:36, borderRadius:'50%', background:roleColors[user.role]||'#7c3aed',
+          display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontWeight:700, fontSize:13,
+          border:'2px solid rgba(255,255,255,0.2)', flexShrink:0,
+        }}>{initials}</div>
+        <div>
+          <div style={{ fontSize:13, fontWeight:600, color:'#fff' }}>{user.nom}</div>
+          <div style={{ fontSize:10, color:'rgba(255,255,255,0.5)' }}>{roleLabels[user.role]}</div>
+        </div>
+        <span style={{ marginLeft:4, color:'rgba(255,255,255,0.4)', fontSize:12 }}>▾</span>
+      </div>
+
+      {/* Dropdown */}
+      {open && (
+        <div style={{
+          position:'absolute', top:'calc(100% + 8px)', left:0, zIndex:1000, background:'#fff',
+          borderRadius:14, boxShadow:'0 8px 32px rgba(0,0,0,0.18)', width:320, overflow:'hidden',
+        }}>
+          {/* Header */}
+          <div style={{ padding:'14px 18px', background:'linear-gradient(135deg,#0f2044,#1a3a6e)', color:'#fff' }}>
+            <p style={{ margin:0, fontWeight:700, fontSize:14 }}>{user.nom}</p>
+            <p style={{ margin:'2px 0 0', fontSize:12, opacity:.6 }}>{user.email}</p>
+          </div>
+
+          {/* Tabs */}
+          <div style={{ display:'flex', borderBottom:'1px solid #f1f5f9', background:'#f8fafc' }}>
+            {tabs.map(t => (
+              <button key={t.k} onClick={() => setTab(t.k)} style={{
+                flex:1, padding:'9px 4px', fontSize:11, fontWeight:600, border:'none', cursor:'pointer',
+                background:tab===t.k?'#fff':'transparent', color:tab===t.k?'#0f2044':'#94a3b8',
+                borderBottom:tab===t.k?'2px solid #7c3aed':'2px solid transparent',
+              }}>{t.l}</button>
+            ))}
+          </div>
+
+          {/* Content */}
+          <div style={{ padding:18 }}>
+            {tab==='password' && (
+              <PasswordTab pw={pw} setPw={setPw} pwMsg={pwMsg} pwLoading={pwLoading} onSubmit={handleChangePw} />
+            )}
+
+            {tab==='student' && (
+              <div>
+                {linkedEleve && (
+                  <div style={{ background:'#f0fdf4', borderRadius:10, padding:12, marginBottom:14 }}>
+                    <p style={{ fontSize:11, fontWeight:700, color:'#16a34a', marginBottom:4, textTransform:'uppercase' }}>✅ Élève lié</p>
+                    <p style={{ margin:0, fontWeight:700, color:'#0f2044', fontSize:14 }}>{linkedEleve.nom}</p>
+                    <p style={{ margin:'2px 0 0', fontSize:12, color:'#64748b' }}>{linkedEleve.email}</p>
+                  </div>
+                )}
+                {linkMsg && <div style={{ marginBottom:10, padding:'8px 12px', borderRadius:8, fontSize:12, background:linkMsg.type==='success'?'#f0fdf4':'#fef2f2', color:linkMsg.type==='success'?'#16a34a':'#dc2626' }}>{linkMsg.text}</div>}
+                <form onSubmit={handleLink}>
+                  <label style={{ fontSize:11, fontWeight:600, color:'#64748b', textTransform:'uppercase', display:'block', marginBottom:6 }}>Email de l'élève</label>
+                  <input type="email" value={studentEmail} onChange={e=>setStudentEmail(e.target.value)} required placeholder="eleve@exemple.ma"
+                    style={{ width:'100%', padding:'8px 10px', border:'1px solid #e2e8f0', borderRadius:8, fontSize:13, outline:'none', boxSizing:'border-box', marginBottom:10 }} />
+                  <button type="submit" disabled={linkLoading} style={{ width:'100%', padding:9, background:linkLoading?'#6ee7b7':'linear-gradient(135deg,#059669,#10b981)', color:'#fff', border:'none', borderRadius:8, fontSize:13, fontWeight:700, cursor:linkLoading?'not-allowed':'pointer' }}>
+                    {linkLoading?'Recherche...':linkedEleve?"Changer l'élève lié":'Lier cet élève'}
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {tab==='onet' && (
+              <div>
+                <p style={{ fontSize:12, color:'#64748b', marginBottom:12 }}>Repasser le test O*NET pour mettre à jour votre profil de carrière.</p>
+                <button onClick={() => { setOpen(false); if(onRetakeOnet) onRetakeOnet(); }} style={{ width:'100%', padding:10, background:'linear-gradient(135deg,#7c3aed,#a855f7)', color:'#fff', border:'none', borderRadius:8, fontSize:13, fontWeight:700, cursor:'pointer' }}>
+                  🎯 Repasser le test O*NET
+                </button>
+                <p style={{ fontSize:11, color:'#94a3b8', textAlign:'center', marginTop:8 }}>Vos résultats précédents seront remplacés.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Footer — logout */}
+          <div style={{ borderTop:'1px solid #f1f5f9', padding:'12px 18px' }}>
+            <button onClick={() => { setOpen(false); onLogout(); }} style={{ width:'100%', padding:8, background:'#fef2f2', color:'#dc2626', border:'1px solid #fecaca', borderRadius:8, fontSize:12, fontWeight:600, cursor:'pointer' }}>
+              🚪 Se déconnecter
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 const elevMenu = [
   { id: 'dashboard', label: 'Tableau de bord', icon: icons.dashboard },
@@ -117,10 +669,10 @@ const parentMenu = [
 ];
 
 function Sidebar({
-  user, active, setActive, onLogout, mobile, onClose,
+  user, active, setActive, onLogout, mobile, onClose, onRetakeOnet,
 }: {
   user: User; active: string; setActive: (s: string) => void;
-  onLogout: () => void; mobile?: boolean; onClose?: () => void;
+  onLogout: () => void; mobile?: boolean; onClose?: () => void; onRetakeOnet?: () => void;
 }) {
   const menu =
     user.role === 'eleve' ? elevMenu
@@ -158,17 +710,9 @@ function Sidebar({
         </div>
       </div>
 
-      {/* User card */}
-      <div className="px-4 py-4">
-        <div className="rounded-xl p-3.5 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${roleColors[user.role]} flex items-center justify-center font-black text-white text-sm flex-shrink-0`}>
-            {user.nom.charAt(0).toUpperCase()}
-          </div>
-          <div className="min-w-0">
-            <div className="text-sm font-bold text-white truncate">{user.nom}</div>
-            <div className="text-xs text-white/40 font-medium">{roleLabels[user.role]}</div>
-          </div>
-        </div>
+      {/* Profile popup — click name to open settings */}
+      <div className="px-4 py-4" style={{ position:'relative', zIndex:200 }}>
+        <ProfilePopup user={user} onLogout={onLogout} onRetakeOnet={onRetakeOnet} />
       </div>
 
       {/* Nav */}
@@ -196,16 +740,7 @@ function Sidebar({
         ))}
       </nav>
 
-      {/* Logout */}
-      <div className="px-3 py-4 border-t border-white/5">
-        <button
-          onClick={onLogout}
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-white/40 hover:text-white/70 hover:bg-white/5 transition-all"
-        >
-          <span className="text-base">{icons.logout}</span>
-          <span>Déconnexion</span>
-        </button>
-      </div>
+      {/* Logout moved to profile popup — click your name */}
     </div>
   );
 }
@@ -752,13 +1287,22 @@ function NotificationsPage({ user }: { user: User }) {
 }
 
 // ─── ELEVE DASHBOARD ──────────────────────────────────────────────────────────
-function EleveDashboard({ user, setActive }: { user: User; setActive: (s: string) => void }) {
+function EleveDashboard({ user, setActive, onRetakeOnet }: { user: User; setActive: (s: string) => void; onRetakeOnet?: () => void }) {
   const [notes, setNotes] = useState<Note[]>([]);
   const [notifCount, setNotifCount] = useState(0);
+  const [showOnetPrompt, setShowOnetPrompt] = useState(false);
+  const [onetProfile, setOnetProfile] = useState<any>(null);
 
   useEffect(() => {
     apiFetch(`/eleves/${user.id}/notes`).then(setNotes).catch(() => {});
     apiFetch(`/notifications/${user.id}`).then((ns: Notification[]) => setNotifCount(ns.filter((n) => !n.lu).length)).catch(() => {});
+    // Check O*NET profile
+    apiFetch('/onet/profile')
+      .then(r => {
+        setOnetProfile(r.profil);
+        if (!r.profil) setTimeout(() => setShowOnetPrompt(true), 800);
+      })
+      .catch(() => setTimeout(() => setShowOnetPrompt(true), 800));
   }, [user.id]);
 
   const moyenne = notes.length
@@ -774,6 +1318,26 @@ function EleveDashboard({ user, setActive }: { user: User; setActive: (s: string
 
   return (
     <div className="p-6 space-y-6">
+      {/* O*NET prompt popup */}
+      {showOnetPrompt && (
+        <div style={{ position:'fixed', inset:0, background:'rgba(15,32,68,0.65)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:999, padding:16 }}>
+          <div style={{ background:'#fff', borderRadius:20, padding:32, maxWidth:440, width:'100%', textAlign:'center', boxShadow:'0 20px 60px rgba(15,32,68,0.25)' }}>
+            <div style={{ fontSize:48, marginBottom:12 }}>🎯</div>
+            <h3 style={{ fontSize:20, fontWeight:800, color:'#0f2044', margin:'0 0 8px' }}>Découvrez votre profil de carrière !</h3>
+            <p style={{ color:'#64748b', fontSize:14, lineHeight:1.6, margin:'0 0 20px' }}>
+              Passez le test O*NET pour obtenir votre <strong>roadmap personnalisée par IA</strong> basée sur vos intérêts.
+            </p>
+            <button onClick={() => { setShowOnetPrompt(false); if(onRetakeOnet) onRetakeOnet(); }} style={{
+              width:'100%', padding:12, background:'linear-gradient(135deg,#7c3aed,#a855f7)', color:'#fff',
+              border:'none', borderRadius:10, fontSize:15, fontWeight:700, cursor:'pointer', marginBottom:10,
+            }}>Commencer le test maintenant</button>
+            <button onClick={() => setShowOnetPrompt(false)} style={{ width:'100%', padding:10, background:'transparent', border:'1px solid #e2e8f0', borderRadius:10, fontSize:13, color:'#94a3b8', cursor:'pointer' }}>
+              Plus tard
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Welcome */}
       <div className="rounded-2xl p-6 text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#0f0c29,#302b63,#24243e)' }}>
         <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-20" style={{ background: 'radial-gradient(circle,#a78bfa,transparent)' }} />
@@ -781,6 +1345,12 @@ function EleveDashboard({ user, setActive }: { user: User; setActive: (s: string
           <p className="text-white/60 text-sm font-medium mb-1">Bonjour 👋</p>
           <h2 className="text-2xl font-black mb-1">{user.nom}</h2>
           <p className="text-white/60 text-sm">{user.filiere || 'Filière non définie'} · {user.niveau || ''}</p>
+          {onetProfile && (
+            <div style={{ marginTop:10, display:'inline-flex', alignItems:'center', gap:6, background:'rgba(255,255,255,0.1)', borderRadius:8, padding:'5px 10px', fontSize:12 }}>
+              <span>🎯</span>
+              <span style={{ fontWeight:700 }}>Profil : {onetProfile.primaryInterest} · {onetProfile.secondaryInterest} · {onetProfile.tertiaryInterest}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -881,12 +1451,69 @@ function ProfDashboard({ user }: { user: User }) {
 
 // ─── ADMIN DASHBOARD ──────────────────────────────────────────────────────────
 function AdminDashboard({ user }: { user: User }) {
-  const [users, setUsers] = useState<any[]>([]);
+  const [data, setData] = useState<{ eleves: any[]; profs: any[]; parents: any[] }>({ eleves: [], profs: [], parents: [] });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [notifForm, setNotifForm] = useState({ contenu: '', type: 'info', eleveId: '' });
+  const [notifMsg, setNotifMsg] = useState('');
+  const [tab, setTab] = useState('users');
 
   useEffect(() => {
-    apiFetch('/admin/users').then(setUsers).finally(() => setLoading(false));
+    apiFetch('/admin/users')
+      .then((r) => {
+        setData({
+          eleves: Array.isArray(r.eleves) ? r.eleves : [],
+          profs: Array.isArray(r.profs) ? r.profs : [],
+          parents: Array.isArray(r.parents) ? r.parents : [],
+        });
+      })
+      .catch((e) => setError(e.message || 'Impossible de charger les utilisateurs'))
+      .finally(() => setLoading(false));
   }, []);
+
+  const deleteUser = async (role: string, id: number) => {
+    if (!confirm('Supprimer cet utilisateur ?')) return;
+    try {
+      await apiFetch(`/admin/users/${role}/${id}`, { method: 'DELETE' });
+      const r = await apiFetch('/admin/users');
+      setData({
+        eleves: Array.isArray(r.eleves) ? r.eleves : [],
+        profs: Array.isArray(r.profs) ? r.profs : [],
+        parents: Array.isArray(r.parents) ? r.parents : [],
+      });
+    } catch (e: any) { alert(e.message); }
+  };
+
+  const sendNotif = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await apiFetch('/notifications', { method: 'POST', body: JSON.stringify(notifForm) });
+      setNotifMsg('✅ Notification envoyée !');
+      setNotifForm({ contenu: '', type: 'info', eleveId: '' });
+      setTimeout(() => setNotifMsg(''), 3000);
+    } catch (e: any) { setNotifMsg('❌ ' + e.message); }
+  };
+
+  if (loading) return (
+    <div className="p-6 flex flex-col items-center justify-center h-64 gap-4">
+      <div className="w-10 h-10 rounded-full border-4 border-violet-200 border-t-violet-600 animate-spin" />
+      <p className="text-gray-400 text-sm">Chargement du panneau d'administration...</p>
+    </div>
+  );
+
+  if (error) return (
+    <div className="p-6 flex flex-col items-center justify-center h-64 gap-4 text-center">
+      <div className="text-4xl">⚠️</div>
+      <p className="text-rose-600 font-semibold text-sm">{error}</p>
+      <button onClick={() => window.location.reload()} className="px-4 py-2 rounded-xl text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)' }}>Réessayer</button>
+    </div>
+  );
+
+  const allUsers = [
+    ...data.eleves.map(u => ({ ...u, role: 'eleve' })),
+    ...data.profs.map(u => ({ ...u, role: 'professeur' })),
+    ...data.parents.map(u => ({ ...u, role: 'parent' })),
+  ];
 
   return (
     <div className="p-6 space-y-6">
@@ -896,37 +1523,74 @@ function AdminDashboard({ user }: { user: User }) {
         <p className="text-white/60 text-sm mt-1">Administrateur plateforme</p>
       </div>
 
-      <StatCard icon="👥" label="Utilisateurs enregistrés" value={users.length} color="bg-rose-50 text-rose-600" />
-
-      <div>
-        <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Tous les utilisateurs</h3>
-        {loading ? (
-          <div className="text-center py-10 text-gray-400">Chargement...</div>
-        ) : (
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
-                  <th className="text-left px-5 py-3 text-xs font-bold text-gray-500 uppercase">Nom</th>
-                  <th className="text-left px-5 py-3 text-xs font-bold text-gray-500 uppercase">Email</th>
-                  <th className="text-left px-5 py-3 text-xs font-bold text-gray-500 uppercase">Rôle</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {users.map((u, i) => (
-                  <tr key={i} className="hover:bg-gray-50/50">
-                    <td className="px-5 py-3.5 text-sm font-semibold text-gray-800">{u.nom}</td>
-                    <td className="px-5 py-3.5 text-sm text-gray-500">{u.email}</td>
-                    <td className="px-5 py-3.5">
-                      <span className="px-2 py-0.5 rounded-md text-xs font-bold bg-gray-100 text-gray-600 capitalize">{u.role}</span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-4">
+        <StatCard icon="🎓" label="Étudiants" value={data.eleves.length} color="bg-blue-50 text-blue-600" />
+        <StatCard icon="👨‍🏫" label="Professeurs" value={data.profs.length} color="bg-purple-50 text-purple-600" />
+        <StatCard icon="👨‍👩‍👧" label="Parents" value={data.parents.length} color="bg-emerald-50 text-emerald-600" />
       </div>
+
+      {/* Tabs */}
+      <div className="flex gap-2">
+        {[['users', '👥 Utilisateurs'], ['notifs', '🔔 Notification']].map(([k, l]) => (
+          <button key={k} onClick={() => setTab(k)}
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${tab === k ? 'text-white shadow-lg' : 'bg-white text-gray-500 border border-gray-100'}`}
+            style={tab === k ? { background: 'linear-gradient(135deg,#7c3aed,#a855f7)' } : {}}>
+            {l}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'users' && (
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-100">
+                <th className="text-left px-5 py-3 text-xs font-bold text-gray-500 uppercase">Nom</th>
+                <th className="text-left px-5 py-3 text-xs font-bold text-gray-500 uppercase">Email</th>
+                <th className="text-left px-5 py-3 text-xs font-bold text-gray-500 uppercase">Rôle</th>
+                <th className="px-5 py-3" />
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {allUsers.map((u, i) => (
+                <tr key={i} className="hover:bg-gray-50/50">
+                  <td className="px-5 py-3.5 text-sm font-semibold text-gray-800">{u.nom}</td>
+                  <td className="px-5 py-3.5 text-sm text-gray-500">{u.email}</td>
+                  <td className="px-5 py-3.5">
+                    <span className="px-2 py-0.5 rounded-md text-xs font-bold bg-gray-100 text-gray-600 capitalize">{u.role}</span>
+                  </td>
+                  <td className="px-5 py-3.5 text-right">
+                    <button onClick={() => deleteUser(u.role, u.id)} className="text-xs text-rose-400 hover:text-rose-600 font-medium">Supprimer</button>
+                  </td>
+                </tr>
+              ))}
+              {!allUsers.length && <tr><td colSpan={4} className="py-10 text-center text-gray-400 text-sm">Aucun utilisateur</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {tab === 'notifs' && (
+        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm max-w-lg">
+          <h3 className="text-sm font-bold text-gray-700 mb-4">Envoyer une notification</h3>
+          {notifMsg && <div className={`mb-4 p-3 rounded-xl text-sm ${notifMsg.startsWith('✅') ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}`}>{notifMsg}</div>}
+          <form onSubmit={sendNotif} className="space-y-3">
+            <select value={notifForm.eleveId} onChange={e => setNotifForm(f => ({ ...f, eleveId: e.target.value }))} required
+              className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-violet-400 outline-none">
+              <option value="">Sélectionner un étudiant...</option>
+              {data.eleves.map(e => <option key={e.id} value={e.id}>{e.nom}</option>)}
+            </select>
+            <select value={notifForm.type} onChange={e => setNotifForm(f => ({ ...f, type: e.target.value }))}
+              className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-violet-400 outline-none">
+              {['info', 'note', 'revision'].map(t => <option key={t}>{t}</option>)}
+            </select>
+            <textarea value={notifForm.contenu} onChange={e => setNotifForm(f => ({ ...f, contenu: e.target.value }))} required rows={3}
+              placeholder="Message de la notification..." className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-violet-400 outline-none resize-none" />
+            <button type="submit" className="w-full py-2.5 rounded-xl text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)' }}>Envoyer</button>
+          </form>
+        </div>
+      )}
     </div>
   );
 }
@@ -934,16 +1598,19 @@ function AdminDashboard({ user }: { user: User }) {
 // ─── PARENT DASHBOARD ─────────────────────────────────────────────────────────
 function ParentDashboard({ user }: { user: User }) {
   const [notes, setNotes] = useState<Note[]>([]);
+  const [linkedEleve, setLinkedEleve] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const eleveId = user.eleveId;
 
   useEffect(() => {
-    if (eleveId) {
-      apiFetch(`/eleves/${eleveId}/notes`).then(setNotes).finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
-  }, [eleveId]);
+    apiFetch('/auth/linked-student')
+      .then((r) => {
+        setLinkedEleve(r.eleve);
+        if (r.eleve) return apiFetch(`/eleves/${r.eleve.id}/notes`);
+      })
+      .then((r) => { if (r) setNotes(r); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const moyenne = notes.length
     ? (notes.reduce((s, n) => s + n.valeur * n.coefficient, 0) / notes.reduce((s, n) => s + n.coefficient, 0)).toFixed(1)
@@ -954,25 +1621,48 @@ function ParentDashboard({ user }: { user: User }) {
       <div className="rounded-2xl p-6 text-white" style={{ background: 'linear-gradient(135deg,#064e3b,#059669,#10b981)' }}>
         <p className="text-white/60 text-sm font-medium mb-1">Espace Parent</p>
         <h2 className="text-2xl font-black">{user.nom}</h2>
-        <p className="text-white/60 text-sm mt-1">Suivi de votre élève</p>
+        <p className="text-white/60 text-sm mt-1">Cliquez sur votre nom dans la barre latérale pour gérer votre compte</p>
       </div>
 
-      {!eleveId ? (
-        <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
-          <div className="text-4xl mb-3">👨‍👩‍👧</div>
-          <p className="text-gray-500 font-medium">Aucun élève associé à ce compte</p>
+      {loading ? (
+        <div className="flex items-center justify-center h-32">
+          <div className="w-8 h-8 rounded-full border-4 border-emerald-200 border-t-emerald-600 animate-spin" />
+        </div>
+      ) : !linkedEleve ? (
+        <div className="text-center py-16 bg-white rounded-2xl border border-gray-100 shadow-sm">
+          <div className="text-5xl mb-4">👦</div>
+          <p className="text-gray-700 font-bold mb-2">Aucun élève lié</p>
+          <p className="text-gray-400 text-sm max-w-xs mx-auto">Cliquez sur votre <strong>nom dans la barre latérale</strong>, puis sur <strong>"Lier un élève"</strong> pour associer votre enfant.</p>
+          <div className="mt-4 inline-block px-4 py-2 rounded-xl text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+            💡 Vous aurez besoin de l'email de votre enfant
+          </div>
         </div>
       ) : (
         <>
+          {/* Student card */}
+          <div className="bg-white rounded-2xl p-5 border border-emerald-100 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center font-black text-white text-lg flex-shrink-0" style={{ background: 'linear-gradient(135deg,#059669,#10b981)' }}>
+              {linkedEleve.nom?.charAt(0)?.toUpperCase()}
+            </div>
+            <div className="flex-1">
+              <p className="font-bold text-gray-900">{linkedEleve.nom}</p>
+              <p className="text-sm text-gray-400">{linkedEleve.email}</p>
+              {linkedEleve.niveau && <p className="text-xs text-gray-400 mt-0.5">{linkedEleve.niveau} · {linkedEleve.filiere}</p>}
+            </div>
+            <div className="text-right">
+              <p className="text-2xl font-black" style={{ color: parseFloat(moyenne) >= 10 ? '#059669' : '#dc2626' }}>{moyenne}</p>
+              <p className="text-xs text-gray-400">/20 moy.</p>
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <StatCard icon="📊" label="Moyenne générale" value={moyenne} color="bg-emerald-50 text-emerald-600" />
             <StatCard icon="📝" label="Notes enregistrées" value={notes.length} color="bg-blue-50 text-blue-600" />
           </div>
+
           <div>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Notes de votre élève</h3>
-            {loading ? (
-              <div className="text-center py-10 text-gray-400">Chargement...</div>
-            ) : notes.length === 0 ? (
+            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Notes de {linkedEleve.nom}</h3>
+            {notes.length === 0 ? (
               <div className="text-center py-10 bg-white rounded-2xl border border-gray-100">
                 <p className="text-gray-400 text-sm">Aucune note disponible</p>
               </div>
@@ -1004,14 +1694,12 @@ export default function Dashboard() {
   const [active, setActive] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifCount, setNotifCount] = useState(0);
+  const [showOnetTest, setShowOnetTest] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    if (!stored || !token) {
-      window.location.href = '/';
-      return;
-    }
+    if (!stored || !token) { window.location.href = '/'; return; }
     const u = JSON.parse(stored);
     setUser(u);
     if (u.role === 'eleve') {
@@ -1028,6 +1716,13 @@ export default function Dashboard() {
   };
 
   if (!user) return null;
+
+  // Full-screen O*NET test
+  if (showOnetTest) {
+    return <OnetTest onComplete={() => setShowOnetTest(false)} onSkip={() => setShowOnetTest(false)} />;
+  }
+
+  const handleRetakeOnet = () => setShowOnetTest(true);
 
   const pageTitles: Record<string, { title: string; subtitle?: string }> = {
     dashboard: { title: 'Tableau de bord', subtitle: `Bienvenue, ${user.nom}` },
@@ -1046,7 +1741,7 @@ export default function Dashboard() {
   const renderPage = () => {
     if (user.role === 'eleve') {
       switch (active) {
-        case 'dashboard': return <EleveDashboard user={user} setActive={setActive} />;
+        case 'dashboard': return <EleveDashboard user={user} setActive={setActive} onRetakeOnet={handleRetakeOnet} />;
         case 'notes': return <NotesPage user={user} />;
         case 'exercices': return <ExercicesPage user={user} />;
         case 'roadmap': return <RoadmapPage user={user} />;
@@ -1084,7 +1779,7 @@ export default function Dashboard() {
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex flex-col flex-shrink-0" style={{ width: '260px' }}>
-        <Sidebar user={user} active={active} setActive={setActive} onLogout={logout} />
+        <Sidebar user={user} active={active} setActive={setActive} onLogout={logout} onRetakeOnet={handleRetakeOnet} />
       </div>
 
       {/* Mobile Sidebar overlay */}
@@ -1092,7 +1787,7 @@ export default function Dashboard() {
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
           <div className="relative w-72 h-full">
-            <Sidebar user={user} active={active} setActive={setActive} onLogout={logout} mobile onClose={() => setSidebarOpen(false)} />
+            <Sidebar user={user} active={active} setActive={setActive} onLogout={logout} mobile onClose={() => setSidebarOpen(false)} onRetakeOnet={handleRetakeOnet} />
           </div>
         </div>
       )}

@@ -16,14 +16,14 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
 }
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
-// Backend expects: { role, email, motDePasse }
-export async function login(email: string, password: string, role: string) {
+// Backend auto-detects role — no need to send it
+export async function login(email: string, password: string, role?: string) {
   const data = await apiRequest('/auth/login', {
     method: 'POST',
-    body: JSON.stringify({ email, motDePasse: password, role }),
+    body: JSON.stringify({ email, motDePasse: password }),
   });
   localStorage.setItem('token', data.token);
-  localStorage.setItem('user', JSON.stringify({ ...data.user, role }));
+  localStorage.setItem('user', JSON.stringify(data.user));
   return data;
 }
 
@@ -155,4 +155,34 @@ export async function deleteUser(role: string, id: number) {
 // ─── Contact ──────────────────────────────────────────────────────────────────
 export async function contactMessage(data: { name: string; email: string; message: string }) {
   return apiRequest('/contact', { method: 'POST', body: JSON.stringify(data) });
+}
+
+// ─── Auth extras ──────────────────────────────────────────────────────────────
+export async function changePassword(currentPassword: string, newPassword: string) {
+  return apiRequest('/auth/change-password', {
+    method: 'POST',
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+}
+
+export async function linkStudent(eleveEmail: string) {
+  return apiRequest('/auth/link-student', {
+    method: 'POST',
+    body: JSON.stringify({ eleveEmail }),
+  });
+}
+
+export async function getLinkedStudent() {
+  return apiRequest('/auth/linked-student');
+}
+
+export async function saveOnetProfile(data: Record<string, any>) {
+  return apiRequest('/onet/save', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function getOnetProfile() {
+  return apiRequest('/onet/profile');
 }

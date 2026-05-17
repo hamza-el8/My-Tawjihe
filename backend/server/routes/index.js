@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const auth = require('../middleware/auth');
-const { register, login } = require('../controllers/authController');
+const { register, login, changePassword, linkStudent, getLinkedStudent, saveOnetProfile, getOnetProfile } = require('../controllers/authController');
 const { getNotes, addNote, deleteNote } = require('../controllers/notesController');
 const { getExercices, submitExercice, createExercice, getResultats } = require('../controllers/exercicesController');
 const { getRoadmap, generateRoadmapHandler, chatbotHandler } = require('../controllers/aiController');
@@ -9,9 +9,16 @@ const { getNotifications, createNotification, markRead } = require('../controlle
 const { getElevesFaibles, postService } = require('../controllers/profController');
 const { getUsers, deleteUser } = require('../controllers/adminController');
 
-// Auth
+// Auth — public
 router.post('/auth/register', register);
 router.post('/auth/login', login);
+
+// Auth — protected
+router.post('/auth/change-password', auth(), changePassword);
+router.post('/auth/link-student', auth(), linkStudent);
+router.get('/auth/linked-student', auth(), getLinkedStudent);
+router.post('/onet/save', auth(['eleve']), saveOnetProfile);
+router.get('/onet/profile', auth(['eleve']), getOnetProfile);
 
 // Notes
 router.get('/eleves/:id/notes', auth(), getNotes);
