@@ -4,7 +4,7 @@ import Inscription from './Inscription';
 import Dashboard from './Dashboard';
 import type { Translation, Lang, BacStageIconKey, AvantBacCareerStage } from './types';
 import { login as apiLogin, isAuthenticated, getStoredUser } from './api';
-
+import AIEcosystem from './components/AIEcosystem';
 // ─── Translations ─────────────────────────────────────────────────────────────
 const translations: Record<Lang, Translation> = {
   fr: {
@@ -2662,6 +2662,9 @@ export default function App() {
       <Navbar language={language} setLanguage={setLanguage} t={t} setShowLoginModal={setShowLoginModal} setShowSignupModal={setShowSignupModal} />
       <main>
         <HeroSection t={t} />
+
+        <AIEcosystem />
+        
         <NewsCarousel t={t} />
         <CTASection t={t} onSignup={() => setShowSignupModal(true)} />
         <AdvantagesSection t={t} />
