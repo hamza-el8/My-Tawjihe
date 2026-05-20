@@ -114,7 +114,6 @@ export interface Translation {
       stages: Array<{
         id: string;
         title: string;
-        yearsLabel: string;
         highlightTags: string[];
         iconKey: BacStageIconKey;
         gradient: string;
