@@ -25,9 +25,18 @@ app.use('/api', routes);
 
 const PORT = process.env.PORT || 5000;
 
-sequelize.sync({ alter: true })
+// SQLite: avoid alter:true by default (see pfce My-Tawjihe backend README / index comment).
+const syncOpts = process.env.DB_SYNC_ALTER === 'true' ? { alter: true } : {};
+
+sequelize
+  .sync(syncOpts)
   .then(() => {
     console.log('✅ Database synced');
     app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
   })
-  .catch(err => console.error('❌ DB Error:', err.message));
+  .catch((err) => {
+    console.error('❌ DB Error:', err.message);
+    if (err.original) console.error('   SQL:', err.original.message);
+    console.error(err);
+    process.exit(1);
+  });
