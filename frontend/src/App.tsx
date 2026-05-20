@@ -2597,29 +2597,32 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup, onLoginSuccess }: {
             </button>
           </p>
 
-          {/* Test accounts hint */}
+          {/* Test accounts — clickable to auto-fill */}
           <div className="mt-4 p-3 rounded-xl bg-gray-50 border border-gray-100">
-  <p className="text-xs text-gray-400 font-medium mb-2">Comptes de test — mot de passe : <strong>password</strong></p>
-  <div className="space-y-1">
-    {[
-      { role: 'Étudiant',   email: 'yassine@test.ma',    color: '#7c3aed' },
-      { role: 'Parent',     email: 'parent@test.ma',     color: '#059669' },
-      { role: 'Professeur', email: 'hassan@test.ma',     color: '#2563eb' },
-      { role: 'Admin',      email: 'admin@mowajih.ma',   color: '#dc2626' },
-    ].map(a => (
-      <button
-        key={a.role}
-        type="button"
-        onClick={() => { setEmail(a.email); setPassword('password'); }}
-        className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white transition-all text-left border border-transparent hover:border-gray-200"
-      >
-        <span className="text-xs font-bold" style={{ color: a.color }}>{a.role}</span>
-        <span className="text-xs text-gray-400 font-mono">{a.email}</span>
-      </button>
-    ))}
-  </div>
-  <p className="text-xs text-gray-300 text-center mt-1">↑ Cliquer pour remplir automatiquement</p>
-</div>
+            <p className="text-xs text-gray-400 font-medium mb-2">
+              {isRtl ? 'حسابات تجريبية — كلمة المرور:' : 'Comptes de test — mot de passe :'}{' '}
+              <strong className="font-mono text-gray-600">password</strong>
+              <span className="ml-1 text-gray-300">{isRtl ? '(انقر للملء)' : '(cliquer pour remplir)'}</span>
+            </p>
+            <div className="space-y-1">
+              {[
+                { role: isRtl ? 'طالب' : 'Étudiant',   email: 'yassine@test.ma',  color: '#7c3aed' },
+                { role: isRtl ? 'ولي أمر' : 'Parent',   email: 'parent@test.ma',   color: '#059669' },
+                { role: isRtl ? 'أستاذ' : 'Professeur', email: 'hassan@test.ma',   color: '#2563eb' },
+                { role: 'Admin',                          email: 'admin@mowajih.ma', color: '#dc2626' },
+              ].map(a => (
+                <button
+                  key={a.role}
+                  type="button"
+                  onClick={() => { setEmail(a.email); setPassword('password'); }}
+                  className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white transition-all text-left border border-transparent hover:border-gray-200 hover:shadow-sm"
+                >
+                  <span className="text-xs font-bold" style={{ color: a.color }}>{a.role}</span>
+                  <span className="text-xs text-gray-400 font-mono">{a.email}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
