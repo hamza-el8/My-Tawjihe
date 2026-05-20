@@ -174,7 +174,6 @@ const translations: Record<Lang, Translation> = {
           {
             id: 'college',
             title: 'Collège',
-            yearsLabel: '1AC → 3AC · 12–15 ans',
             highlightTags: ['Examen régional', 'Choix lycée', '3 filières'],
             iconKey: 'college',
             gradient: 'from-amber-400 to-orange-500',
@@ -194,7 +193,6 @@ const translations: Record<Lang, Translation> = {
           {
             id: 'tronc',
             title: 'Tronc Commun',
-            yearsLabel: 'Tronc Commun · ~16 ans',
             highlightTags: ['Choix filière', '10+ options', 'Décisif'],
             iconKey: 'tronc',
             gradient: 'from-sky-500 to-blue-600',
@@ -216,7 +214,6 @@ const translations: Record<Lang, Translation> = {
           {
             id: '1bac',
             title: '1ère Bac',
-            yearsLabel: '1ère Bac · ~17 ans',
             highlightTags: ['Spécialisation', 'Coefficients', 'Post-bac'],
             iconKey: 'bac1',
             gradient: 'from-violet-500 to-purple-600',
@@ -234,7 +231,6 @@ const translations: Record<Lang, Translation> = {
           {
             id: '2bac',
             title: '2ème Bac (Terminale)',
-            yearsLabel: '2ème Bac · ~18 ans',
             highlightTags: ['Examen national', 'Tawjihni', 'Orientation'],
             iconKey: 'bac2',
             gradient: 'from-rose-500 to-pink-600',
@@ -632,7 +628,6 @@ const translations: Record<Lang, Translation> = {
           {
             id: 'college',
             title: 'الإعدادي',
-            yearsLabel: 'الأولى→الثالثة إعدادي · 12–15 سنة',
             highlightTags: ['الامتحان الجهوي', 'اختيار الثانوية', '3 مسالك'],
             iconKey: 'college',
             gradient: 'from-amber-400 to-orange-500',
@@ -652,7 +647,6 @@ const translations: Record<Lang, Translation> = {
           {
             id: 'tronc',
             title: 'الجذع المشترك',
-            yearsLabel: 'الجذع المشترك · ~16 سنة',
             highlightTags: ['اختيار الشعبة', '+10 خيارات', 'حاسم'],
             iconKey: 'tronc',
             gradient: 'from-sky-500 to-blue-600',
@@ -674,7 +668,6 @@ const translations: Record<Lang, Translation> = {
           {
             id: '1bac',
             title: 'الأولى باك',
-            yearsLabel: 'الأولى باك · ~17 سنة',
             highlightTags: ['تخصص', 'معاملات', 'ما بعد الباك'],
             iconKey: 'bac1',
             gradient: 'from-violet-500 to-purple-600',
@@ -692,7 +685,6 @@ const translations: Record<Lang, Translation> = {
           {
             id: '2bac',
             title: 'الثانية باك (النهائية)',
-            yearsLabel: 'الثانية باك · ~18 سنة',
             highlightTags: ['امتحان وطني', 'توجيهني', 'التوجيه'],
             iconKey: 'bac2',
             gradient: 'from-rose-500 to-pink-600',
@@ -1329,7 +1321,7 @@ function NewsCarousel({ t }: { t: Translation }) {
 }
 
 // ─── CTA Section ──────────────────────────────────────────────────────────────
-function CTASection({ t }: { t: Translation }) {
+function CTASection({ t, onSignup }: { t: Translation; onSignup: () => void }) {
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   return (
     <section className="py-24 bg-white overflow-hidden">
@@ -1343,7 +1335,7 @@ function CTASection({ t }: { t: Translation }) {
               <h2 className="text-3xl md:text-4xl font-black text-white mb-5 leading-tight">{t.cta.title}</h2>
               <p className="text-white/75 mb-8 leading-relaxed">{t.cta.description}</p>
               <div className="flex flex-wrap gap-4">
-                <button onClick={() => scrollTo('contact')} className="bg-white text-purple-700 px-7 py-3.5 rounded-full font-bold shadow-xl hover:-translate-y-1 transition-all">{t.cta.button}</button>
+                <button onClick={onSignup} className="bg-white text-purple-700 px-7 py-3.5 rounded-full font-bold shadow-xl hover:-translate-y-1 transition-all">{t.cta.button}</button>
                 <button onClick={() => scrollTo('news')} className="border-2 border-white/40 text-white px-7 py-3.5 rounded-full font-bold hover:bg-white/10 transition-all">{t.cta.buttonSecondary}</button>
               </div>
             </div>
@@ -1670,12 +1662,88 @@ const CAREER_STAGE_GRADIENT: Record<AvantBacCareerStage, string> = {
   '1bac': 'from-violet-500 to-purple-600',
 };
 
+type PostBacSchool = {
+  id: string;
+  name: string;
+  category: string;
+  duration: string;
+  admission: string;
+  details: string;
+  careers: string[];
+  icon: string;
+  streams: Array<'sm' | 'pc' | 'svt' | 'eco' | 'lettres' | 'tech'>;
+};
+
+const POST_BAC_STREAMS = {
+  fr: [
+    { key: 'sm', label: 'Sciences Math' },
+    { key: 'pc', label: 'Sciences Physiques (PC)' },
+    { key: 'svt', label: 'SVT' },
+    { key: 'eco', label: 'Sciences Économiques' },
+    { key: 'lettres', label: 'Lettres & Sciences Humaines' },
+    { key: 'tech', label: 'Sciences & Technologies / Technique' },
+  ],
+  ar: [
+    { key: 'sm', label: 'علوم رياضية' },
+    { key: 'pc', label: 'علوم فيزيائية' },
+    { key: 'svt', label: 'علوم الحياة والأرض' },
+    { key: 'eco', label: 'علوم اقتصادية' },
+    { key: 'lettres', label: 'آداب وعلوم إنسانية' },
+    { key: 'tech', label: 'علوم وتكنولوجيات / تقني' },
+  ],
+} as const;
+
+const POST_BAC_SCHOOLS: Record<Lang, PostBacSchool[]> = {
+  fr: [
+    { id: 'encg', name: 'ENCG (Écoles Nationales de Commerce et Gestion)', category: 'Commerce & Gestion', duration: '5 ans', admission: 'Concours via TAFEM après Bac', details: 'Formation en management, finance, marketing et audit.', careers: ['Cadre marketing', 'Contrôleur de gestion', 'Business analyst'], icon: '💼', streams: ['eco', 'sm', 'pc', 'svt', 'lettres'] },
+    { id: 'iscae', name: 'ISCAE', category: 'Commerce Premium', duration: '5 ans', admission: 'Concours national très compétitif', details: 'Grande école de référence en commerce et management.', careers: ['Consultant', 'Manager', 'Auditeur'], icon: '📈', streams: ['eco', 'sm', 'pc', 'svt', 'lettres'] },
+    { id: 'enset', name: 'ENSET', category: 'Technologie & Enseignement technique', duration: '3 à 5 ans', admission: 'Concours/sélection selon filière', details: 'Formations en ingénierie pédagogique et techniques industrielles.', careers: ['Enseignant technique', 'Cadre industriel', 'Formateur'], icon: '🧪', streams: ['sm', 'pc', 'svt', 'tech'] },
+    { id: 'ensa', name: 'ENSA (Écoles Nationales des Sciences Appliquées)', category: 'Ingénierie', duration: '5 ans', admission: 'Concours national après Bac scientifique', details: 'Cycle préparatoire intégré puis spécialisation.', careers: ['Ingénieur logiciel', 'Ingénieur industriel', 'Chef de projet'], icon: '⚙️', streams: ['sm', 'pc', 'svt', 'tech'] },
+    { id: 'ensam', name: 'ENSAM (Arts et Métiers)', category: 'Ingénierie industrielle', duration: '5 ans', admission: 'Concours après Bac scientifique/technique', details: 'Spécialisée en génie mécanique, industriel et productique.', careers: ['Ingénieur mécanique', 'Ingénieur production', 'Responsable maintenance'], icon: '🏭', streams: ['sm', 'pc', 'tech'] },
+    { id: 'cpge', name: 'CPGE (Classes Préparatoires)', category: 'Prépa Grandes Écoles', duration: '2 ans', admission: 'Sélection sur dossier', details: 'Voie d’excellence vers grandes écoles ingénieurs/commerce.', careers: ['Accès grandes écoles', 'Ingénierie', 'Management'], icon: '📚', streams: ['sm', 'pc', 'svt', 'eco'] },
+    { id: 'medecine', name: 'Faculté de Médecine, Pharmacie, Dentaire', category: 'Santé', duration: '6 à 7 ans+', admission: 'Concours très sélectif', details: 'Parcours long pour étudiants très forts en sciences.', careers: ['Médecin', 'Pharmacien', 'Chirurgien-dentiste'], icon: '🩺', streams: ['svt', 'pc', 'sm'] },
+    { id: 'fst-fs', name: 'Facultés des Sciences / FST', category: 'Université scientifique', duration: '3 ans (Licence)', admission: 'Inscription post-bac', details: 'Licence en maths, physique, chimie, biologie, informatique.', careers: ['Recherche', 'Ingénierie', 'Data'], icon: '🎓', streams: ['sm', 'pc', 'svt', 'tech'] },
+    { id: 'fsjes', name: 'FSJES (Droit, Éco, Gestion)', category: 'Université droit & économie', duration: '3 ans (Licence)', admission: 'Inscription post-bac', details: 'Formations en droit privé/public, économie et gestion.', careers: ['Juriste', 'Comptable', 'Cadre administratif'], icon: '⚖️', streams: ['eco', 'lettres', 'sm', 'pc'] },
+    { id: 'flsh', name: 'FLSH (Lettres et Sciences Humaines)', category: 'Université lettres', duration: '3 ans (Licence)', admission: 'Inscription post-bac', details: 'Langues, histoire, géographie, sociologie, philosophie.', careers: ['Enseignement', 'Communication', 'Fonction publique'], icon: '📝', streams: ['lettres'] },
+    { id: 'est', name: 'EST (Écoles Supérieures de Technologie)', category: 'Technologie', duration: '2 à 3 ans', admission: 'Sélection sur dossier', details: 'Formations professionnalisantes en IT, réseaux, génie élec., gestion.', careers: ['Développeur junior', 'Technicien réseau', 'Assistant manager'], icon: '💻', streams: ['sm', 'pc', 'svt', 'eco', 'tech'] },
+    { id: 'ensaad', name: 'Écoles d’Art & Design', category: 'Art, Design, Création', duration: '3 à 5 ans', admission: 'Dossier + concours/entretien', details: 'Design graphique, animation, arts visuels, UX/UI.', careers: ['Designer', 'Directeur artistique', 'Illustrateur'], icon: '🎨', streams: ['lettres', 'tech', 'eco'] },
+    { id: 'architecture', name: 'Écoles d’Architecture', category: 'Architecture & Urbanisme', duration: '6 ans', admission: 'Concours + parfois dessin', details: 'Conception architecturale et techniques du bâtiment.', careers: ['Architecte', 'Urbaniste', 'Designer d’espace'], icon: '🏛️', streams: ['sm', 'pc', 'tech'] },
+    { id: 'aviation', name: 'Écoles d’Aviation / Pilotage', category: 'Aéronautique', duration: '2 à 5 ans', admission: 'Tests + niveau scientifique + anglais', details: 'Formation de pilotes et techniciens aéronautiques.', careers: ['Pilote', 'Technicien avionique', 'Opérations aériennes'], icon: '✈️', streams: ['sm', 'pc'] },
+    { id: 'paramedical', name: 'Instituts Paramédicaux / Kiné', category: 'Paramédical', duration: '3 à 5 ans', admission: 'Concours ou sélection', details: 'Soins infirmiers, kiné, labo, imagerie médicale.', careers: ['Infirmier(ère)', 'Kinésithérapeute', 'Technicien imagerie'], icon: '🏥', streams: ['svt', 'pc', 'sm'] },
+    { id: 'ifcs', name: 'IFCS (Infirmiers et Cadres de Santé)', category: 'Santé publique', duration: '3 ans', admission: 'Concours après Bac', details: 'Instituts publics de formation en soins infirmiers.', careers: ['Infirmier polyvalent', 'Sage-femme', 'Urgences'], icon: '🧑‍⚕️', streams: ['svt', 'pc', 'sm'] },
+    { id: 'tourisme', name: 'Écoles de Tourisme & Hôtellerie', category: 'Tourisme', duration: '2 à 4 ans', admission: 'Dossier/concours', details: 'Formations hôtellerie, restauration, événementiel.', careers: ['Manager hôtelier', 'Agent de voyage', 'Responsable événementiel'], icon: '🏨', streams: ['eco', 'lettres', 'tech'] },
+    { id: 'journalisme', name: 'Écoles de Journalisme & Média', category: 'Média & Communication', duration: '3 à 5 ans', admission: 'Dossier, concours ou entretien', details: 'Rédaction, audiovisuel, communication digitale.', careers: ['Journaliste', 'Chargé de communication', 'Content creator'], icon: '🎙️', streams: ['lettres', 'eco'] },
+    { id: 'ofppt', name: 'OFPPT / Instituts techniques', category: 'Formation Professionnelle', duration: '2 à 3 ans', admission: 'Dossier + conditions selon spécialité', details: 'Voie pratique avec insertion rapide dans plusieurs métiers.', careers: ['Technicien spécialisé', 'Support IT', 'Technicien maintenance'], icon: '🛠️', streams: ['sm', 'pc', 'svt', 'eco', 'lettres', 'tech'] },
+    { id: 'isitt', name: 'ISITT (Tourisme International Tanger)', category: 'Tourisme international', duration: '3 à 5 ans', admission: 'Concours + langues', details: 'Spécialisation haut niveau en management touristique.', careers: ['Manager tourisme', 'Chef produit touristique', 'Consultant travel'], icon: '🌍', streams: ['eco', 'lettres'] },
+  ],
+  ar: [
+    { id: 'encg', name: 'المدرسة الوطنية للتجارة والتسيير ENCG', category: 'التجارة والتسيير', duration: '5 سنوات', admission: 'ولوج عبر مباراة TAFEM بعد الباك', details: 'تكوين قوي في التسويق والمالية والتدبير.', careers: ['التسويق', 'المالية', 'تحليل الأعمال'], icon: '💼', streams: ['eco', 'sm', 'pc', 'svt', 'lettres'] },
+    { id: 'iscae', name: 'ISCAE', category: 'تجارة وتسيير عالي', duration: '5 سنوات', admission: 'مباراة وطنية تنافسية', details: 'مؤسسة مرجعية في التسيير والمالية.', careers: ['استشاري', 'مدير', 'مدقق مالي'], icon: '📈', streams: ['eco', 'sm', 'pc', 'svt', 'lettres'] },
+    { id: 'enset', name: 'ENSET', category: 'التكنولوجيا والتعليم التقني', duration: '3 إلى 5 سنوات', admission: 'مباراة/انتقاء حسب المسلك', details: 'تكوينات في الهندسة التقنية والتعليم المهني.', careers: ['أستاذ تقني', 'إطار صناعي', 'مكوّن'], icon: '🧪', streams: ['sm', 'pc', 'svt', 'tech'] },
+    { id: 'ensa', name: 'المدارس الوطنية للعلوم التطبيقية ENSA', category: 'الهندسة', duration: '5 سنوات', admission: 'مباراة وطنية بعد الباك العلمي', details: 'مسار مدمج مع تخصصات هندسية متعددة.', careers: ['مهندس معلوميات', 'مهندس صناعي', 'تدبير المشاريع'], icon: '⚙️', streams: ['sm', 'pc', 'svt', 'tech'] },
+    { id: 'ensam', name: 'ENSAM (الفنون والمهن)', category: 'الهندسة الصناعية', duration: '5 سنوات', admission: 'مباراة بعد الباك العلمي/التقني', details: 'تخصص قوي في الهندسة الميكانيكية والصناعية.', careers: ['مهندس ميكانيك', 'مهندس إنتاج', 'مسؤول صيانة'], icon: '🏭', streams: ['sm', 'pc', 'tech'] },
+    { id: 'cpge', name: 'الأقسام التحضيرية CPGE', category: 'التحضير للمدارس الكبرى', duration: 'سنتان', admission: 'انتقاء حسب المعدل والملف', details: 'تكوين مكثف للتحضير لمباريات المدارس العليا.', careers: ['ولوج المدارس العليا', 'الهندسة', 'التسيير'], icon: '📚', streams: ['sm', 'pc', 'svt', 'eco'] },
+    { id: 'med', name: 'كليات الطب والصيدلة وطب الأسنان', category: 'الصحة', duration: '6 إلى 7 سنوات+', admission: 'مباراة انتقائية جداً', details: 'مسار طويل يتطلب مستوى قوي في العلوم.', careers: ['طبيب', 'صيدلي', 'طبيب أسنان'], icon: '🩺', streams: ['svt', 'pc', 'sm'] },
+    { id: 'fsfst', name: 'كلية العلوم / كلية العلوم والتقنيات', category: 'جامعة علمية', duration: '3 سنوات (إجازة)', admission: 'تسجيل بعد الباك', details: 'تخصصات علمية متعددة في الرياضيات والفيزياء والمعلوميات.', careers: ['بحث علمي', 'هندسة', 'تحليل بيانات'], icon: '🎓', streams: ['sm', 'pc', 'svt', 'tech'] },
+    { id: 'fsjes', name: 'FSJES (القانون والاقتصاد والتدبير)', category: 'جامعة قانون واقتصاد', duration: '3 سنوات (إجازة)', admission: 'تسجيل بعد الباك', details: 'مسالك القانون والاقتصاد والتدبير.', careers: ['قانوني', 'محاسب', 'إدارة'], icon: '⚖️', streams: ['eco', 'lettres', 'sm', 'pc'] },
+    { id: 'flsh', name: 'FLSH (الآداب والعلوم الإنسانية)', category: 'جامعة الآداب', duration: '3 سنوات (إجازة)', admission: 'تسجيل بعد الباك', details: 'مسالك اللغات والتاريخ والجغرافيا والفلسفة.', careers: ['التدريس', 'التواصل', 'الإدارة'], icon: '📝', streams: ['lettres'] },
+    { id: 'est', name: 'المدارس العليا للتكنولوجيا EST', category: 'التكنولوجيا', duration: '2 إلى 3 سنوات', admission: 'انتقاء بالملف', details: 'تكوين تطبيقي في المعلوميات والشبكات والتدبير.', careers: ['مطور مبتدئ', 'تقني شبكات', 'مساعد إداري'], icon: '💻', streams: ['sm', 'pc', 'svt', 'eco', 'tech'] },
+    { id: 'artdesign', name: 'مدارس الفن والتصميم', category: 'فن وتصميم', duration: '3 إلى 5 سنوات', admission: 'ملف + مباراة/مقابلة', details: 'تكوين في التصميم الغرافيكي والفنون البصرية.', careers: ['مصمم', 'مخرج فني', 'رسام'], icon: '🎨', streams: ['lettres', 'tech', 'eco'] },
+    { id: 'archi', name: 'مدارس الهندسة المعمارية', category: 'الهندسة المعمارية والتصميم', duration: '6 سنوات', admission: 'مباراة وقد تشمل اختبار الرسم', details: 'تكوين في التصميم المعماري والتعمير.', careers: ['مهندس معماري', 'مخطط عمراني', 'مصمم فضاءات'], icon: '🏛️', streams: ['sm', 'pc', 'tech'] },
+    { id: 'aviation', name: 'مدارس الطيران', category: 'الطيران', duration: '2 إلى 5 سنوات', admission: 'اختبارات + مستوى علمي + إنجليزية', details: 'تكوين الطيارين والتقنيين في مجال الطيران.', careers: ['طيار', 'تقني طيران', 'عمليات جوية'], icon: '✈️', streams: ['sm', 'pc'] },
+    { id: 'paramed', name: 'المعاهد شبه الطبية والعلاج الطبيعي', category: 'شبه طبي', duration: '3 إلى 5 سنوات', admission: 'مباراة أو انتقاء', details: 'تكوينات في التمريض والعلاج الطبيعي والمختبر.', careers: ['ممرض(ة)', 'أخصائي علاج طبيعي', 'تقني تصوير'], icon: '🏥', streams: ['svt', 'pc', 'sm'] },
+    { id: 'ifcs', name: 'IFCS (معاهد التمريض وتقنيات الصحة)', category: 'الصحة العمومية', duration: '3 سنوات', admission: 'مباراة بعد الباك', details: 'تكوينات عمومية في مهن التمريض.', careers: ['ممرض متعدد الاختصاصات', 'قبالة', 'مستعجلات'], icon: '🧑‍⚕️', streams: ['svt', 'pc', 'sm'] },
+    { id: 'tour', name: 'مدارس السياحة والفندقة', category: 'السياحة', duration: '2 إلى 4 سنوات', admission: 'ملف أو مباراة', details: 'تكوين في الفندقة والمطعمة وتنظيم التظاهرات.', careers: ['تدبير الفنادق', 'وكالات الأسفار', 'تنظيم الأحداث'], icon: '🏨', streams: ['eco', 'lettres', 'tech'] },
+    { id: 'media', name: 'مدارس الصحافة والإعلام', category: 'الإعلام والتواصل', duration: '3 إلى 5 سنوات', admission: 'ملف أو مباراة أو مقابلة', details: 'تنمية مهارات الكتابة والإعلام الرقمي.', careers: ['صحفي', 'مسؤول تواصل', 'صانع محتوى'], icon: '🎙️', streams: ['lettres', 'eco'] },
+    { id: 'ofppt', name: 'OFPPT والمعاهد التقنية', category: 'التكوين المهني', duration: '2 إلى 3 سنوات', admission: 'ملف وشروط حسب التخصص', details: 'مسار عملي للاندماج السريع في سوق الشغل.', careers: ['تقني متخصص', 'الدعم المعلوماتي', 'الصيانة'], icon: '🛠️', streams: ['sm', 'pc', 'svt', 'eco', 'lettres', 'tech'] },
+    { id: 'isitt', name: 'ISITT (المعهد العالي الدولي للسياحة طنجة)', category: 'السياحة الدولية', duration: '3 إلى 5 سنوات', admission: 'مباراة + لغات', details: 'تكوين عالي في تدبير السياحة والفندقة الدولية.', careers: ['مدير سياحي', 'تسويق سياحي', 'استشارة سفر'], icon: '🌍', streams: ['eco', 'lettres'] },
+  ],
+};
+
 // ─── Avant Bac — page complète (style Voir Tout) ─────────────────────────────
 function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: () => void; onSignup: () => void }) {
   const e = t.bacPath.avantBacExplore;
   const isRtl = t.direction === 'rtl';
-  const [schoolQuery, setSchoolQuery] = useState('');
-  const [schoolFilter, setSchoolFilter] = useState<'all' | 'college' | 'lycee'>('all');
   const [careerQuery, setCareerQuery] = useState('');
   const [careerFilter, setCareerFilter] = useState<AvantBacCareerStage | 'all'>('all');
   const [expandedCareer, setExpandedCareer] = useState<string | null>(null);
@@ -1687,13 +1755,6 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
     document.addEventListener('keydown', handleKey);
     return () => { document.body.style.overflow = ''; document.removeEventListener('keydown', handleKey); };
   }, [onClose]);
-
-  const filteredSchools = e.schools.filter((s) => {
-    const matchType = schoolFilter === 'all' || s.type === schoolFilter;
-    const q = schoolQuery.toLowerCase();
-    const matchQuery = !q || s.name.toLowerCase().includes(q) || s.city.toLowerCase().includes(q);
-    return matchType && matchQuery;
-  });
 
   const careerFilterKeys = ['all', 'college', 'tronc', '1bac'] as const;
   const careerStageOrder: AvantBacCareerStage[] = ['college', 'tronc', '1bac'];
@@ -1709,6 +1770,10 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
       items: filteredCareers.filter((c) => c.stage === stageId),
     }))
     .filter((group) => group.items.length > 0);
+  const handleSignup = () => {
+    onClose();
+    onSignup();
+  };
 
   return (
     <div className="fp-overlay fixed inset-0 z-[90] flex flex-col bg-[#fafafa] overflow-y-auto" dir={t.direction}>
@@ -1736,7 +1801,7 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
 
       <main className="flex-1 max-w-3xl mx-auto w-full px-6 py-8 space-y-12">
         <section>
-          <div className="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-5 py-4 mb-8 shadow-sm">
+          <div className="rounded-2xl border border-indigo-100/80 bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-5 py-4 mb-8 shadow-sm">
             <p className="text-sm text-gray-700 leading-relaxed">{e.overview}</p>
           </div>
           <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">{e.stagesTitle}</h2>
@@ -1747,12 +1812,12 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
               return (
                 <article
                   key={stage.id}
-                  className={`avant-stage-item relative fp-card ${isLast ? '' : 'pb-1'}`}
+                  className={`avant-stage-item relative fp-card ${isLast ? '' : 'pb-1'} group`}
                   style={{ animationDelay: `${0.08 + i * 0.1}s` }}
                 >
                   {!isLast && <span className="avant-stage-line" aria-hidden />}
                   <div
-                    className={`overflow-hidden rounded-2xl border border-gray-100/80 bg-gradient-to-br ${stage.bg} shadow-sm transition-shadow duration-300 ${open ? 'shadow-md ring-1 ring-black/5' : ''}`}
+                    className={`overflow-hidden rounded-2xl border bg-gradient-to-br ${stage.bg} shadow-sm transition-all duration-300 ${open ? 'shadow-md ring-1 ring-black/5 border-gray-100/90' : 'border-gray-100/80 group-hover:border-violet-200 group-hover:shadow-md'}`}
                   >
                     <button
                     type="button"
@@ -1760,23 +1825,20 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
                     className="w-full px-5 py-5 flex items-start gap-4 text-left"
                     aria-expanded={open}
                   >
-                    <div className={`relative z-[1] flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br ${stage.gradient} flex items-center justify-center text-white shadow-md`}>
+                    <div className={`relative z-[1] flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br ${stage.gradient} flex items-center justify-center text-white shadow-md ring-1 ring-white/30`}>
                       <BacStageIcon name={stage.iconKey} className="w-6 h-6" />
                       <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-white text-[10px] font-black text-gray-700 flex items-center justify-center shadow border border-gray-100">
                         {i + 1}
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
                         <h3 className="text-lg font-black text-gray-900">{stage.title}</h3>
-                        <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-white/90 text-gray-500 border border-gray-100">
-                          {stage.yearsLabel}
-                        </span>
                       </div>
                       {!open && (
-                        <div className="flex flex-wrap gap-1.5 mb-2">
+                        <div className="flex flex-wrap gap-1.5 mb-2.5">
                           {stage.highlightTags.map((tag) => (
-                            <span key={tag} className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-white/60 text-gray-600 border border-white">
+                            <span key={tag} className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/80 text-gray-600 border border-gray-100">
                               {tag}
                             </span>
                           ))}
@@ -1787,10 +1849,10 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
                     <ChevronDownIcon className={`self-center mt-0.5 text-gray-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
                   </button>
                   {open && (
-                    <div className="px-5 pb-5 pt-0 border-t border-white/70">
+                    <div className="px-5 pb-5 pt-0 border-t border-white/80">
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
                         {stage.topics.map((topic, ti) => (
-                          <li key={topic.title} className="flex gap-3 bg-white/80 rounded-xl px-4 py-3.5 border border-gray-100/90 shadow-sm hover:shadow transition-shadow">
+                          <li key={topic.title} className="flex gap-3 bg-white/85 rounded-xl px-4 py-3.5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                             <span className={`flex-shrink-0 w-7 h-7 rounded-lg bg-gradient-to-br ${stage.gradient} text-white text-xs font-black flex items-center justify-center shadow-sm`}>
                               {ti + 1}
                             </span>
@@ -1807,6 +1869,18 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
                 </article>
               );
             })}
+          </div>
+          <div className="mt-6 rounded-2xl border border-violet-100 bg-gradient-to-r from-violet-50 via-white to-fuchsia-50 px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-sm">
+            <p className="text-sm text-gray-700 leading-relaxed">
+              {isRtl ? 'تحتاج مزيداً من المعلومات؟ توجيه شخصي مجاني على MyTawjeh.' : 'Tu veux plus d’infos ? Orientation personnalisée gratuite sur MyTawjeh.'}
+            </p>
+            <button
+              type="button"
+              onClick={handleSignup}
+              className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-bold text-white btn-gradient shadow-sm hover:shadow-md transition-shadow"
+            >
+              {isRtl ? 'إنشاء حساب مجاني' : 'Créer un compte gratuit'}
+            </button>
           </div>
         </section>
 
@@ -1841,10 +1915,15 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
           ) : (
             <div className="space-y-8">
               {careersByStage.map(({ stageId, items }) => (
-                <div key={stageId}>
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className={`w-2 h-8 rounded-full bg-gradient-to-b ${CAREER_STAGE_GRADIENT[stageId]}`} aria-hidden />
-                    <h3 className="text-sm font-black text-gray-800">{e.careerStageFilters[stageId]}</h3>
+                <div key={stageId} className="rounded-2xl border border-gray-100 bg-gradient-to-br from-white to-gray-50/70 p-4 sm:p-5 shadow-sm">
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className={`w-2 h-8 rounded-full bg-gradient-to-b ${CAREER_STAGE_GRADIENT[stageId]}`} aria-hidden />
+                      <h3 className="text-sm font-black text-gray-800">{e.careerStageFilters[stageId]}</h3>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full bg-white border border-gray-200 text-gray-500">
+                      {items.length}
+                    </span>
                   </div>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {items.map((career, i) => {
@@ -1852,14 +1931,14 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
                 const grad = CAREER_STAGE_GRADIENT[career.stage];
                 return (
                   <li key={career.id} className="fp-card" style={{ animationDelay: `${0.05 + (i % 6) * 0.06}s` }}>
-                    <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
+                    <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md hover:border-violet-200 transition-all h-full flex flex-col">
                       <button
                         type="button"
                         onClick={() => setExpandedCareer(open ? null : career.id)}
                         className="w-full px-4 py-4 flex items-start gap-3 text-left"
                         aria-expanded={open}
                       >
-                        <span className={`flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br ${grad} flex items-center justify-center text-white shadow-md ring-1 ring-white/20`}>
+                        <span className={`flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br ${grad} flex items-center justify-center text-white shadow-md ring-1 ring-white/30`}>
                           <CareerIcon id={career.id} className="w-5 h-5" />
                         </span>
                         <div className="flex-1 min-w-0">
@@ -1904,81 +1983,219 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
               ))}
             </div>
           )}
-        </section>
-
-        <section>
-          <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">{e.schoolsTitle}</h2>
-          <p className="text-xs text-gray-400 mb-5">{e.schoolsNote}</p>
-          <div className="flex flex-wrap gap-2 mb-4">
-            {(['all', 'college', 'lycee'] as const).map((f) => (
-              <button
-                key={f}
-                type="button"
-                onClick={() => setSchoolFilter(f)}
-                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                  schoolFilter === f ? 'btn-gradient text-white shadow-md' : 'bg-white text-gray-600 border border-gray-200 hover:border-purple-300'
-                }`}
-              >
-                {f === 'all' ? e.filterAll : f === 'college' ? e.filterCollege : e.filterLycee}
-              </button>
-            ))}
-          </div>
-          <div className="fp-search fp-input-wrap mb-5">
-            <input
-              type="text"
-              value={schoolQuery}
-              onChange={(ev) => setSchoolQuery(ev.target.value)}
-              placeholder={e.searchSchools}
-              className="w-full bg-transparent border-0 border-b border-gray-200 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none"
-            />
-          </div>
-          {filteredSchools.length === 0 ? (
-            <p className="text-center text-gray-400 text-sm py-10">{isRtl ? 'لا توجد نتائج' : 'Aucun établissement trouvé'}</p>
-          ) : (
-            <ul className="fp-grid grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {filteredSchools.map((school, i) => (
-                <li key={`${school.name}-${school.city}`} className="fp-card-row" style={{ animationDelay: `${0.05 + (i % 6) * 0.06}s` }}>
-                  <div className="fp-card-btn w-full bg-white rounded-xl border border-gray-100 px-4 py-4 text-left h-full">
-                    <p className="text-[14px] font-semibold text-gray-800 leading-snug">{school.name}</p>
-                    <p className="text-xs text-gray-400 mt-1">{school.city}</p>
-                    <div className="flex flex-wrap gap-1.5 mt-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-purple-50 text-purple-700">
-                        {school.type === 'college' ? e.typeCollege : e.typeLycee}
-                      </span>
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
-                        {school.network === 'public' ? e.networkPublic : e.networkPrivate}
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-gray-500 mt-2">{school.stageLabel}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      </main>
-
-      <footer className="flex-shrink-0 border-t border-gray-200/80 bg-white py-5 px-6">
-        <div className="max-w-3xl mx-auto space-y-4">
-          <div className="text-center">
-            <p className="text-sm text-gray-700 mb-2">
-              {isRtl ? 'هل تريد المزيد من المعلومات؟ توجيه شخصي مجاني على MyTawjeh' : 'Tu veux plus d\'infos ? Orientation personnalisée gratuite sur MyTawjeh'}
+          <div className="mt-6 rounded-2xl border border-indigo-100 bg-gradient-to-r from-indigo-50 via-white to-purple-50 px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-sm">
+            <p className="text-sm text-gray-700 leading-relaxed">
+              {isRtl ? 'اكتشف التخصص المناسب لك بخطة واضحة ومجانية على MyTawjeh.' : 'Découvre la spécialité qui te correspond avec un plan clair et gratuit sur MyTawjeh.'}
             </p>
             <button
               type="button"
-              onClick={() => { onClose(); onSignup(); }}
-              className="text-sm font-semibold text-violet-600 hover:text-violet-800 transition-colors duration-300"
+              onClick={handleSignup}
+              className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-bold text-white btn-gradient shadow-sm hover:shadow-md transition-shadow"
             >
-              {isRtl ? 'إنشاء حساب مجاني' : 'Créer un compte gratuit'}
+              {isRtl ? 'ابدأ الآن مجاناً' : 'Commencer gratuitement'}
             </button>
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left pt-3 border-t border-gray-100">
+        </section>
+
+      </main>
+
+      <footer className="flex-shrink-0 border-t border-gray-200/80 bg-white py-5 px-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <span className="text-sm font-black text-gray-800">My<span className="gradient-text">Tawjeh</span></span>
             <p className="text-xs text-gray-400">{isRtl ? '© 2026 MyTawjeh' : '© 2026 MyTawjeh. Tous droits réservés.'}</p> 
             <button type="button" onClick={onClose} className="text-xs font-semibold text-violet-600 hover:text-violet-800">
               {isRtl ? 'إغلاق' : 'Fermer'}
             </button>
           </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function AllApresBacPage({ t, onClose, onSignup }: { t: Translation; onClose: () => void; onSignup: () => void }) {
+  const isRtl = t.direction === 'rtl';
+  const schools = POST_BAC_SCHOOLS[isRtl ? 'ar' : 'fr'];
+  const streamOptions = POST_BAC_STREAMS[isRtl ? 'ar' : 'fr'];
+  const [selectedStream, setSelectedStream] = useState<'' | 'sm' | 'pc' | 'svt' | 'eco' | 'lettres' | 'tech'>('');
+  const [query, setQuery] = useState('');
+  const [expanded, setExpanded] = useState<string | null>(schools[0]?.id ?? null);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    const handleKey = (ev: KeyboardEvent) => { if (ev.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleKey);
+    return () => { document.body.style.overflow = ''; document.removeEventListener('keydown', handleKey); };
+  }, [onClose]);
+
+  const filteredSchools = schools.filter((s) => {
+    if (!selectedStream) return false;
+    if (!s.streams.includes(selectedStream)) return false;
+    const q = query.toLowerCase();
+    if (!q) return true;
+    return (
+      s.name.toLowerCase().includes(q) ||
+      s.category.toLowerCase().includes(q) ||
+      s.details.toLowerCase().includes(q) ||
+      s.careers.some((c) => c.toLowerCase().includes(q))
+    );
+  });
+
+  return (
+    <div className="fp-overlay fixed inset-0 z-[90] flex flex-col bg-[#fafafa] overflow-y-auto" dir={t.direction}>
+      <header className="fp-header flex-shrink-0 border-b border-gray-200/80 bg-white sticky top-0 z-10">
+        <div className="max-w-4xl mx-auto px-6 pt-6 pb-4">
+          <div className="flex items-start justify-between gap-6 mb-3">
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-gray-400 mb-3">{isRtl ? 'الرئيسية / بعد الباك' : 'Accueil / Après Bac'}</p>
+              <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight leading-tight">
+                {isRtl ? 'المسارات ' : 'Parcours '}<span className="gradient-text">{isRtl ? 'بعد الباك' : 'après le Bac'}</span>
+              </h1>
+              <p className="text-gray-500 text-sm mt-2 leading-relaxed max-w-2xl">
+                {isRtl
+                  ? 'دليل مبسّط لأهم المدارس والتكوينات بعد البكالوريا في المغرب، مع مدة الدراسة، شروط الولوج، والآفاق المهنية لكل مؤسسة.'
+                  : 'Guide pratique des principales écoles et filières après le Bac au Maroc, avec durée, mode d’admission et débouchés pour chaque établissement.'}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-900 text-2xl font-light leading-none w-10 h-10 flex items-center justify-center transition-colors"
+              aria-label={isRtl ? 'إغلاق' : 'Fermer'}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-1 max-w-4xl mx-auto w-full px-6 py-8 space-y-7">
+        <section className="rounded-2xl border border-indigo-100/80 bg-gradient-to-r from-indigo-50 via-white to-purple-50 p-5 shadow-sm">
+          <p className="text-sm text-gray-700 leading-relaxed mb-4">
+            {isRtl
+              ? 'اختيار ما بعد الباك كيحتاج مقارنة واضحة: التخصص، شروط القبول، مدة الدراسة، وفرص الشغل.'
+              : 'Pour bien choisir après le Bac, comparez clairement: spécialité, admission, durée des études et débouchés.'}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-1.5 block">
+                {isRtl ? 'اختيار الشعبة' : 'Choisir votre branche'}
+              </label>
+              <select
+                value={selectedStream}
+                onChange={(ev) => setSelectedStream(ev.target.value as '' | 'sm' | 'pc' | 'svt' | 'eco' | 'lettres' | 'tech')}
+                className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300"
+              >
+                <option value="">{isRtl ? 'اختر الشعبة أولاً' : 'Sélectionnez d’abord votre branche'}</option>
+                {streamOptions.map((opt) => (
+                  <option key={opt.key} value={opt.key}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
+            <div className="fp-search fp-input-wrap">
+              <label className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-1.5 block">
+                {isRtl ? 'بحث إضافي' : 'Recherche rapide'}
+              </label>
+              <input
+                type="text"
+                value={query}
+                onChange={(ev) => setQuery(ev.target.value)}
+                placeholder={isRtl ? 'ابحث عن مدرسة أو تخصص أو مهنة...' : 'Rechercher une école, une spécialité ou un débouché...'}
+                className="w-full bg-transparent border-0 border-b border-gray-200 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="rounded-2xl border border-violet-100 bg-gradient-to-r from-violet-50 via-white to-fuchsia-50 px-5 py-4 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <p className="text-sm text-gray-700 leading-relaxed">
+              {isRtl ? 'باغي معلومات أكثر على المدارس والشعب؟ تسجّل فـ MyTawjeh وخذ توجيه مخصص ليك.' : 'Tu veux plus d’infos sur les écoles et filières ? Inscris-toi sur MyTawjeh pour une orientation personnalisée.'}
+            </p>
+            <button
+              type="button"
+              onClick={() => { onClose(); onSignup(); }}
+              className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-bold text-white btn-gradient shadow-sm hover:shadow-md transition-shadow"
+            >
+              {isRtl ? 'تسجيل مجاني' : 'Inscription gratuite'}
+            </button>
+          </div>
+        </section>
+
+        <section>
+          {!selectedStream ? (
+            <p className="text-center text-gray-400 text-sm py-12">
+              {isRtl ? 'اختار الشعبة ديالك أولاً باش نعرضو لك المدارس المناسبة.' : 'Choisissez d’abord votre branche pour afficher les écoles adaptées.'}
+            </p>
+          ) : filteredSchools.length === 0 ? (
+            <p className="text-center text-gray-400 text-sm py-12">{isRtl ? 'لا توجد نتائج' : 'Aucun établissement trouvé'}</p>
+          ) : (
+            <>
+              <p className="text-xs text-gray-500 mb-3">
+                {isRtl ? `تم العثور على ${filteredSchools.length} مؤسسة مناسبة` : `${filteredSchools.length} établissements trouvés pour votre branche`}
+              </p>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {filteredSchools.map((school, i) => {
+                const open = expanded === school.id;
+                return (
+                  <li key={school.id} className="fp-card" style={{ animationDelay: `${0.05 + (i % 8) * 0.05}s` }}>
+                    <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-all">
+                      <button
+                        type="button"
+                        onClick={() => setExpanded(open ? null : school.id)}
+                        className="w-full px-4 py-4 flex items-start gap-3 text-left"
+                        aria-expanded={open}
+                      >
+                        <span className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-lg shadow-md">
+                          {school.icon}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-2 mb-1">
+                            <h3 className="text-sm font-black text-gray-900">{school.name}</h3>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5 mb-1.5">
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-100">{school.category}</span>
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200">{school.duration}</span>
+                          </div>
+                          <p className={`text-xs text-gray-600 leading-relaxed ${open ? '' : 'line-clamp-2'}`}>{school.details}</p>
+                        </div>
+                        <ChevronDownIcon className={`self-center text-gray-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+                      </button>
+                      {open && (
+                        <div className="px-4 pb-4 pt-0 border-t border-gray-50 space-y-3">
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-1">{isRtl ? 'شروط الولوج' : 'Admission'}</p>
+                            <p className="text-xs text-gray-700 leading-relaxed">{school.admission}</p>
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-1.5">{isRtl ? 'الآفاق المهنية' : 'Débouchés'}</p>
+                            <div className="flex flex-wrap gap-1.5">
+                              {school.careers.map((career) => (
+                                <span key={career} className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-gray-100 text-gray-700">
+                                  {career}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </article>
+                  </li>
+                );
+              })}
+              </ul>
+            </>
+          )}
+        </section>
+      </main>
+
+      <footer className="flex-shrink-0 border-t border-gray-200/80 bg-white py-5 px-6">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <span className="text-sm font-black text-gray-800">My<span className="gradient-text">Tawjeh</span></span>
+          <button type="button" onClick={onClose} className="text-xs font-semibold text-violet-600 hover:text-violet-800">
+            {isRtl ? 'إغلاق' : 'Fermer'}
+          </button>
         </div>
       </footer>
     </div>
@@ -2038,13 +2255,12 @@ function AllAvantBacPage({ t, onClose, onSignup }: { t: Translation; onClose: ()
 */
 
 function BacPathSection({ t, onSignup }: { t: Translation; onSignup: () => void }) {
-  const [showExplorePage, setShowExplorePage] = useState(false);
+  const [activePathPage, setActivePathPage] = useState<'avant' | 'apres' | null>(null);
   const pathCards = [
     { key: 'avant' as const, iconKey: 'pathAvant' as const, gradient: 'from-blue-500 to-indigo-600', bg: 'from-blue-50 to-indigo-50', data: t.bacPath.avantBac, clickable: true },
-    { key: 'apres' as const, iconKey: 'pathApres' as const, gradient: 'from-purple-500 to-violet-600', bg: 'from-purple-50 to-violet-50', data: t.bacPath.apresBac, clickable: false },
+    { key: 'apres' as const, iconKey: 'pathApres' as const, gradient: 'from-purple-500 to-violet-600', bg: 'from-purple-50 to-violet-50', data: t.bacPath.apresBac, clickable: true },
   ];
-
-  const openAvant = () => setShowExplorePage(true);
+  const openPath = (key: 'avant' | 'apres') => setActivePathPage(key);
 
   return (
     <>
@@ -2063,12 +2279,16 @@ function BacPathSection({ t, onSignup }: { t: Translation; onSignup: () => void 
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-3">{data.title}</h3>
                     <p className="text-gray-600 text-sm leading-relaxed">{data.message}</p>
-                    {clickable && <span className="mt-4 inline-block text-sm font-bold text-indigo-600 group-hover:text-indigo-800 transition-colors">{t.bacPath.avantBac.cta}</span>}
+                    {clickable && (
+                      <span className="mt-4 inline-block text-sm font-bold text-indigo-600 group-hover:text-indigo-800 transition-colors">
+                        {key === 'avant' ? t.bacPath.avantBac.cta : (t.direction === 'rtl' ? 'استكشاف المسارات بعد الباك →' : 'Explorer les options →')}
+                      </span>
+                    )}
                   </>
                 );
                 if (clickable) {
                   return (
-                    <button key={key} type="button" onClick={openAvant} className={`group text-left w-full rounded-2xl border border-gray-100 bg-gradient-to-br ${bg} p-8 shadow-sm card-lift cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2`}>{inner}</button>
+                    <button key={key} type="button" onClick={() => openPath(key)} className={`group text-left w-full rounded-2xl border border-gray-100 bg-gradient-to-br ${bg} p-8 shadow-sm card-lift cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2`}>{inner}</button>
                   );
                 }
                 return <div key={key} className={`rounded-2xl border border-gray-100 bg-gradient-to-br ${bg} p-8 shadow-sm`}>{inner}</div>;
@@ -2076,7 +2296,8 @@ function BacPathSection({ t, onSignup }: { t: Translation; onSignup: () => void 
             </div>
         </div>
       </section>
-      {showExplorePage && <AllAvantBacPage t={t} onClose={() => setShowExplorePage(false)} onSignup={onSignup} />}
+      {activePathPage === 'avant' && <AllAvantBacPage t={t} onClose={() => setActivePathPage(null)} onSignup={onSignup} />}
+      {activePathPage === 'apres' && <AllApresBacPage t={t} onClose={() => setActivePathPage(null)} onSignup={onSignup} />}
     </>
   );
 }
@@ -2246,20 +2467,28 @@ function ContactSection({ t }: { t: Translation }) {
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer({ t }: { t: Translation }) {
-  const socials = [{ icon: '📘', href: '#', label: 'Facebook' }, { icon: '🐦', href: '#', label: 'Twitter' }, { icon: '💼', href: '#', label: 'LinkedIn' }, { icon: '📸', href: '#', label: 'Instagram' }];
   return (
-    <footer className="bg-gray-950 text-gray-400 py-10">
+    <footer className="bg-white border-t border-gray-200 py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl btn-gradient flex items-center justify-center"><span className="text-white font-black text-sm">M</span></div>
-            <span className="font-black text-lg text-white">My<span className="gradient-text">Tawjeh</span></span>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl btn-gradient flex items-center justify-center">
+                <span className="text-white font-black text-sm">M</span>
+              </div>
+              <span className="font-black text-lg text-gray-900">My<span className="gradient-text">Tawjeh</span></span>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">{t.direction === 'rtl' ? 'منصة التوجيه الدراسي الذكي' : "Plateforme d'orientation scolaire intelligente"}</p>
           </div>
-          <div className="flex gap-4">
-            {socials.map((s) => (<a key={s.label} href={s.href} className="social-icon w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-base hover:bg-purple-600/30 hover:border-purple-500/50 transition-all">{s.icon}</a>))}
+          <p className="text-sm text-gray-500 md:text-center">
+            {t.direction === 'rtl' ? 'توجيه بسيط، واضح، ومهني لكل تلميذ.' : 'Une orientation simple, claire et professionnelle pour chaque élève.'}
+          </p>
+
+          <div className="text-sm text-gray-600">
+            <a href="mailto:contact@mytawjeh.ma" className="hover:text-violet-700 transition-colors">contact@mytawjeh.ma</a>
           </div>
-          <p className="text-sm text-center">{t.contact.copyright}</p>
         </div>
+        <div className="mt-3 pt-2 border-t border-gray-100 text-xs text-gray-500 text-center md:text-left">{t.contact.copyright}</div>
       </div>
     </footer>
   );
@@ -2439,7 +2668,7 @@ export default function App() {
       <main>
         <HeroSection t={t} />
         <NewsCarousel t={t} />
-        <CTASection t={t} />
+        <CTASection t={t} onSignup={() => setShowSignupModal(true)} />
         <AdvantagesSection t={t} />
         <FormationsSection key={language} t={t} onSignup={() => setShowSignupModal(true)} />
         <BacPathSection key={`bac-${language}`} t={t} onSignup={() => setShowSignupModal(true)} />
