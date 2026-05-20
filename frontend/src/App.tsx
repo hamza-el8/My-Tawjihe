@@ -2467,28 +2467,20 @@ function ContactSection({ t }: { t: Translation }) {
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer({ t }: { t: Translation }) {
+  const socials = [{ icon: '📘', href: '#', label: 'Facebook' }, { icon: '🐦', href: '#', label: 'Twitter' }, { icon: '💼', href: '#', label: 'LinkedIn' }, { icon: '📸', href: '#', label: 'Instagram' }];
   return (
-    <footer className="bg-white border-t border-gray-200 py-4">
+    <footer className="bg-gray-950 text-gray-400 py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl btn-gradient flex items-center justify-center">
-                <span className="text-white font-black text-sm">M</span>
-              </div>
-              <span className="font-black text-lg text-gray-900">My<span className="gradient-text">Tawjeh</span></span>
-            </div>
-            <p className="text-xs text-gray-500 mt-1">{t.direction === 'rtl' ? 'منصة التوجيه الدراسي الذكي' : "Plateforme d'orientation scolaire intelligente"}</p>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl btn-gradient flex items-center justify-center"><span className="text-white font-black text-sm">M</span></div>
+            <span className="font-black text-lg text-white">My<span className="gradient-text">Tawjeh</span></span>
           </div>
-          <p className="text-sm text-gray-500 md:text-center">
-            {t.direction === 'rtl' ? 'توجيه بسيط، واضح، ومهني لكل تلميذ.' : 'Une orientation simple, claire et professionnelle pour chaque élève.'}
-          </p>
-
-          <div className="text-sm text-gray-600">
-            <a href="mailto:contact@mytawjeh.ma" className="hover:text-violet-700 transition-colors">contact@mytawjeh.ma</a>
+          <div className="flex gap-4">
+            {socials.map((s) => (<a key={s.label} href={s.href} className="social-icon w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-base hover:bg-purple-600/30 hover:border-purple-500/50 transition-all">{s.icon}</a>))}
           </div>
+          <p className="text-sm text-center">{t.contact.copyright}</p>
         </div>
-        <div className="mt-3 pt-2 border-t border-gray-100 text-xs text-gray-500 text-center md:text-left">{t.contact.copyright}</div>
       </div>
     </footer>
   );
