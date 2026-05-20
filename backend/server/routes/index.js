@@ -6,7 +6,7 @@ const { getExercices, submitExercice, createExercice, getResultats } = require('
 const { getRoadmap, generateRoadmapHandler, chatbotHandler } = require('../controllers/aiController');
 const { getConcours, createConcours, getAnnales, createAnnale } = require('../controllers/concoursController');
 const { getNotifications, createNotification, markRead } = require('../controllers/notificationsController');
-const { getElevesFaibles, postService } = require('../controllers/profController');
+const { getElevesFaibles, getProfStats, postService } = require('../controllers/profController');
 const { getUsers, deleteUser } = require('../controllers/adminController');
 
 // Auth — public
@@ -44,11 +44,12 @@ router.post('/annales', auth(['admin']), createAnnale);
 
 // Notifications
 router.get('/notifications/:eleveId', auth(), getNotifications);
-router.post('/notifications', auth(['admin']), createNotification);
+router.post('/notifications', auth(['admin', 'professeur']), createNotification);
 router.patch('/notifications/:id/read', auth(), markRead);
 
 // Prof
 router.get('/prof/eleves-faibles', auth(['professeur']), getElevesFaibles);
+router.get('/prof/stats', auth(['professeur']), getProfStats);
 router.post('/prof/services', auth(['professeur']), postService);
 
 // Admin
