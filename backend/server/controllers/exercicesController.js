@@ -11,7 +11,7 @@ const getExercices = async (req, res) => {
   res.json(await Exercice.findAll({ where }));
 };
 
-// AI auto-correction
+// AI auto-correction — upsert so retries don't inflate count
 const submitExercice = async (req, res) => {
   try {
     const { reponse, eleveId } = req.body;
@@ -22,15 +22,13 @@ const submitExercice = async (req, res) => {
     let feedback = '';
 
     if (reponse && exercice.correction) {
-      // Ask AI to grade the answer
-      const prompt = `Tu es un professeur qui corrige une copie d'élève. 
+      const prompt = `Tu es un professeur corrigeant une copie. Réponds UNIQUEMENT avec un JSON valide sans markdown:
 
 Exercice: ${exercice.contenu}
 Correction officielle: ${exercice.correction}
 Réponse de l'élève: ${reponse}
 
-Évalue la réponse et réponds UNIQUEMENT avec un JSON valide:
-{"score": <nombre entre 0 et 20>, "feedback": "<commentaire bref et encourageant en français, max 2 phrases>"}`;
+{"score": <0 à 20>, "feedback": "<commentaire bref et encourageant, max 2 phrases en français>"}`;
 
       try {
         const aiResponse = await chatbot(prompt, '');
@@ -39,27 +37,32 @@ Réponse de l'élève: ${reponse}
         score = Math.min(20, Math.max(0, parseFloat(parsed.score) || 0));
         feedback = parsed.feedback || '';
       } catch {
-        // Fallback: manual score if AI fails
-        score = req.body.score || 0;
-        feedback = 'Correction manuelle.';
+        score = 0;
+        feedback = 'Correction automatique indisponible. Score basé sur la tentative.';
       }
     } else {
       score = parseFloat(req.body.score) || 0;
       feedback = '';
     }
 
-    const resultat = await ResultatExercice.create({
+    // Upsert — update if already submitted, insert if first time
+    const [resultat, created] = await ResultatExercice.upsert({
       score,
+      reponse: reponse || '',
+      feedback,
       eleveId,
       exerciceId: req.params.id,
-    });
+    }, { returning: true });
 
-    if (score < 10) {
+    // Notify only on first submission or if score improved
+    if (created || score < 10) {
       await Notification.create({
-        contenu: `📝 Score de ${score}/20 en ${exercice.matiere}. ${feedback || 'Continuez à pratiquer !'}`,
-        type: 'revision',
+        contenu: score < 10
+          ? `📝 Score de ${score}/20 en ${exercice.matiere}. ${feedback || 'Continuez à pratiquer !'}`
+          : `✅ Exercice de ${exercice.matiere} complété : ${score}/20 !`,
+        type: score < 10 ? 'revision' : 'info',
         eleveId,
-      });
+      }).catch(() => {}); // silent — don't fail submission if notif fails
     }
 
     res.status(201).json({ resultat, score, feedback, correction: exercice.correction });
@@ -69,8 +72,12 @@ Réponse de l'élève: ${reponse}
 };
 
 const createExercice = async (req, res) => {
-  const ex = await Exercice.create({ ...req.body, professeurId: req.user.id });
-  res.status(201).json(ex);
+  try {
+    const ex = await Exercice.create({ ...req.body, professeurId: req.user.id });
+    res.status(201).json(ex);
+  } catch (e) {
+    res.status(400).json({ message: e.message });
+  }
 };
 
 const getResultats = async (req, res) => {

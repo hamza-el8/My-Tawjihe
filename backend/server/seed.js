@@ -142,11 +142,12 @@ Complexité : O(n) — un seul parcours du tableau.`,
     nom: 'CNC 2026 — Concours National Commun',
     datw: '2026-06-15',
     seuil: 14.0,
-    description: 'Accès aux CPGE et grandes écoles d\'ingénieurs',
+    description: "Accès aux CPGE et grandes écoles d'ingénieurs",
+    lien: 'https://cnc.ac.ma',
   });
-  await Concours.create({ nom: 'ENSA 2026', datw: '2026-07-01', seuil: 13.5, description: 'École Nationale des Sciences Appliquées' });
-  await Concours.create({ nom: 'ENCG 2026', datw: '2026-06-20', seuil: 13.0, description: 'École Nationale de Commerce et de Gestion' });
-  await Concours.create({ nom: 'Médecine 2026', datw: '2026-09-10', seuil: 15.5, description: 'Concours d\'accès aux facultés de médecine' });
+  await Concours.create({ nom: 'ENSA 2026',     datw: '2026-07-01', seuil: 13.5, description: 'École Nationale des Sciences Appliquées',       lien: 'https://ensa.ac.ma' });
+  await Concours.create({ nom: 'ENCG 2026',     datw: '2026-06-20', seuil: 13.0, description: 'École Nationale de Commerce et de Gestion',     lien: 'https://encg.ac.ma' });
+  await Concours.create({ nom: 'Médecine 2026', datw: '2026-09-10', seuil: 15.5, description: "Concours d'accès aux facultés de médecine",     lien: 'https://fmdr.ac.ma' });
 
   // Annales with real external PDF links
   await Annale.bulkCreate([
