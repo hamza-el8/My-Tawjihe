@@ -242,7 +242,7 @@ The backend and frontend are properly connected through:
 **1. Start the Backend:**
 ```bash
 cd backend
-npm install
+cd backend
 copy .env.example .env
 npm run dev
 ```
