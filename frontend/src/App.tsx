@@ -10,7 +10,7 @@ const translations: Record<Lang, Translation> = {
   fr: {
     direction: 'ltr',
     nav: {
-      home: 'Accueil', news: 'Actualités', testimonials: 'Avantages',
+      home: 'Accueil',features: 'Fonctionnalités',news: 'Actualités', testimonials: 'Avantages',
       formations: 'Types de formations',
       bacPath: 'Avant/Après Bac',
       contact: 'Contact', login: 'Connexion', signup: 'Inscription',
@@ -28,6 +28,70 @@ const translations: Record<Lang, Translation> = {
         { value: '50+', label: 'Filières couvertes' },
       ],
     },
+
+aiEcosystem: {
+
+  badge: 'Le futur de l’éducation intelligente',
+
+  title1: 'Découvrez',
+
+  title2: 'l’expérience IA',
+
+  subtitle:
+    'Une plateforme immersive pensée pour transformer l’apprentissage, le suivi scolaire et l’expérience pédagogique grâce à l’intelligence artificielle.',
+
+  core: 'Cœur de l’éducation intelligente',
+
+  student: {
+    title: 'Étudiant',
+    subtitle:
+      'Construisez votre avenir grâce à une expérience IA immersive et personnalisée.',
+    button: 'Créer mon espace étudiant',
+
+    features: [
+      'Mon Profil O*NET',
+      'Mes Notes',
+      'Exercices intelligents',
+      'Roadmap IA',
+      'Assistant IA',
+      'Concours',
+      'Annales',
+      'Notifications',
+      'Actualités',
+    ],
+  },
+
+  parent: {
+    title: 'Parent',
+    subtitle:
+      'Explorez toutes les fonctionnalités intelligentes dédiées aux parents.',
+    button: 'Créer mon espace parent',
+
+    features: [
+      'Suivi de mon élève',
+      'Moyenne générale',
+      'Notes enregistrées',
+      'Progression académique',
+      'Dashboard parent',
+    ],
+  },
+
+  teacher: {
+    title: 'Professeur',
+    subtitle:
+      'Découvrez les fonctionnalités pédagogiques avancées de la plateforme.',
+    button: 'Créer mon espace professeur',
+
+    features: [
+      'Gestion des étudiants',
+      'Suivi des notes',
+      'Création d’exercices',
+      'Suivi des performances',
+      'Notifications',
+      'Dashboard intelligent',
+    ],
+  },
+},
     news: {
       headingSmall: 'ACTUALITÉS', headingLarge: 'Dernières nouvelles',
       items: [
@@ -476,13 +540,81 @@ const translations: Record<Lang, Translation> = {
   },
   ar: {
     direction: 'rtl',
-    nav: { home: 'الرئيسية', news: 'الأخبار', testimonials: 'المزايا', formations: 'أنواع التكوينات', bacPath: 'قبل/بعد البكالوريا', contact: 'تواصل معنا', login: 'تسجيل الدخول', signup: 'إنشاء حساب' },
+    nav: { home: 'الرئيسية',features: 'المميزات',news: 'الأخبار', testimonials: 'المزايا', formations: 'أنواع التكوينات', bacPath: 'قبل/بعد البكالوريا', contact: 'تواصل معنا', login: 'تسجيل الدخول', signup: 'إنشاء حساب' },
     hero: {
       badge: 'مرحبًا بكم على MyTawjeh', title: 'منصة ذكية', titleAccent: 'للتوجيه الأكاديمي بالذكاء الاصطناعي',
       subtitle: 'اكتشف مسارك الأمثل بفضل الذكاء الاصطناعي. توجيه شخصي، تحضير للامتحانات ومتابعة تقدمك الدراسي.',
       button: 'ابدأ الآن', buttonSecondary: 'اعرف أكثر',
       stats: [{ value: '+300K', label: 'طالب مستفيد' }, { value: '95%', label: 'نسبة الرضا' }, { value: '+50', label: 'تخصص مغطى' }],
     },
+    aiEcosystem: {
+  badge: 'مستقبل التعليم الذكي',
+
+  title1: 'اكتشف',
+
+  title2: 'تجربة الذكاء الاصطناعي',
+
+  subtitle:
+    'منصة ذكية متكاملة تهدف إلى تطوير التعلم والمتابعة الدراسية والتجربة التعليمية بفضل تقنيات الذكاء الاصطناعي.',
+
+  core: 'قلب التعليم الذكي',
+
+  student: {
+    title: 'التلميذ',
+
+    subtitle:
+      'ابنِ مستقبلك من خلال تجربة ذكاء اصطناعي متطورة ومخصصة.',
+
+    button: 'إنشاء فضاء التلميذ',
+
+    features: [
+      'ملفي الشخصي O*NET',
+      'نقطي',
+      'تمارين ذكية',
+      'خارطة الطريق',
+      'المساعد الذكي',
+      'المباريات',
+      'الامتحانات السابقة',
+      'الإشعارات',
+      'الأخبار',
+    ],
+  },
+
+  parent: {
+    title: 'ولي الأمر',
+
+    subtitle:
+      'تابع نتائج وتطور ابنك بسهولة عبر أدوات ذكية ومتطورة.',
+
+    button: 'إنشاء فضاء ولي الأمر',
+
+    features: [
+      'متابعة التلميذ',
+      'المعدل العام',
+      'النقط المسجلة',
+      'التطور الدراسي',
+      'لوحة تحكم الأولياء',
+    ],
+  },
+
+  teacher: {
+    title: 'الأستاذ',
+
+    subtitle:
+      'استفد من أدوات تعليمية حديثة لإدارة وتتبع التلاميذ.',
+
+    button: 'إنشاء فضاء الأستاذ',
+
+    features: [
+      'إدارة التلاميذ',
+      'تتبع النقط',
+      'إنشاء التمارين',
+      'تتبع الأداء',
+      'الإشعارات',
+      'لوحة ذكية',
+    ],
+  },
+},
     news: {
       headingSmall: 'الأخبار', headingLarge: 'آخر الأخبار',
       items: [
@@ -1154,6 +1286,7 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
 
   const navLinks = [
     { href: '#top', label: t.nav.home, id: 'top' },
+    { id: 'features', href: '#features', label: t.nav.features },
     { href: '#news', label: t.nav.news, id: 'news' },
     { href: '#advantages', label: t.nav.testimonials, id: 'advantages' },
     { href: '#formations', label: t.nav.formations, id: 'formations' },
@@ -2663,7 +2796,10 @@ export default function App() {
       <main>
         <HeroSection t={t} />
 
-        <AIEcosystem />
+        <AIEcosystem
+  t={t}
+  onSignup={() => setShowSignupModal(true)}
+/>
         
         <NewsCarousel t={t} />
         <CTASection t={t} onSignup={() => setShowSignupModal(true)} />

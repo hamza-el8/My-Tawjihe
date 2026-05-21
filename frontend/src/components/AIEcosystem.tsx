@@ -1,6 +1,10 @@
-export default function AIEcosystem() {
+export default function AIEcosystem({
+  t,
+  onSignup,
+}: any) {
   return (
     <section
+      id="features"
       style={{
         position: "relative",
         overflow: "hidden",
@@ -119,7 +123,7 @@ export default function AIEcosystem() {
               textTransform: "uppercase",
             }}
           >
-            The Future Of Smart Education
+            {t.aiEcosystem.badge}
           </div>
 
           <h1
@@ -132,7 +136,8 @@ export default function AIEcosystem() {
               letterSpacing: "-4px",
             }}
           >
-            Découvrez
+            {t.aiEcosystem.title1}
+
             <span
               style={{
                 display: "block",
@@ -142,7 +147,7 @@ export default function AIEcosystem() {
                 color: "transparent",
               }}
             >
-              l’expérience IA
+              {t.aiEcosystem.title2}
             </span>
           </h1>
 
@@ -155,9 +160,7 @@ export default function AIEcosystem() {
               lineHeight: 1.9,
             }}
           >
-            Une plateforme immersive pensée pour transformer
-            l’apprentissage, le suivi scolaire et l’expérience
-            pédagogique grâce à l’intelligence artificielle.
+            {t.aiEcosystem.subtitle}
           </p>
         </div>
 
@@ -187,7 +190,6 @@ export default function AIEcosystem() {
               animation: "pulse 6s ease-in-out infinite",
             }}
           >
-            {/* OUTER RINGS */}
             <div
               style={{
                 position: "absolute",
@@ -208,7 +210,6 @@ export default function AIEcosystem() {
               }}
             />
 
-            {/* FLOATING DOTS */}
             {[...Array(10)].map((_, i) => (
               <div
                 key={i}
@@ -246,12 +247,12 @@ export default function AIEcosystem() {
                 style={{
                   marginTop: "10px",
                   color: "#cbd5e1",
-                  fontSize: "11px",
+                  fontSize: "8px",
                   letterSpacing: "4px",
                   textTransform: "uppercase",
                 }}
               >
-                AI EDUCATION CORE
+                {t.aiEcosystem.core}
               </p>
             </div>
           </div>
@@ -268,62 +269,36 @@ export default function AIEcosystem() {
         >
           {[
             {
-              title: "Étudiant",
-              subtitle:
-                "Construisez votre avenir grâce à une expérience IA immersive et personnalisée, et découvrez toutes les fonctionnalités intelligentes disponibles dans votre espace pour apprendre, progresser, réussir vos examens et atteindre vos objectifs académiques plus efficacement.",
+              title: t.aiEcosystem.student.title,
+              subtitle: t.aiEcosystem.student.subtitle,
               color: "#c084fc",
               glow: "rgba(168,85,247,0.45)",
               button:
                 "linear-gradient(to right,#9333ea,#ec4899)",
-              buttonText: "Créer mon espace étudiant",
-              features: [
-                "Mon Profil O*NET",
-                "Mes Notes",
-                "Exercices intelligents",
-                "Roadmap IA",
-                "Assistant IA",
-                "Concours",
-                "Annales",
-                "Notifications",
-                "Actualités",
-              ],
+              buttonText: t.aiEcosystem.student.button,
+              features: t.aiEcosystem.student.features,
             },
 
             {
-              title: "Parent",
-              subtitle:
-                "Explorez toutes les fonctionnalités intelligentes dédiées aux parents pour suivre les résultats, visualiser la progression académique, recevoir des notifications importantes et accompagner efficacement votre enfant vers la réussite.",
+              title: t.aiEcosystem.parent.title,
+              subtitle: t.aiEcosystem.parent.subtitle,
               color: "#6ee7b7",
               glow: "rgba(16,185,129,0.45)",
               button:
                 "linear-gradient(to right,#10b981,#14b8a6)",
-              buttonText: "Créer mon espace parent",
-              features: [
-                "Suivi de mon élève",
-                "Moyenne générale",
-                "Notes enregistrées",
-                "Progression académique",
-                "Dashboard parent",
-              ],
+              buttonText: t.aiEcosystem.parent.button,
+              features: t.aiEcosystem.parent.features,
             },
 
             {
-              title: "Professeur",
-              subtitle:
-                "Découvrez les fonctionnalités pédagogiques avancées de la plateforme pour gérer vos étudiants, créer des exercices intelligents, analyser les performances et moderniser votre expérience pédagogique grâce à des outils innovants nouvelle génération.",
+              title: t.aiEcosystem.teacher.title,
+              subtitle: t.aiEcosystem.teacher.subtitle,
               color: "#7dd3fc",
               glow: "rgba(59,130,246,0.45)",
               button:
                 "linear-gradient(to right,#2563eb,#06b6d4)",
-              buttonText: "Créer mon espace professeur",
-              features: [
-                "Gestion des étudiants",
-                "Suivi des notes",
-                "Création d’exercices",
-                "Suivi des performances",
-                "Notifications",
-                "Dashboard intelligent",
-              ],
+              buttonText: t.aiEcosystem.teacher.button,
+              features: t.aiEcosystem.teacher.features,
             },
           ].map((card, index) => (
             <div
@@ -342,43 +317,13 @@ export default function AIEcosystem() {
                   5 + index
                 }s ease-in-out infinite`,
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform =
-                  "translateY(-18px) scale(1.03)";
-                e.currentTarget.style.boxShadow = `0 0 120px ${card.glow}`;
-                e.currentTarget.style.border =
-                  "1px solid rgba(255,255,255,0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform =
-                  "translateY(0px)";
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.border =
-                  "1px solid rgba(255,255,255,0.08)";
-              }}
             >
-              {/* BACK LIGHT */}
               <div
                 style={{
                   position: "absolute",
                   inset: 0,
                   background: `linear-gradient(135deg,${card.glow},transparent)`,
                   opacity: 0.45,
-                }}
-              />
-
-              {/* SHINE EFFECT */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: "-120%",
-                  left: "-40%",
-                  width: "60%",
-                  height: "300%",
-                  background:
-                    "linear-gradient(to right,transparent,rgba(255,255,255,0.08),transparent)",
-                  transform: "rotate(25deg)",
-                  animation: "shine 8s linear infinite",
                 }}
               />
 
@@ -400,7 +345,6 @@ export default function AIEcosystem() {
                     justifyContent: "center",
                     marginBottom: "24px",
                     boxShadow: `0 0 40px ${card.glow}`,
-                    animation: "pulseSmall 4s ease-in-out infinite",
                   }}
                 >
                   <div
@@ -420,7 +364,6 @@ export default function AIEcosystem() {
                     fontSize: "30px",
                     fontWeight: 800,
                     marginBottom: "14px",
-                    letterSpacing: "-1px",
                   }}
                 >
                   {card.title}
@@ -445,81 +388,58 @@ export default function AIEcosystem() {
                     gap: "12px",
                   }}
                 >
-                  {card.features.map((item, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        padding: "15px 16px",
-                        borderRadius: "16px",
-                        background:
-                          "rgba(255,255,255,0.04)",
-                        border:
-                          "1px solid rgba(255,255,255,0.06)",
-                        color: "#e2e8f0",
-                        fontSize: "13px",
-                        transition: "0.4s",
-                        backdropFilter: "blur(10px)",
-                      }}
-                    >
-                      {item}
-                    </div>
-                  ))}
+                  {card.features.map(
+                    (item: string, i: number) => (
+                      <div
+                        key={i}
+                        style={{
+                          padding: "15px 16px",
+                          borderRadius: "16px",
+                          background:
+                            "rgba(255,255,255,0.04)",
+                          border:
+                            "1px solid rgba(255,255,255,0.06)",
+                          color: "#e2e8f0",
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item}
+                      </div>
+                    )
+                  )}
                 </div>
 
                 {/* BUTTON */}
-                <button
-                  onClick={() => {
-                    const target = Array.from(
-                      document.querySelectorAll("button")
-                    ).find((btn) =>
-                      btn.textContent?.includes("Inscription")
-                    );
-
-                    if (target) {
-                      target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center",
-                      });
-
-                      (target as HTMLElement).click();
-                    }
-                  }}
-                  style={{
-                    marginTop: "30px",
-                    width: "100%",
-                    padding: "16px",
-                    borderRadius: "18px",
-                    border: "none",
-                    background: card.button,
-                    color: "white",
-                    fontWeight: 700,
-                    fontSize: "14px",
-                    cursor: "pointer",
-                    boxShadow: `0 0 40px ${card.glow}`,
-                    transition: "0.4s",
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  {card.buttonText}
-                </button>
+                {/* BUTTON */}
+<button
+  onClick={onSignup}
+  style={{
+    marginTop: "30px",
+    width: "100%",
+    padding: "16px",
+    borderRadius: "18px",
+    border: "none",
+    background: card.button,
+    color: "white",
+    fontWeight: 700,
+    fontSize: "14px",
+    cursor: "pointer",
+    boxShadow: `0 0 40px ${card.glow}`,
+  }}
+>
+  {card.buttonText}
+</button>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ANIMATIONS */}
       <style>
         {`
           @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.04); }
-            100% { transform: scale(1); }
-          }
-
-          @keyframes pulseSmall {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.08); }
             100% { transform: scale(1); }
           }
 
@@ -549,11 +469,6 @@ export default function AIEcosystem() {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-14px); }
             100% { transform: translateY(0px); }
-          }
-
-          @keyframes shine {
-            0% { left: -60%; }
-            100% { left: 130%; }
           }
 
           @keyframes particle {

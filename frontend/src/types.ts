@@ -14,6 +14,7 @@ export interface Translation {
     contact: string;
     login: string;
     signup: string;
+    features: string;
   };
   hero: {
     badge: string;
@@ -24,6 +25,35 @@ export interface Translation {
     buttonSecondary: string;
     stats: Array<{ value: string; label: string }>;
   };
+
+  aiEcosystem: {
+  badge: string;
+  title1: string;
+  title2: string;
+  subtitle: string;
+  core: string;
+
+  student: {
+    title: string;
+    subtitle: string;
+    button: string;
+    features: string[];
+  };
+
+  parent: {
+    title: string;
+    subtitle: string;
+    button: string;
+    features: string[];
+  };
+
+  teacher: {
+    title: string;
+    subtitle: string;
+    button: string;
+    features: string[];
+  };
+};
   news: {
     headingSmall: string;
     headingLarge: string;
