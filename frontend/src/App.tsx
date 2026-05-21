@@ -144,11 +144,17 @@ aiEcosystem: {
   },
   ar: {
     direction: 'rtl',
-<<<<<<< HEAD
-    nav: { home: 'الرئيسية', news: 'الأخبار', testimonials: 'المزايا', contact: 'تواصل معنا', login: 'تسجيل الدخول', signup: 'إنشاء حساب' },
-=======
-    nav: { home: 'الرئيسية',features: 'المميزات',news: 'الأخبار', testimonials: 'المزايا', formations: 'أنواع التكوينات', bacPath: 'قبل/بعد البكالوريا', contact: 'تواصل معنا', login: 'تسجيل الدخول', signup: 'إنشاء حساب' },
->>>>>>> 669458d1be873c584919f3ce6d8948bb4590cdf9
+    nav: {
+      home: 'الرئيسية',
+      features: 'المميزات',
+      news: 'الأخبار',
+      testimonials: 'المزايا',
+      formations: 'أنواع التكوينات',
+      bacPath: 'قبل/بعد البكالوريا',
+      contact: 'تواصل معنا',
+      login: 'تسجيل الدخول',
+      signup: 'إنشاء حساب',
+    },
     hero: {
       badge: 'مرحبًا بكم على MyTawjeh', title: 'منصة ذكية', titleAccent: 'للتوجيه الأكاديمي بالذكاء الاصطناعي',
       subtitle: 'اكتشف مسارك الأمثل بفضل الذكاء الاصطناعي. توجيه شخصي، تحضير للامتحانات ومتابعة تقدمك الدراسي.',
