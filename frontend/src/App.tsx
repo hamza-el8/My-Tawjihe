@@ -5,6 +5,8 @@ import Dashboard from './Dashboard';
 import type { Translation, Lang, BacStageIconKey, AvantBacCareerStage } from './types';
 import { login as apiLogin, isAuthenticated, getStoredUser } from './api';
 import AIEcosystem from './components/AIEcosystem';
+import SmartChatbot from './components/SmartChatbot';
+
 // ─── Translations ─────────────────────────────────────────────────────────────
 const translations: Record<Lang, Translation> = {
   fr: {
@@ -1273,7 +1275,14 @@ function SectionHeading({ small, large, accent, center = true }: { small: string
 }
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
-function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModal }: { language: Lang; setLanguage: (l: Lang) => void; t: Translation; setShowLoginModal: (s: boolean) => void; setShowSignupModal: (s: boolean) => void }) {
+function Navbar({
+  language,
+  setLanguage,
+  t,
+  setShowLoginModal,
+  setOpenChat,
+  setShowSignupModal,
+}: any) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('top');
@@ -1299,9 +1308,10 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
     if (id === 'top') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-
+  
   return (
     <nav dir={t.direction} className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           <a href="#top" onClick={(e) => { e.preventDefault(); scrollTo('#top', 'top'); }} className="flex items-center gap-2 flex-shrink-0">
@@ -1317,6 +1327,12 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
             ))}
           </div>
           <div className="hidden md:flex items-center gap-3">
+            <button
+  onClick={() => setOpenChat(true)}
+  className="px-4 py-2 rounded-full bg-purple-500 text-white font-bold hover:bg-purple-600 transition"
+>
+  🤖 AI Chat
+</button>
             <button onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')} className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all duration-200 ${scrolled ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : 'border-white/50 text-white hover:bg-white/10'}`}>
               {language === 'fr' ? 'العربية' : 'Français'}
             </button>
@@ -2600,7 +2616,7 @@ function ContactSection({ t }: { t: Translation }) {
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer({ t }: { t: Translation }) {
-  const socials = [{ icon: '📘', href: '#', label: 'Facebook' }, { icon: '🐦', href: '#', label: 'Twitter' }, { icon: '💼', href: '#', label: 'LinkedIn' }, { icon: '📸', href: '#', label: 'Instagram' }];
+  const socials = [  { icon: '📸', href: '#', label: 'Instagram' }];
   return (
     <footer className="bg-gray-950 text-gray-400 py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -2766,6 +2782,7 @@ function LangFAB({ language, setLanguage }: { language: Lang; setLanguage: (l: L
 
 // ─── App Root ─────────────────────────────────────────────────────────────────
 export default function App() {
+  const [openChat, setOpenChat] = useState(false);
   const [language, setLanguage] = useState<Lang>('fr');
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
@@ -2792,7 +2809,7 @@ export default function App() {
   // ── Otherwise show landing page ──
   return (
     <div dir={t.direction} lang={language}>
-      <Navbar language={language} setLanguage={setLanguage} t={t} setShowLoginModal={setShowLoginModal} setShowSignupModal={setShowSignupModal} />
+      <Navbar language={language} setLanguage={setLanguage} t={t} setOpenChat={setOpenChat} setShowLoginModal={setShowLoginModal} setShowSignupModal={setShowSignupModal} />
       <main>
         <HeroSection t={t} />
 
@@ -2803,6 +2820,27 @@ export default function App() {
         
         <NewsCarousel t={t} />
         <CTASection t={t} onSignup={() => setShowSignupModal(true)} />
+        <SmartChatbot
+          language={language}
+          onSignup={() => setShowSignupModal(true)}
+        />
+        {openChat && (
+  <div
+    className="fixed inset-0 z-[9999] bg-black/40 overflow-y-auto"
+  >
+    <button
+      onClick={() => setOpenChat(false)}
+      className="fixed top-5 right-5 w-12 h-12 rounded-full bg-white text-black font-bold text-xl z-[10000]"
+    >
+      ✕
+    </button>
+
+    <SmartChatbot
+      language={language}
+      onSignup={() => setShowSignupModal(true)}
+    />
+  </div>
+)}
         <AdvantagesSection t={t} />
         <FormationsSection key={language} t={t} onSignup={() => setShowSignupModal(true)} />
         <BacPathSection key={`bac-${language}`} t={t} onSignup={() => setShowSignupModal(true)} />
@@ -2826,6 +2864,7 @@ export default function App() {
           lang={language}
         />
       )}
+     
     </div>
   );
 }
