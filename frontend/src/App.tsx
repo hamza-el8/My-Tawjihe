@@ -9,14 +9,15 @@ const translations: Record<Lang, Translation> = {
   fr: {
     direction: 'ltr',
     nav: {
-<<<<<<< HEAD
-      home: 'Accueil', news: 'Actualités', testimonials: 'Avantages',
-=======
-      home: 'Accueil',features: 'Fonctionnalités',news: 'Actualités', testimonials: 'Avantages',
+      home: 'Accueil',
+      features: 'Fonctionnalités',
+      news: 'Actualités',
+      testimonials: 'Avantages',
       formations: 'Types de formations',
       bacPath: 'Avant/Après Bac',
->>>>>>> 669458d1be873c584919f3ce6d8948bb4590cdf9
-      contact: 'Contact', login: 'Connexion', signup: 'Inscription',
+      contact: 'Contact',
+      login: 'Connexion',
+      signup: 'Inscription',
     },
     hero: {
       badge: 'Bienvenue sur MyTawjeh',
