@@ -4,6 +4,7 @@ import Dashboard from './Dashboard';
 import type { Translation, Lang } from './types';
 import { login as apiLogin, isAuthenticated, getStoredUser } from './api';
 import AIEcosystem from './components/AIEcosystem';
+import { ErrorBoundary } from './components/ErrorBoundary';
 // ─── Translations ─────────────────────────────────────────────────────────────
 const translations: Record<Lang, Translation> = {
   fr: {
