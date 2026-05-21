@@ -96,13 +96,6 @@ export async function generateRoadmap(eleveId: number) {
   });
 }
 
-export async function sendChatMessage(message: string, eleveId?: number) {
-  return apiRequest('/chatbot/message', {
-    method: 'POST',
-    body: JSON.stringify({ message, eleveId }),
-  });
-}
-
 // ─── Concours & Annales ───────────────────────────────────────────────────────
 export async function getConcours() {
   return apiRequest('/concours');
@@ -185,4 +178,16 @@ export async function saveOnetProfile(data: Record<string, any>) {
 
 export async function getOnetProfile() {
   return apiRequest('/onet/profile');
+}
+
+
+export async function sendChatMessage(
+  message: string,
+  eleveId: number,
+  history: { role: string; content: string }[] = []
+) {
+  return apiRequest('/chatbot/message', {
+    method: 'POST',
+    body: JSON.stringify({ message, eleveId, history }),
+  });
 }

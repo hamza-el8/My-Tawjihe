@@ -57,3 +57,12 @@ router.get('/admin/users', auth(['admin']), getUsers);
 router.delete('/admin/users/:role/:id', auth(['admin']), deleteUser);
 
 module.exports = router;
+
+// Contact form
+router.post('/contact', async (req, res) => {
+  const { nom, email, message } = req.body;
+  if (!nom || !email || !message) return res.status(400).json({ message: 'Champs requis manquants' });
+  // Log to console (email integration can be added later)
+  console.log(`📧 Contact: ${nom} <${email}> — ${message}`);
+  res.json({ message: 'Message reçu. Nous vous répondrons dans les 24h.' });
+});
