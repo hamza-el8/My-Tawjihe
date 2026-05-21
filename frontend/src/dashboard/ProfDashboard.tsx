@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { User, apiFetch } from './shared';
+import { StatCard } from './Layout';
 
 // ─── PROF DASHBOARD ───────────────────────────────────────────────────────────
 function ProfDashboard({ user }: { user: User }) {
