@@ -1,5 +1,7 @@
 export type Lang = 'fr' | 'ar';
 export type Direction = 'ltr' | 'rtl';
+export type BacStageIconKey = 'college' | 'tronc' | 'bac1' | 'bac2' | 'pathAvant' | 'pathApres';
+export type AvantBacCareerStage = 'college' | 'tronc' | '1bac';
 
 export interface Translation {
   direction: Direction;
@@ -11,6 +13,9 @@ export interface Translation {
     login: string;
     signup: string;
     features: string;
+    formations?: string;
+    bacPath?: string;
+    worldMap?: string;
   };
   hero: {
     badge: string;
@@ -99,4 +104,11 @@ export interface Translation {
     button: string;
     copyright: string;
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formations?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  bacPath?: any;
+  // Allow additional keys for extended translations
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
