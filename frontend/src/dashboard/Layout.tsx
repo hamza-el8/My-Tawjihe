@@ -1,5 +1,3 @@
-import { User } from './shared';
-
 // ─── Header ───────────────────────────────────────────────────────────────────
 function Header({ title, subtitle, onMenuClick, notifCount }: {
   title: string; subtitle?: string; onMenuClick: () => void; notifCount?: number;

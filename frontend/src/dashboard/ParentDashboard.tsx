@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { User, Note, apiFetch } from './shared';
+import { User, Note, Notification, apiFetch } from './shared';
 import { StatCard } from './Layout';
 
 export default function ParentDashboard({ user }: { user: User }) {
   const [notes, setNotes] = useState<Note[]>([]);
-  const [linkedEleve, setLinkedEleve] = useState<any>(null);
+  const [linkedEleve, setLinkedEleve] = useState<{ id: number; nom: string; email: string; niveau?: string; filiere?: string } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [parentNotifs, setParentNotifs] = useState<any[]>([]);
+  const [parentNotifs, setParentNotifs] = useState<Notification[]>([]);
   const [tab, setTab] = useState<'notes' | 'notifs'>('notes');
 
   useEffect(() => {
@@ -20,9 +20,9 @@ export default function ParentDashboard({ user }: { user: User }) {
             apiFetch(`/notifications/${r.eleve.id}`),
           ]);
         }
-        return [[], []];
+        return [] as unknown as [any, any];
       })
-      .then(([n, notifs]) => {
+      .then(([n, notifs]: [Note[], Notification[]]) => {
         setNotes(Array.isArray(n) ? n : []);
         setParentNotifs(Array.isArray(notifs) ? notifs : []);
       })

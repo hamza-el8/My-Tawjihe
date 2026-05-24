@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User, Exercice, apiFetch, diffColor } from './shared';
+import { User, Exercice, Notification, apiFetch } from './shared';
 
 // ─── EXERCICES PAGE ───────────────────────────────────────────────────────────
 function ExercicesPage({ user }: { user: User }) {
@@ -11,6 +11,10 @@ function ExercicesPage({ user }: { user: User }) {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [filterMatiere, setFilterMatiere] = useState('');
+  const localDiffColor = (d: string) =>
+    d === 'facile' || d === 'Facile' ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+    : d === 'difficile' || d === 'Difficile' ? 'bg-rose-50 text-rose-700 border-rose-200'
+    : 'bg-amber-50 text-amber-700 border-amber-200';
   const [filterDiff, setFilterDiff] = useState('');
   const [filterNiveau, setFilterNiveau] = useState('');
 
@@ -56,10 +60,6 @@ function ExercicesPage({ user }: { user: User }) {
     }
   };
 
-  const diffColor = (d: string) =>
-    d === 'Facile' ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-    : d === 'Moyen' ? 'bg-amber-50 text-amber-700 border-amber-200'
-    : 'bg-rose-50 text-rose-700 border-rose-200';
 
   return (
     <div>
@@ -71,7 +71,7 @@ function ExercicesPage({ user }: { user: User }) {
           </button>
           <div className="dash-card p-6">
             <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:16 }}>
-              <span className={`px-2.5 py-1 rounded-lg text-xs font-bold border ${diffColor(selected.difficulte)}`}>{selected.difficulte}</span>
+              <span className={`px-2.5 py-1 rounded-lg text-xs font-bold border ${localDiffColor(selected.difficulte)}`}>{selected.difficulte}</span>
               <span style={{ fontSize:13, color:'#94a3b8' }}>{selected.matiere} · {selected.niveau}</span>
             </div>
 
@@ -166,7 +166,7 @@ function ExercicesPage({ user }: { user: User }) {
                 <button key={ex.id} onClick={() => { setSelected(ex); setSubmitted(false); setReponse(''); setResult(null); }}
                   className="dash-card p-5 text-left cursor-pointer" style={{ width:'100%' }}>
                   <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:10 }}>
-                    <span className={`px-2.5 py-1 rounded-lg text-xs font-bold border ${diffColor(ex.difficulte)}`}>{ex.difficulte}</span>
+                    <span className={`px-2.5 py-1 rounded-lg text-xs font-bold border ${localDiffColor(ex.difficulte)}`}>{ex.difficulte}</span>
                     <span style={{ fontSize:11, color:'#94a3b8' }}>{ex.niveau}</span>
                   </div>
                   <div style={{ fontSize:14, fontWeight:700, color:'#0f0c29', marginBottom:6 }}>{ex.matiere}</div>

@@ -2679,18 +2679,6 @@ function Navbar({
 
           <div className="hidden md:flex items-center gap-3">
 
-            <button
-
-  onClick={() => setOpenChat(true)}
-
-  className="px-4 py-2 rounded-full bg-purple-500 text-white font-bold hover:bg-purple-600 transition"
-
->
-
-  🤖 AI Chat
-
-</button>
-
             <button onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')} className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all duration-200 ${scrolled ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : 'border-white/50 text-white hover:bg-white/10'}`}>
 
               {language === 'fr' ? 'العربية' : 'Français'}
@@ -5800,17 +5788,17 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup, onLoginSuccess }: {
 
 
 
-// ─── Lang FAB ─────────────────────────────────────────────────────────────────
+// ─── AI FAB ────────────────────────────────────────────────────────────────────
 
-function LangFAB({ language, setLanguage }: { language: Lang; setLanguage: (l: Lang) => void }) {
+function AIFAB({ setOpenChat }: { setOpenChat: (v: boolean) => void }) {
 
   return (
 
-    <button onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')}
+    <button onClick={() => setOpenChat(true)}
 
-      className="fixed bottom-6 right-6 z-50 btn-gradient text-white w-14 h-14 rounded-full shadow-2xl text-sm font-black flex items-center justify-center hover:scale-110 transition-transform border-2 border-white/30">
+      className="fixed bottom-6 right-6 z-50 btn-gradient text-white w-14 h-14 rounded-full shadow-2xl text-lg font-black flex items-center justify-center hover:scale-110 transition-transform border-2 border-white/30">
 
-      {language === 'fr' ? 'ع' : 'FR'}
+      🤖
 
     </button>
 
@@ -5960,7 +5948,7 @@ export default function App() {
 
       <Footer t={t} />
 
-      <LangFAB language={language} setLanguage={setLanguage} />
+      <AIFAB setOpenChat={setOpenChat} />
 
 
 

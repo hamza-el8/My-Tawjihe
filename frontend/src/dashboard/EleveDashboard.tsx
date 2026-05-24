@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User, Note, apiFetch, icons } from './shared';
+import { User, Note, Notification, apiFetch, icons } from './shared';
 import NotesEvolutionChart from './NotesEvolutionChart';
 import { StatCard } from './Layout';
 
@@ -11,15 +11,18 @@ function EleveDashboard({ user, setActive, onRetakeOnet }: { user: User; setActi
   const [onetProfile, setOnetProfile] = useState<any>(null);
 
   useEffect(() => {
-    apiFetch(`/eleves/${user.id}/notes`).then(setNotes).catch(() => {});
-    apiFetch(`/notifications/${user.id}`).then((ns: Notification[]) => setNotifCount(ns.filter((n) => !n.lu).length)).catch(() => {});
-    // Check O*NET profile
-    apiFetch('/onet/profile')
-      .then(r => {
-        setOnetProfile(r.profil);
-        if (!r.profil) setTimeout(() => setShowOnetPrompt(true), 800);
-      })
-      .catch(() => setTimeout(() => setShowOnetPrompt(true), 800));
+    Promise.all([
+      apiFetch(`/eleves/${user.id}/notes`),
+      apiFetch(`/notifications/${user.id}`),
+      apiFetch('/onet/profile'),
+    ]).then(([notesData, notifsData, onetData]: [any, any, any]) => {
+      setNotes(Array.isArray(notesData) ? notesData : []);
+      setNotifCount(Array.isArray(notifsData) ? notifsData.filter((n: Notification) => !n.lu).length : 0);
+      setOnetProfile(onetData?.profil || null);
+      if (!onetData?.profil) setTimeout(() => setShowOnetPrompt(true), 800);
+    }).catch(() => {
+      setTimeout(() => setShowOnetPrompt(true), 800);
+    });
   }, [user.id]);
 
   const moyenne = notes.length
