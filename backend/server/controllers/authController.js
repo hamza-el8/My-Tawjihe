@@ -139,6 +139,8 @@ const getLinkedStudent = async (req, res) => {
 };
 
 // ── Save ONET profile ─────────────────────────────────────────────────────────
+const ProfilOnet = require('../models/ProfilOnet');
+
 const saveOnetProfile = async (req, res) => {
   const { id, role } = req.user;
   if (role !== 'eleve') return res.status(403).json({ message: 'Réservé aux étudiants' });
@@ -146,41 +148,24 @@ const saveOnetProfile = async (req, res) => {
   const { testLevel, scores, primaryInterest, secondaryInterest, tertiaryInterest, jobZone, dreamUni, dreamJob, language } = req.body;
 
   try {
-    const sequelize = require('../config/db');
-    await sequelize.query(`
-      CREATE TABLE IF NOT EXISTS ProfilOnet (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        eleveId INTEGER NOT NULL,
-        testLevel INTEGER,
-        scoresR INTEGER DEFAULT 0,
-        scoresI INTEGER DEFAULT 0,
-        scoresA INTEGER DEFAULT 0,
-        scoresS INTEGER DEFAULT 0,
-        scoresE INTEGER DEFAULT 0,
-        scoresC INTEGER DEFAULT 0,
-        primaryInterest VARCHAR(50),
-        secondaryInterest VARCHAR(50),
-        tertiaryInterest VARCHAR(50),
-        jobZone INTEGER,
-        dreamUni VARCHAR(255),
-        dreamJob VARCHAR(255),
-        language VARCHAR(10) DEFAULT 'fr',
-        completedAt DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    await sequelize.query(`DELETE FROM ProfilOnet WHERE eleveId = ?`, { replacements: [id] });
-    await sequelize.query(`
-      INSERT INTO ProfilOnet (eleveId, testLevel, scoresR, scoresI, scoresA, scoresS, scoresE, scoresC,
-        primaryInterest, secondaryInterest, tertiaryInterest, jobZone, dreamUni, dreamJob, language)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, {
-      replacements: [
-        id, testLevel,
-        scores?.R || 0, scores?.I || 0, scores?.A || 0, scores?.S || 0, scores?.E || 0, scores?.C || 0,
-        primaryInterest, secondaryInterest, tertiaryInterest,
-        jobZone, dreamUni || null, dreamJob || null, language || 'fr'
-      ]
+    // Delete existing profile then create new one (upsert pattern)
+    await ProfilOnet.destroy({ where: { eleveId: id } });
+    await ProfilOnet.create({
+      eleveId: id,
+      testLevel,
+      scoresR: scores?.R || 0,
+      scoresI: scores?.I || 0,
+      scoresA: scores?.A || 0,
+      scoresS: scores?.S || 0,
+      scoresE: scores?.E || 0,
+      scoresC: scores?.C || 0,
+      primaryInterest,
+      secondaryInterest,
+      tertiaryInterest,
+      jobZone,
+      dreamUni: dreamUni || null,
+      dreamJob: dreamJob || null,
+      language: language || 'fr',
     });
 
     res.json({ message: 'Profil O*NET sauvegardé avec succès' });
@@ -193,9 +178,8 @@ const saveOnetProfile = async (req, res) => {
 const getOnetProfile = async (req, res) => {
   const { id } = req.user;
   try {
-    const sequelize = require('../config/db');
-    const [rows] = await sequelize.query(`SELECT * FROM ProfilOnet WHERE eleveId = ? LIMIT 1`, { replacements: [id] });
-    res.json({ profil: rows[0] || null });
+    const profil = await ProfilOnet.findOne({ where: { eleveId: id } });
+    res.json({ profil });
   } catch (e) {
     res.json({ profil: null });
   }

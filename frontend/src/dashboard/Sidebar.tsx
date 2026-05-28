@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { User, icons } from './shared';
 import { ProfilePopup } from './ProfilePopup';
 
@@ -55,7 +56,7 @@ function Sidebar({
     exercices:'Académique', concours:'Ressources', annales:'Ressources',
     notifications:'Activité', actualites:'Actualités', eleves:'Gestion', users:'Gestion',
   };
-  const lastSectionRef = { current: '' };
+  const lastSectionRef = useRef('');
 
   return (
     <div className="dash-sidebar" style={{ width: mobile ? '100%' : '260px' }}>

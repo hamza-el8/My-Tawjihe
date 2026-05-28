@@ -1,6 +1,13 @@
 {
-  "dependencies": {
-    "framer-motion": "^12.39.0",
-    "lucide-react": "^1.16.0"
+  "name": "mytawjeh-workspace",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend/server && npm run dev",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "seed": "cd backend/server && node seed.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
   }
 }

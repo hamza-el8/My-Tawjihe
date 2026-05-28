@@ -17,7 +17,7 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 // Backend auto-detects role — no need to send it
-export async function login(email: string, password: string, role?: string) {
+export async function login(email: string, password: string) {
   const data = await apiRequest('/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email, motDePasse: password }),

@@ -2,10 +2,15 @@ const Note = require('../models/Note');
 const Notification = require('../models/Notification');
 
 const getNotes = async (req, res) => {
-  const notes = await Note.findAll({
+  const { limit, offset } = req.query;
+  const queryOptions = {
     where: { eleveId: req.params.id },
-    order: [['createdAt', 'ASC']],
-  });
+    order: [['createdAt', 'DESC']],
+  };
+  // Support pagination via ?limit=10&offset=0
+  if (limit) queryOptions.limit = parseInt(limit, 10);
+  if (offset) queryOptions.offset = parseInt(offset, 10);
+  const notes = await Note.findAll(queryOptions);
   res.json(notes);
 };
 

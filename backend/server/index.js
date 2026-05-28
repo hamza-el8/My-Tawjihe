@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/db');
 const routes = require('./routes/index');
-const { errorHandler, asyncHandler } = require('./middleware/errorHandler');
+const { errorHandler } = require('./middleware/errorHandler');
 const { authLimiter, apiLimiter, securityHeaders } = require('./middleware/security');
 
 // Import models to register them
@@ -19,6 +19,10 @@ require('./models/Metier');
 require('./models/Concours');
 require('./models/Annale');
 require('./models/Notification');
+require('./models/ProfilOnet');
+
+// Load model associations (must be after all model imports)
+require('./models/associations');
 
 const app = express();
 

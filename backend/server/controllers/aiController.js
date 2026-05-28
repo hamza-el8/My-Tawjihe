@@ -1,6 +1,7 @@
 const Eleve = require('../models/Eleve');
 const Note = require('../models/Note');
 const Roadmap = require('../models/Roadmap');
+const ProfilOnet = require('../models/ProfilOnet');
 const { generateRoadmap, chatbot } = require('../services/aiService');
 
 const getRoadmap = async (req, res) => {
@@ -17,12 +18,7 @@ const generateRoadmapHandler = async (req, res) => {
 
     let onetProfil = null;
     try {
-      const sequelize = require('../config/db');
-      const [rows] = await sequelize.query(
-        'SELECT * FROM ProfilOnet WHERE eleveId = ? LIMIT 1',
-        { replacements: [eleve.id] }
-      );
-      onetProfil = rows[0] || null;
+      onetProfil = await ProfilOnet.findOne({ where: { eleveId: eleve.id } });
     } catch (_) {}
 
     const result = await generateRoadmap(eleve, notes, onetProfil);
@@ -56,15 +52,11 @@ const chatbotHandler = async (req, res) => {
 
         let onetText = '';
         try {
-          const sequelize = require('../config/db');
-          const [rows] = await sequelize.query(
-            'SELECT * FROM ProfilOnet WHERE eleveId = ? LIMIT 1',
-            { replacements: [eleveId] }
-          );
-          if (rows[0]) {
-            onetText = ` Profil RIASEC: ${rows[0].primaryInterest}/${rows[0].secondaryInterest}/${rows[0].tertiaryInterest}.`;
-            if (rows[0].dreamJob) onetText += ` Métier rêvé: ${rows[0].dreamJob}.`;
-            if (rows[0].dreamUni) onetText += ` Université rêvée: ${rows[0].dreamUni}.`;
+          const onetProfile = await ProfilOnet.findOne({ where: { eleveId } });
+          if (onetProfile) {
+            onetText = ` Profil RIASEC: ${onetProfile.primaryInterest}/${onetProfile.secondaryInterest}/${onetProfile.tertiaryInterest}.`;
+            if (onetProfile.dreamJob) onetText += ` Métier rêvé: ${onetProfile.dreamJob}.`;
+            if (onetProfile.dreamUni) onetText += ` Université rêvée: ${onetProfile.dreamUni}.`;
           }
         } catch (_) {}
 

@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const auth = require('../middleware/auth');
+const { validateSchema } = require('../middleware/validation');
+const schemas = require('../middleware/schemas');
 const { register, login, changePassword, linkStudent, getLinkedStudent, saveOnetProfile, getOnetProfile } = require('../controllers/authController');
 const { getNotes, addNote, deleteNote } = require('../controllers/notesController');
 const { getExercices, submitExercice, createExercice, getResultats } = require('../controllers/exercicesController');
@@ -10,8 +12,8 @@ const { getElevesFaibles, getProfStats, postService } = require('../controllers/
 const { getUsers, deleteUser } = require('../controllers/adminController');
 
 // Auth — public
-router.post('/auth/register', register);
-router.post('/auth/login', login);
+router.post('/auth/register', validateSchema(schemas.register), register);
+router.post('/auth/login', validateSchema(schemas.login), login);
 
 // Auth — protected
 router.post('/auth/change-password', auth(), changePassword);
@@ -56,9 +58,7 @@ router.post('/prof/services', auth(['professeur']), postService);
 router.get('/admin/users', auth(['admin']), getUsers);
 router.delete('/admin/users/:role/:id', auth(['admin']), deleteUser);
 
-module.exports = router;
-
-// Contact form
+// Contact form (public - no auth required)
 router.post('/contact', async (req, res) => {
   const { nom, email, message } = req.body;
   if (!nom || !email || !message) return res.status(400).json({ message: 'Champs requis manquants' });
@@ -66,3 +66,5 @@ router.post('/contact', async (req, res) => {
   console.log(`📧 Contact: ${nom} <${email}> — ${message}`);
   res.json({ message: 'Message reçu. Nous vous répondrons dans les 24h.' });
 });
+
+module.exports = router;
