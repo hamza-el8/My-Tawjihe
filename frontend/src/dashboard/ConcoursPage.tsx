@@ -47,7 +47,7 @@ function ConcoursPage() {
         ) : (
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:16 }}>
             {concours.map(c => {
-              const cd = getCountdown(c.dateConcours || c.datw || '');
+              const cd = getCountdown(c.dateConcours || '');
               return (
                 <div key={c.id} className="dash-card p-5">
                   <div style={{ display:'flex', alignItems:'flex-start', gap:14 }}>
@@ -56,7 +56,7 @@ function ConcoursPage() {
                       <h3 style={{ fontWeight:800, color:'#0f0c29', fontSize:15, marginBottom:6 }}>{c.nom}</h3>
                       <div style={{ display:'flex', alignItems:'center', gap:10, flexWrap:'wrap' }}>
                         <span style={{ fontSize:12, color:'#64748b' }}>
-                          📅 {c.dateConcours ? new Date(c.dateConcours).toLocaleDateString('fr-FR') : c.datw}
+                          📅 {c.dateConcours ? new Date(c.dateConcours).toLocaleDateString('fr-FR') : 'Date non spécifiée'}
                         </span>
                         <span style={{ fontSize:12, color:'#7c3aed', fontWeight:700 }}>Seuil: {c.seuil}/20</span>
                       </div>
