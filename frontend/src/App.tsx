@@ -527,7 +527,7 @@ function Navbar({
 
       
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-10">
 
         <div className="flex items-center justify-between h-16 md:h-20">
 
@@ -539,13 +539,13 @@ function Navbar({
 
           </a>
 
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center justify-center flex-1 mx-4 gap-0.5">
 
             {navLinks.map((link) => (
 
               <a key={link.id} href={link.href} onClick={(e) => { e.preventDefault(); scrollTo(link.href, link.id); }}
 
-                className={`nav-link-animated px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${scrolled ? activeSection === link.id ? 'text-purple-700' : 'text-gray-700 hover:text-purple-700' : activeSection === link.id ? 'text-purple-300' : 'text-white/90 hover:text-white'} ${activeSection === link.id ? 'active' : ''}`}>
+                className={`nav-link-animated px-3 py-2 rounded-lg text-base font-medium whitespace-nowrap transition-colors duration-200 ${scrolled ? activeSection === link.id ? 'text-purple-700' : 'text-gray-700 hover:text-purple-700' : activeSection === link.id ? 'text-purple-300' : 'text-white/90 hover:text-white'} ${activeSection === link.id ? 'active' : ''}`}>
 
                 {link.label}
 
@@ -557,7 +557,7 @@ function Navbar({
 
               <a key={link.id} href={link.href} onClick={(e) => { e.preventDefault(); scrollTo(link.href, link.id); }}
 
-                className={`nav-link-animated px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${scrolled ? activeSection === link.id ? 'text-purple-700' : 'text-gray-700 hover:text-purple-700' : activeSection === link.id ? 'text-purple-300' : 'text-white/90 hover:text-white'} ${activeSection === link.id ? 'active' : ''}`}>
+                className={`nav-link-animated px-3 py-2 rounded-lg text-base font-medium whitespace-nowrap transition-colors duration-200 ${scrolled ? activeSection === link.id ? 'text-purple-700' : 'text-gray-700 hover:text-purple-700' : activeSection === link.id ? 'text-purple-300' : 'text-white/90 hover:text-white'} ${activeSection === link.id ? 'active' : ''}`}>
 
                 {link.label}
 
@@ -567,17 +567,17 @@ function Navbar({
 
           </div>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3 flex-shrink-0">
 
-            <button onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')} className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all duration-200 ${scrolled ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : 'border-white/50 text-white hover:bg-white/10'}`}>
+            <button onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')} className={`px-3 py-1.5 rounded-full text-sm font-bold border transition-all duration-200 ${scrolled ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : 'border-white/50 text-white hover:bg-white/10'}`}>
 
               {language === 'fr' ? 'العربية' : 'Français'}
 
             </button>
 
-            <button onClick={() => setShowLoginModal(true)} className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${scrolled ? 'text-purple-700 hover:bg-purple-50' : 'text-white/90 hover:bg-white/10'}`}>{t.nav.login}</button>
+            <button onClick={() => setShowLoginModal(true)} className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-200 ${scrolled ? 'text-purple-700 hover:bg-purple-50' : 'text-white/90 hover:bg-white/10'}`}>{t.nav.login}</button>
 
-            <button onClick={() => setShowSignupModal(true)} className="btn-gradient text-white px-5 py-2 rounded-full text-sm font-semibold shadow-lg">{t.nav.signup}</button>
+            <button onClick={() => setShowSignupModal(true)} className="btn-gradient text-white px-5 py-2 rounded-full text-base font-medium shadow-lg">{t.nav.signup}</button>
 
           </div>
 
