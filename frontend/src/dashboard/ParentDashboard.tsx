@@ -11,20 +11,16 @@ export default function ParentDashboard({ user }: { user: User }) {
 
   useEffect(() => {
     apiFetch('/auth/linked-student')
-      .then(r => {
+      .then(async (r) => {
         setLinkedEleve(r.eleve);
         if (r.eleve) {
-          // Fetch notes AND eleve notifications for parent visibility
-          return Promise.all([
+          const [notesData, notifsData] = await Promise.all([
             apiFetch(`/eleves/${r.eleve.id}/notes`),
             apiFetch(`/notifications/${r.eleve.id}`),
           ]);
+          setNotes(Array.isArray(notesData) ? notesData : []);
+          setParentNotifs(Array.isArray(notifsData) ? notifsData : []);
         }
-        return [] as unknown as [any, any];
-      })
-      .then(([n, notifs]: [Note[], Notification[]]) => {
-        setNotes(Array.isArray(n) ? n : []);
-        setParentNotifs(Array.isArray(notifs) ? notifs : []);
       })
       .catch(() => {})
       .finally(() => setLoading(false));

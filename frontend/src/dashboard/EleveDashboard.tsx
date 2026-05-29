@@ -25,23 +25,26 @@ function EleveDashboard({ user, setActive, onRetakeOnet }: { user: User; setActi
     });
   }, [user.id]);
 
+  // Note: notification fetch here is intentional — EleveDashboard needs the count for its own stat cards,
+  // while Dashboard.tsx fetches a separate notifCount for the header. These are independent state values.
+
   const moyenne = notes.length
     ? (notes.reduce((s, n) => s + n.valeur * n.coefficient, 0) / notes.reduce((s, n) => s + n.coefficient, 0)).toFixed(1)
     : '—';
 
-  const [exercicesDone, setExercicesDone] = useState(0);
+  const [exercicesDone, setExercicesDone] = useState<number | null>(null);
 
   useEffect(() => {
     apiFetch(`/exercices/resultats/${user.id}`)
       .then((r: any[]) => setExercicesDone(Array.isArray(r) ? r.length : 0))
-      .catch(() => {});
+      .catch(() => setExercicesDone(0));
   }, [user.id]);
 
   const quick = [
     { id: 'notes',     icon: icons.notes,     label: 'Mes notes',    desc: `${notes.length} note${notes.length!==1?'s':''} enregistrée${notes.length!==1?'s':''}`, color:'#7c3aed' },
     { id: 'roadmap',   icon: icons.roadmap,   label: 'Roadmap IA',   desc: 'Générer mon parcours', color:'#2563eb' },
     { id: 'chatbot',   icon: icons.chatbot,   label: 'Assistant IA', desc: 'Posez une question', color:'#059669' },
-    { id: 'exercices', icon: icons.exercices, label: 'Exercices',    desc: `${exercicesDone} fait${exercicesDone!==1?'s':''}`, color:'#f59e0b' },
+    { id: 'exercices', icon: icons.exercices, label: 'Exercices',    desc: exercicesDone !== null ? `${exercicesDone} fait${exercicesDone !== 1 ? 's' : ''}` : '⏳ chargement...', color:'#f59e0b' },
   ];
 
   return (

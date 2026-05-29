@@ -36,7 +36,6 @@ export interface Exercice {
 export interface Concours {
   id: number;
   nom: string;
-  datw?: string; // @deprecated use dateConcours
   dateConcours?: string;
   seuil: number;
   lien?: string;

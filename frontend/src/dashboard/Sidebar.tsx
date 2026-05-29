@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { User, icons } from './shared';
 import { ProfilePopup } from './ProfilePopup';
 
@@ -56,7 +55,6 @@ function Sidebar({
     exercices:'Académique', concours:'Ressources', annales:'Ressources',
     notifications:'Activité', actualites:'Actualités', eleves:'Gestion', users:'Gestion',
   };
-  const lastSectionRef = useRef('');
 
   return (
     <div className="dash-sidebar" style={{ width: mobile ? '100%' : '260px' }}>
@@ -81,10 +79,11 @@ function Sidebar({
       </div>
 
       <nav className="dash-sidebar-nav">
-        {menu.map((item) => {
+        {(() => { let lastSection = ''; return menu.map((item) => {
           const section = menuSections[item.id] || '';
-          const showSection = section && section !== lastSectionRef.current;
-          if (showSection) lastSectionRef.current = section;
+          // Use a local variable instead of useRef to track last section — avoids React anti-pattern of mutating refs during render
+          const showSection = section && section !== lastSection;
+          if (showSection) lastSection = section;
           return (
             <div key={item.id}>
               {showSection && <div className="dash-nav-section">{section}</div>}
@@ -95,7 +94,7 @@ function Sidebar({
               </button>
             </div>
           );
-        })}
+        }); })()}
       </nav>
 
       <div style={{ padding:'12px 20px', borderTop:'1px solid rgba(255,255,255,0.05)', position:'relative', zIndex:1 }}>
