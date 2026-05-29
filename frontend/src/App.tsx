@@ -489,25 +489,23 @@ function Navbar({
 
     { href: '#top', label: t.nav.home, id: 'top' },
 
-    { id: 'features', href: '#features', label: t.nav.features },
-
-    { href: '#news', label: t.nav.news, id: 'news' },
-
-    { href: '#advantages', label: t.nav.testimonials, id: 'advantages' },
+    { href: '#bac-path', label: t.nav.bacPath, id: 'bac-path' },
 
     { href: '#formations', label: t.nav.formations, id: 'formations' },
 
-    { href: '#bac-path', label: t.nav.bacPath, id: 'bac-path' },
-
     { href: '#world-map', label: t.nav.worldMap, id: 'world-map' },
 
-  ];
+    { href: '#advantages', label: t.nav.testimonials, id: 'advantages' },
 
-  const navLinksAfterMap = [
+    { href: '#news', label: t.nav.news, id: 'news' },
+
+    { id: 'features', href: '#features', label: t.nav.features },
 
     { href: '#contact', label: t.nav.contact, id: 'contact' },
 
   ];
+
+  const navLinksAfterMap: { href: string; label: string; id: string }[] = [];
 
 
 
@@ -3752,13 +3750,23 @@ export default function App() {
 
 
 
+        <BacPathSection key={`bac-${language}`} t={t} onSignup={() => setShowSignupModal(true)} />
+
+        <FormationsSection key={language} t={t} onSignup={() => setShowSignupModal(true)} />
+
+        <WorldMapTeaserSection lang={language} onOpenMap={() => setShowWorldMap(true)} />
+
+        <AdvantagesSection t={t} />
+
+        <NewsCarousel t={t} />
+
+        <CTASection t={t} onSignup={() => setShowSignupModal(true)} />
+
         <AIEcosystem
   t={t}
   onSignup={() => setShowSignupModal(true)}
 />
-        
-        <NewsCarousel t={t} />
-        <CTASection t={t} onSignup={() => setShowSignupModal(true)} />
+
         <SmartChatbot
           language={language}
           onSignup={() => setShowSignupModal(true)}
@@ -3780,14 +3788,6 @@ export default function App() {
     />
   </div>
 )}
-
-        <AdvantagesSection t={t} />
-
-        <FormationsSection key={language} t={t} onSignup={() => setShowSignupModal(true)} />
-
-        <BacPathSection key={`bac-${language}`} t={t} onSignup={() => setShowSignupModal(true)} />
-
-        <WorldMapTeaserSection lang={language} onOpenMap={() => setShowWorldMap(true)} />
 
         <TestimonialsSection t={t} />
 
