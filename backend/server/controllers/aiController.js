@@ -5,13 +5,20 @@ const ProfilOnet = require('../models/ProfilOnet');
 const { generateRoadmap, chatbot } = require('../services/aiService');
 
 const getRoadmap = async (req, res) => {
-  const roadmap = await Roadmap.findOne({ where: { eleveId: req.params.eleveId }, order: [['createdAt', 'DESC']] });
+  const roadmap = await Roadmap.findOne({
+    where: { eleveId: req.params.eleveId },
+    order: [['createdAt', 'DESC']],
+  });
   res.json(roadmap);
 };
 
 const generateRoadmapHandler = async (req, res) => {
   try {
-    const eleve = await Eleve.findByPk(req.body.eleveId);
+    // Security: eleve can only generate their own roadmap
+    const eleveId = req.user.role === 'eleve' ? req.user.id : req.body.eleveId;
+    if (!eleveId) return res.status(400).json({ message: 'eleveId requis' });
+
+    const eleve = await Eleve.findByPk(eleveId);
     if (!eleve) return res.status(404).json({ message: 'Élève introuvable' });
 
     const notes = await Note.findAll({ where: { eleveId: eleve.id } });
@@ -38,7 +45,10 @@ const generateRoadmapHandler = async (req, res) => {
 
 const chatbotHandler = async (req, res) => {
   try {
-    const { message, eleveId, history = [] } = req.body;
+    const { message, history = [] } = req.body;
+    // eleveId from token if eleve, otherwise from body (for prof/admin reviewing a student)
+    const eleveId = req.user.role === 'eleve' ? req.user.id : req.body.eleveId;
+
     let context = '';
 
     if (eleveId) {
@@ -69,7 +79,6 @@ const chatbotHandler = async (req, res) => {
       }
     }
 
-    // Pass history for conversation memory (keep last 10 messages)
     const trimmedHistory = history.slice(-10);
     const reply = await chatbot(message, context, trimmedHistory);
     res.json({ reply });

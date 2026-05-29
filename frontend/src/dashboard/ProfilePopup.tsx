@@ -118,9 +118,12 @@ function ProfilePopup({ user, onLogout, onRetakeOnet }: { user: User; onLogout: 
   return (
     <div ref={ref} style={{ position:'relative' }}>
       {/* Trigger */}
-      <div
+      <button
+        type="button"
         onClick={() => setOpen(o=>!o)}
-        style={{ cursor:'pointer', display:'flex', alignItems:'center', gap:10, padding:'6px 10px', borderRadius:10, transition:'background .2s' }}
+        aria-haspopup="true"
+        aria-expanded={open}
+        style={{ cursor:'pointer', display:'flex', alignItems:'center', gap:10, padding:'6px 10px', borderRadius:10, transition:'background .2s', background:'transparent', border:'none' }}
         onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.1)'}
         onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
       >
@@ -134,7 +137,7 @@ function ProfilePopup({ user, onLogout, onRetakeOnet }: { user: User; onLogout: 
           <div style={{ fontSize:10, color:'rgba(255,255,255,0.5)' }}>{roleLabels[user.role]}</div>
         </div>
         <span style={{ marginLeft:4, color:'rgba(255,255,255,0.4)', fontSize:12 }}>▾</span>
-      </div>
+      </button>
 
       {/* Dropdown */}
       {open && (

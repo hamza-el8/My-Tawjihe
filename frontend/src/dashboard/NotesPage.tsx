@@ -39,6 +39,11 @@ function NotesPage({ user }: { user: User }) {
   return (
     <div className="">
       {notes.length >= 2 && <div className="mb-6"><NotesEvolutionChart notes={notes} /></div>}
+      {notes.length === 1 && (
+        <div className="mb-4 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-700">
+          Le graphique nécessite au moins 2 notes pour afficher votre évolution. Ajoutez une note supplémentaire pour activer la visualisation.
+        </div>
+      )}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-lg font-black text-gray-900">Mes Notes</h2>

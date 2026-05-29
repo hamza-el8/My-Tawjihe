@@ -1,4 +1,12 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+// ─── 401 redirect helper ──────────────────────────────────────────────────────
+function handleUnauthorized() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  // Reload so App re-evaluates auth state and shows the landing/login page
+  window.location.reload();
+}
 
 // ─── Core fetch ───────────────────────────────────────────────────────────────
 export async function apiRequest(endpoint: string, options: RequestInit = {}) {
@@ -10,13 +18,19 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
   const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+
+  // Handle expired / invalid token globally
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error('Session expirée. Veuillez vous reconnecter.');
+  }
+
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || data.error || 'Request failed');
   return data;
 }
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
-// Backend auto-detects role — no need to send it
 export async function login(email: string, password: string) {
   const data = await apiRequest('/auth/login', {
     method: 'POST',
@@ -27,13 +41,11 @@ export async function login(email: string, password: string) {
   return data;
 }
 
-// Backend expects: { role, nom, email, motDePasse, niveau?, filiere?, ville?, specialite?, eleveId? }
 export async function register(userData: Record<string, any>) {
-  const data = await apiRequest('/auth/register', {
+  return apiRequest('/auth/register', {
     method: 'POST',
     body: JSON.stringify(userData),
   });
-  return data;
 }
 
 export function logout() {
@@ -51,8 +63,8 @@ export function isAuthenticated() {
 }
 
 // ─── Notes ────────────────────────────────────────────────────────────────────
-export async function getNotes(eleveId: number) {
-  return apiRequest(`/eleves/${eleveId}/notes`);
+export async function getNotes(eleveId: number, limit = 50, offset = 0) {
+  return apiRequest(`/eleves/${eleveId}/notes?limit=${limit}&offset=${offset}`);
 }
 
 export async function createNote(note: Record<string, any>) {
@@ -64,15 +76,16 @@ export async function deleteNote(id: number) {
 }
 
 // ─── Exercices ────────────────────────────────────────────────────────────────
-export async function getExercices(filters?: { matiere?: string; difficulte?: string; niveau?: string }) {
+export async function getExercices(filters?: { matiere?: string; difficulte?: string; niveau?: string; limit?: number; offset?: number }) {
   const params = new URLSearchParams(filters as Record<string, string>).toString();
   return apiRequest(`/exercices${params ? '?' + params : ''}`);
 }
 
-export async function submitExercice(id: number, score: number, eleveId: number) {
+export async function submitExercice(id: number, reponse: string) {
+  // eleveId no longer sent — backend uses token
   return apiRequest(`/exercices/${id}/submit`, {
     method: 'POST',
-    body: JSON.stringify({ score, eleveId }),
+    body: JSON.stringify({ reponse }),
   });
 }
 
@@ -80,8 +93,8 @@ export async function createExercice(data: Record<string, any>) {
   return apiRequest('/exercices', { method: 'POST', body: JSON.stringify(data) });
 }
 
-export async function getResultats(eleveId: number) {
-  return apiRequest(`/exercices/resultats/${eleveId}`);
+export async function getResultats(eleveId: number, limit = 50, offset = 0) {
+  return apiRequest(`/exercices/resultats/${eleveId}?limit=${limit}&offset=${offset}`);
 }
 
 // ─── Roadmap & AI ─────────────────────────────────────────────────────────────
@@ -89,23 +102,21 @@ export async function getRoadmap(eleveId: number) {
   return apiRequest(`/roadmap/${eleveId}`);
 }
 
-export async function generateRoadmap(eleveId: number) {
-  return apiRequest('/roadmap/generate', {
-    method: 'POST',
-    body: JSON.stringify({ eleveId }),
-  });
+export async function generateRoadmap() {
+  // eleveId comes from token on the server now
+  return apiRequest('/roadmap/generate', { method: 'POST', body: JSON.stringify({}) });
 }
 
 // ─── Concours & Annales ───────────────────────────────────────────────────────
-export async function getConcours() {
-  return apiRequest('/concours');
+export async function getConcours(limit = 50, offset = 0) {
+  return apiRequest(`/concours?limit=${limit}&offset=${offset}`);
 }
 
 export async function createConcours(data: Record<string, any>) {
   return apiRequest('/concours', { method: 'POST', body: JSON.stringify(data) });
 }
 
-export async function getAnnales(filters?: { matiere?: string; annee?: string }) {
+export async function getAnnales(filters?: { matiere?: string; annee?: string; limit?: number; offset?: number }) {
   const params = new URLSearchParams(filters as Record<string, string>).toString();
   return apiRequest(`/annales${params ? '?' + params : ''}`);
 }
@@ -115,8 +126,8 @@ export async function createAnnale(data: Record<string, any>) {
 }
 
 // ─── Notifications ────────────────────────────────────────────────────────────
-export async function getNotifications(eleveId: number) {
-  return apiRequest(`/notifications/${eleveId}`);
+export async function getNotifications(eleveId: number, limit = 50, offset = 0) {
+  return apiRequest(`/notifications/${eleveId}?limit=${limit}&offset=${offset}`);
 }
 
 export async function markNotificationRead(id: number) {
@@ -180,14 +191,13 @@ export async function getOnetProfile() {
   return apiRequest('/onet/profile');
 }
 
-
 export async function sendChatMessage(
   message: string,
-  eleveId: number,
   history: { role: string; content: string }[] = []
 ) {
+  // eleveId comes from token on the server
   return apiRequest('/chatbot/message', {
     method: 'POST',
-    body: JSON.stringify({ message, eleveId, history }),
+    body: JSON.stringify({ message, history }),
   });
 }

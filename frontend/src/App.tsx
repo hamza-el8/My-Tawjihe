@@ -9,7 +9,7 @@ import Dashboard from './Dashboard';
 import type { Translation, Lang, BacStageIconKey, AvantBacCareerStage } from './types';
 import { translations } from './translations/index';
 
-import { login as apiLogin, isAuthenticated, getStoredUser } from './api';
+import { useAuth } from './AuthContext';
 
 import AIEcosystem from './components/AIEcosystem';
 
@@ -3412,13 +3412,15 @@ function Footer({ t }: { t: Translation }) {
 
 // ─── LOGIN MODAL (connected to real backend) ──────────────────────────────────
 
-function LoginModal({ isOpen, onClose, t, onSwitchToSignup, onLoginSuccess }: {
+function LoginModal({ isOpen, onClose, t, onSwitchToSignup }: {
 
   isOpen: boolean; onClose: () => void; t: Translation;
 
-  onSwitchToSignup: () => void; onLoginSuccess: () => void;
+  onSwitchToSignup: () => void;
 
 }) {
+
+  const { login } = useAuth();
 
   const [email, setEmail] = useState('');
 
@@ -3446,13 +3448,11 @@ function LoginModal({ isOpen, onClose, t, onSwitchToSignup, onLoginSuccess }: {
 
     try {
 
-      // Role auto-detected by backend — no need to send it
-
-      await apiLogin(email, password);
+      await login(email, password);
 
       onClose();
 
-      onLoginSuccess();
+      // loggedIn from useAuth updates automatically — no callback needed
 
     } catch (err: any) {
 
@@ -3704,33 +3704,17 @@ function AIFAB({ setOpenChat }: { setOpenChat: (v: boolean) => void }) {
 
 export default function App() {
 
-  const [openChat, setOpenChat] = useState(false);
+  const { loggedIn, language, setLanguage } = useAuth();
 
-  const [language, setLanguage] = useState<Lang>('fr');
+  const [openChat, setOpenChat] = useState(false);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [showSignupModal, setShowSignupModal] = useState(false);
 
-  const [loggedIn, setLoggedIn] = useState(false);
-
   const [showWorldMap, setShowWorldMap] = useState(false);
 
   const t = translations[language];
-
-
-
-  // Check if already logged in on mount
-
-  useEffect(() => {
-
-    if (isAuthenticated() && getStoredUser()) {
-
-      setLoggedIn(true);
-
-    }
-
-  }, []);
 
 
 
@@ -3769,59 +3753,32 @@ export default function App() {
 
 
         <AIEcosystem
-
   t={t}
-
   onSignup={() => setShowSignupModal(true)}
-
 />
-
         
-
         <NewsCarousel t={t} />
-
         <CTASection t={t} onSignup={() => setShowSignupModal(true)} />
-
         <SmartChatbot
-
           language={language}
-
           onSignup={() => setShowSignupModal(true)}
-
         />
-
         {openChat && (
-
   <div
-
     className="fixed inset-0 z-[9999] bg-black/40 overflow-y-auto"
-
   >
-
     <button
-
       onClick={() => setOpenChat(false)}
-
       className="fixed top-5 right-5 w-12 h-12 rounded-full bg-white text-black font-bold text-xl z-[10000]"
-
     >
-
       ✕
-
     </button>
 
-
-
     <SmartChatbot
-
       language={language}
-
       onSignup={() => setShowSignupModal(true)}
-
     />
-
   </div>
-
 )}
 
         <AdvantagesSection t={t} />
@@ -3854,8 +3811,6 @@ export default function App() {
 
         onSwitchToSignup={() => { setShowLoginModal(false); setShowSignupModal(true); }}
 
-        onLoginSuccess={() => setLoggedIn(true)}
-
       />
 
       {showSignupModal && (
@@ -3885,8 +3840,6 @@ export default function App() {
         />
 
       )}
-
-     
 
     </div>
 

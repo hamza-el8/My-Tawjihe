@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { Lang } from './types';
 import './Inscription.css';
 import { register } from './api';
 
@@ -81,7 +82,7 @@ const ROLES_CONFIG = {
   professeur: { fr: { label: 'Professeur', desc: 'Espace enseignement et suivi' },       ar: { label: 'أستاذ',     desc: 'فضاء التدريس والمتابعة' },                 icon: '👨‍🏫', apiRole: 'professeur' },
 };
 
-export default function Inscription({ onClose, onSwitchToLogin, lang = 'fr' }) {
+export default function Inscription({ onClose, onSwitchToLogin, lang = 'fr' }: { onClose: () => void; onSwitchToLogin: () => void; lang: Lang }) {
   const [role, setRole] = useState(null);
   const [form, setForm] = useState({});
   const [error, setError] = useState('');

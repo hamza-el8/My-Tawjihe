@@ -1,49 +1,39 @@
 import { useState, useEffect } from 'react';
-import { User, Note, Notification, apiFetch, icons } from './shared';
+import { User, Note, apiFetch, icons } from './shared';
 import NotesEvolutionChart from './NotesEvolutionChart';
 import { StatCard } from './Layout';
 
 // ─── ELEVE DASHBOARD ──────────────────────────────────────────────────────────
-function EleveDashboard({ user, setActive, onRetakeOnet }: { user: User; setActive: (s: string) => void; onRetakeOnet?: () => void }) {
+function EleveDashboard({ user, setActive, onRetakeOnet, notifCount }: { user: User; setActive: (s: string) => void; onRetakeOnet?: () => void; notifCount: number }) {
   const [notes, setNotes] = useState<Note[]>([]);
-  const [notifCount, setNotifCount] = useState(0);
   const [showOnetPrompt, setShowOnetPrompt] = useState(false);
   const [onetProfile, setOnetProfile] = useState<any>(null);
+  const [exercicesDone, setExercicesDone] = useState<number | null>(null);
 
   useEffect(() => {
     Promise.all([
       apiFetch(`/eleves/${user.id}/notes`),
-      apiFetch(`/notifications/${user.id}`),
       apiFetch('/onet/profile'),
-    ]).then(([notesData, notifsData, onetData]: [any, any, any]) => {
+      apiFetch(`/exercices/resultats/${user.id}`),
+    ]).then(([notesData, onetData, exercicesData]: [any, any, any]) => {
       setNotes(Array.isArray(notesData) ? notesData : []);
-      setNotifCount(Array.isArray(notifsData) ? notifsData.filter((n: Notification) => !n.lu).length : 0);
       setOnetProfile(onetData?.profil || null);
+      setExercicesDone(Array.isArray(exercicesData) ? exercicesData.length : 0);
       if (!onetData?.profil) setTimeout(() => setShowOnetPrompt(true), 800);
     }).catch(() => {
+      setExercicesDone(0);
       setTimeout(() => setShowOnetPrompt(true), 800);
     });
   }, [user.id]);
-
-  // Note: notification fetch here is intentional — EleveDashboard needs the count for its own stat cards,
-  // while Dashboard.tsx fetches a separate notifCount for the header. These are independent state values.
 
   const moyenne = notes.length
     ? (notes.reduce((s, n) => s + n.valeur * n.coefficient, 0) / notes.reduce((s, n) => s + n.coefficient, 0)).toFixed(1)
     : '—';
 
-  const [exercicesDone, setExercicesDone] = useState<number | null>(null);
-
-  useEffect(() => {
-    apiFetch(`/exercices/resultats/${user.id}`)
-      .then((r: any[]) => setExercicesDone(Array.isArray(r) ? r.length : 0))
-      .catch(() => setExercicesDone(0));
-  }, [user.id]);
-
   const quick = [
     { id: 'notes',     icon: icons.notes,     label: 'Mes notes',    desc: `${notes.length} note${notes.length!==1?'s':''} enregistrée${notes.length!==1?'s':''}`, color:'#7c3aed' },
     { id: 'roadmap',   icon: icons.roadmap,   label: 'Roadmap IA',   desc: 'Générer mon parcours', color:'#2563eb' },
-    { id: 'chatbot',   icon: icons.chatbot,   label: 'Assistant IA', desc: 'Posez une question', color:'#059669' },
+    { id: 'chatbot',   icon: icons.chatbot, label: 'Assistant IA', desc: 'Posez une question', color:'#059669' },
     { id: 'exercices', icon: icons.exercices, label: 'Exercices',    desc: exercicesDone !== null ? `${exercicesDone} fait${exercicesDone !== 1 ? 's' : ''}` : '⏳ chargement...', color:'#f59e0b' },
   ];
 
@@ -89,7 +79,7 @@ function EleveDashboard({ user, setActive, onRetakeOnet }: { user: User; setActi
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-2">
         <StatCard icon="📊" label="Moyenne générale" value={notes.length ? `${moyenne}/20` : '—'} color="bg-violet-50 text-violet-600" />
         <StatCard icon="📝" label="Notes enregistrées" value={notes.length} color="bg-blue-50 text-blue-600" />
-        <StatCard icon="✅" label="Exercices faits" value={exercicesDone} color="bg-emerald-50 text-emerald-600" />
+        <StatCard icon="✅" label="Exercices faits" value={exercicesDone !== null ? exercicesDone : '—'} color="bg-emerald-50 text-emerald-600" />
         <StatCard icon="🔔" label="Non lues" value={notifCount > 0 ? notifCount : '✓'} color="bg-amber-50 text-amber-600" />
       </div>
 

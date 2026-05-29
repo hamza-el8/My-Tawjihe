@@ -4,6 +4,7 @@ const Eleve = require('../models/Eleve');
 const Parent = require('../models/Parent');
 const Professeur = require('../models/Professeur');
 const Admine = require('../models/Admine');
+const ProfilOnet = require('../models/ProfilOnet');
 
 const MODELS = { eleve: Eleve, parent: Parent, professeur: Professeur, admin: Admine };
 
@@ -14,9 +15,10 @@ const register = async (req, res) => {
   if (!Model) return res.status(400).json({ message: 'Rôle invalide' });
   try {
     const hash = await bcrypt.hash(motDePasse, 10);
-    const extra = role === 'eleve' ? { niveau: niveau || 'Non défini', filiere, ville }
-      : role === 'parent' ? { eleveId: eleveId || null }
-      : role === 'professeur' ? { specialite } : {};
+    const extra = role === 'eleve'      ? { niveau: niveau || 'Non défini', filiere, ville }
+                : role === 'parent'     ? { eleveId: eleveId || null }
+                : role === 'professeur' ? { specialite }
+                : {};
     const user = await Model.create({ nom, email, motDePasse: hash, ...extra });
     res.status(201).json({ message: 'Compte créé', id: user.id });
   } catch (e) {
@@ -77,6 +79,13 @@ const login = async (req, res) => {
 // ── Change password ───────────────────────────────────────────────────────────
 const changePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword)
+    return res.status(400).json({ message: 'currentPassword et newPassword sont requis' });
+
+  if (typeof newPassword !== 'string' || newPassword.length < 6)
+    return res.status(400).json({ message: 'Le nouveau mot de passe doit contenir au moins 6 caractères' });
+
   const { id, role } = req.user;
   const Model = MODELS[role];
   if (!Model) return res.status(400).json({ message: 'Rôle invalide' });
@@ -87,9 +96,6 @@ const changePassword = async (req, res) => {
 
     const valid = await bcrypt.compare(currentPassword, user.motDePasse);
     if (!valid) return res.status(401).json({ message: 'Mot de passe actuel incorrect' });
-
-    if (newPassword.length < 6)
-      return res.status(400).json({ message: 'Le nouveau mot de passe doit contenir au moins 6 caractères' });
 
     const hash = await bcrypt.hash(newPassword, 10);
     await user.update({ motDePasse: hash });
@@ -138,9 +144,19 @@ const getLinkedStudent = async (req, res) => {
   }
 };
 
-// ── Save ONET profile ─────────────────────────────────────────────────────────
-const ProfilOnet = require('../models/ProfilOnet');
+const unlinkStudent = async (req, res) => {
+  const { id, role } = req.user;
+  if (role !== 'parent') return res.status(403).json({ message: 'Réservé aux parents' });
 
+  try {
+    await Parent.update({ eleveId: null }, { where: { id } });
+    res.json({ message: 'Élève dissocié avec succès' });
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+};
+
+// ── Save ONET profile ─────────────────────────────────────────────────────────
 const saveOnetProfile = async (req, res) => {
   const { id, role } = req.user;
   if (role !== 'eleve') return res.status(403).json({ message: 'Réservé aux étudiants' });
@@ -148,9 +164,8 @@ const saveOnetProfile = async (req, res) => {
   const { testLevel, scores, primaryInterest, secondaryInterest, tertiaryInterest, jobZone, dreamUni, dreamJob, language } = req.body;
 
   try {
-    // Delete existing profile then create new one (upsert pattern)
-    await ProfilOnet.destroy({ where: { eleveId: id } });
-    await ProfilOnet.create({
+    // Upsert — atomic, no race condition
+    await ProfilOnet.upsert({
       eleveId: id,
       testLevel,
       scoresR: scores?.R || 0,
@@ -185,4 +200,4 @@ const getOnetProfile = async (req, res) => {
   }
 };
 
-module.exports = { register, login, changePassword, linkStudent, getLinkedStudent, saveOnetProfile, getOnetProfile };
+module.exports = { register, login, changePassword, linkStudent, unlinkStudent, getLinkedStudent, saveOnetProfile, getOnetProfile };

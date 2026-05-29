@@ -6,30 +6,52 @@ const { Op } = require('sequelize');
 
 const getElevesFaibles = async (req, res) => {
   try {
-    const notes = await Note.findAll();
-    const byEleve = {};
-    notes.forEach(n => {
-      if (!byEleve[n.eleveId]) byEleve[n.eleveId] = { vals: [], weighted: 0, coeff: 0 };
-      byEleve[n.eleveId].vals.push(parseFloat(n.valeur));
-      byEleve[n.eleveId].weighted += parseFloat(n.valeur) * parseFloat(n.coefficient);
-      byEleve[n.eleveId].coeff += parseFloat(n.coefficient);
+    const exercices = await Exercice.findAll({ where: { professeurId: req.user.id } });
+    const exerciceIds = exercices.map(e => e.id);
+    if (!exerciceIds.length) return res.json([]);
+
+    const resultats = await ResultatExercice.findAll({
+      where: { exerciceId: { [Op.in]: exerciceIds } },
+      include: [{ model: Exercice, as: 'exercice', attributes: ['matiere', 'contenu'] }],
     });
+
+    const byEleve = {};
+    resultats.forEach(r => {
+      const score = parseFloat(r.score || 0);
+      if (!byEleve[r.eleveId]) byEleve[r.eleveId] = { total: 0, count: 0, worst: null };
+      byEleve[r.eleveId].total += score;
+      byEleve[r.eleveId].count += 1;
+      if (!byEleve[r.eleveId].worst || score < byEleve[r.eleveId].worst.score) {
+        byEleve[r.eleveId].worst = {
+          score,
+          matiere: r.exercice?.matiere || 'Inconnue',
+          contenu: String(r.exercice?.contenu || 'Aucun détail').slice(0, 80),
+        };
+      }
+    });
+
     const faibleIds = Object.entries(byEleve)
-      .filter(([, d]) => d.coeff > 0 && (d.weighted / d.coeff) < 12)
-      .map(([id]) => parseInt(id));
+      .filter(([, d]) => d.count > 0 && (d.total / d.count) < 12)
+      .map(([id]) => parseInt(id, 10));
+
+    if (!faibleIds.length) return res.json([]);
 
     const eleves = await Eleve.findAll({
       where: { id: { [Op.in]: faibleIds } },
       attributes: ['id', 'nom', 'email', 'niveau', 'filiere'],
     });
 
-    // Attach computed average
-    const result = eleves.map(e => ({
-      ...e.toJSON(),
-      moyenne: byEleve[e.id]?.coeff > 0
-        ? (byEleve[e.id].weighted / byEleve[e.id].coeff).toFixed(1)
-        : null,
-    }));
+    const result = eleves.map(e => {
+      const stats = byEleve[e.id];
+      const avg = stats ? stats.total / stats.count : null;
+      return {
+        ...e.toJSON(),
+        moyenne: avg !== null ? avg.toFixed(1) : null,
+        weakestSubject: stats?.worst?.matiere || '—',
+        weakestExercise: stats?.worst?.contenu || '—',
+        weakestScore: stats?.worst?.score != null ? stats.worst.score.toFixed(1) : null,
+      };
+    });
 
     res.json(result);
   } catch (e) {

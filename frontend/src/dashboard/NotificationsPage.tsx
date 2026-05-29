@@ -2,27 +2,35 @@ import { useState, useEffect } from 'react';
 import { User, Notification, apiFetch } from './shared';
 
 // ─── NOTIFICATIONS PAGE ───────────────────────────────────────────────────────
-function NotificationsPage({ user }: { user: User }) {
+function NotificationsPage({ user, onUpdateCount }: { user: User; onUpdateCount?: (count: number) => void }) {
   const [notifs, setNotifs] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     apiFetch(`/notifications/${user.id}`)
-      .then(data => setNotifs(Array.isArray(data) ? data : []))
+      .then((data) => {
+        const list = Array.isArray(data) ? data : [];
+        setNotifs(list);
+        onUpdateCount?.(list.filter((n: Notification) => !n.lu).length);
+      })
       .catch(() => setError('Impossible de charger les notifications.'))
       .finally(() => setLoading(false));
-  }, [user.id]);
+  }, [user.id, onUpdateCount]);
 
   const markRead = async (id: number) => {
     await apiFetch(`/notifications/${id}/read`, { method: 'PATCH' });
-    setNotifs(notifs.map(n => n.id === id ? { ...n, lu: true } : n));
+    const updated = notifs.map(n => n.id === id ? { ...n, lu: true } : n);
+    setNotifs(updated);
+    onUpdateCount?.(updated.filter(n => !n.lu).length);
   };
 
   const markAllRead = async () => {
     const unread = notifs.filter(n => !n.lu);
     await Promise.all(unread.map(n => apiFetch(`/notifications/${n.id}/read`, { method: 'PATCH' })));
-    setNotifs(notifs.map(n => ({ ...n, lu: true })));
+    const updated = notifs.map(n => ({ ...n, lu: true }));
+    setNotifs(updated);
+    onUpdateCount?.(0);
   };
 
   const typeIcon: Record<string, string> = { note:'📊', revision:'📝', info:'ℹ️', success:'✅' };

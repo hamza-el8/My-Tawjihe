@@ -64,7 +64,8 @@ input:focus, textarea:focus { outline:none; border-color:#667eea; box-shadow:0 0
 /* ── Dashboard layout shell ────────────────────────────────────────────────── */
 .dash-shell {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  align-items: stretch;
   background: #f0f2f8;
   background-image:
     radial-gradient(circle at 20% 50%, rgba(139,92,246,0.06) 0%, transparent 50%),
@@ -75,6 +76,7 @@ input:focus, textarea:focus { outline:none; border-color:#667eea; box-shadow:0 0
 .dash-sidebar {
   width: 260px;
   min-height: 100vh;
+  height: 100vh;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -178,8 +180,19 @@ input:focus, textarea:focus { outline:none; border-color:#667eea; box-shadow:0 0
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   min-width: 0;
   overflow: hidden;
+}
+
+/* ── Mobile toggle support ────────────────────────────────────────────────── */
+.mobile-menu-toggle {
+  display: none !important;
+}
+@media (max-width: 1023px) {
+  .mobile-menu-toggle {
+    display: flex !important;
+  }
 }
 
 /* ── Top header bar ────────────────────────────────────────────────────────── */
@@ -213,6 +226,7 @@ input:focus, textarea:focus { outline:none; border-color:#667eea; box-shadow:0 0
 /* ── Page content ──────────────────────────────────────────────────────────── */
 .dash-content {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 28px;
 }

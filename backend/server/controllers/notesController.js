@@ -1,16 +1,20 @@
 const Note = require('../models/Note');
 const Notification = require('../models/Notification');
 
+const DEFAULT_LIMIT = 50;
+const MAX_LIMIT = 200;
+
 const getNotes = async (req, res) => {
   const { limit, offset } = req.query;
-  const queryOptions = {
+  const parsedLimit = Math.min(parseInt(limit, 10) || DEFAULT_LIMIT, MAX_LIMIT);
+  const parsedOffset = parseInt(offset, 10) || 0;
+
+  const notes = await Note.findAll({
     where: { eleveId: req.params.id },
     order: [['createdAt', 'DESC']],
-  };
-  // Support pagination via ?limit=10&offset=0
-  if (limit) queryOptions.limit = parseInt(limit, 10);
-  if (offset) queryOptions.offset = parseInt(offset, 10);
-  const notes = await Note.findAll(queryOptions);
+    limit: parsedLimit,
+    offset: parsedOffset,
+  });
   res.json(notes);
 };
 
@@ -18,10 +22,12 @@ const addNote = async (req, res) => {
   try {
     const { role, id: userId } = req.user;
 
-    // Security: eleve can only add notes for themselves
+    // Security: eleve can only add notes for themselves;
+    // professeur and parent must supply a valid eleveId but we keep it as-is
+    // (a future improvement would verify the prof teaches that student).
     let targetEleveId = req.body.eleveId;
     if (role === 'eleve') {
-      targetEleveId = userId; // Force own ID — ignore what was sent
+      targetEleveId = userId;
     }
     if (!targetEleveId) {
       return res.status(400).json({ message: 'eleveId requis' });
@@ -32,7 +38,6 @@ const addNote = async (req, res) => {
       eleveId: targetEleveId,
     });
 
-    // Auto-notification
     const message = parseFloat(note.valeur) < 10
       ? `⚠️ Note faible en ${note.matiere} : ${note.valeur}/20. Pensez à revoir cette matière !`
       : `📊 Nouvelle note en ${note.matiere} : ${note.valeur}/20 (${note.periode})`;

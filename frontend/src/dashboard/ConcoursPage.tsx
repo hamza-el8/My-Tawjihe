@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react';
 import { Concours, apiFetch } from './shared';
 
 // ─── CONCOURS PAGE ────────────────────────────────────────────────────────────
-function ConcoursPage() {
+function ConcoursPage({ initialTab = 'concours' }: { initialTab?: 'concours' | 'annales' }) {
   const [concours, setConcours] = useState<Concours[]>([]);
   const [annales, setAnnales] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<'concours'|'annales'>('concours');
+  const [tab, setTab] = useState<'concours'|'annales'>(initialTab);
   const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    setTab(initialTab);
+  }, [initialTab]);
 
   useEffect(() => {
     Promise.all([apiFetch('/concours'), apiFetch('/annales')])
@@ -31,11 +35,7 @@ function ConcoursPage() {
 
   return (
     <div>
-      <div className="dash-tabs">
-        {[['concours','🏆 Concours'],['annales','📚 Annales']].map(([k,l]) => (
-          <button key={k} onClick={() => setTab(k as any)} className={`dash-tab ${tab===k?'active':''}`}>{l}</button>
-        ))}
-      </div>
+      {/* Top tabs removed — sidebar navigation handles switching */}
 
       {loading ? (
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))', gap:16 }}>
@@ -96,8 +96,8 @@ function ConcoursPage() {
             {annales.map((a: any) => (
               <div key={a.id} className="dash-card p-5">
                 <div style={{ fontSize:32, marginBottom:10 }}>📄</div>
-                <h3 style={{ fontWeight:800, color:'#0f0c29', fontSize:14, marginBottom:4 }}>{a.titre || a.nom}</h3>
-                <div style={{ fontSize:12, color:'#64748b', marginBottom:12 }}>{a.annee} · {a.matiere || a.concours}</div>
+                <h3 style={{ fontWeight:800, color:'#0f0c29', fontSize:14, marginBottom:4 }}>{a.matiere ? `${a.matiere} — ${a.annee || 'N/A'}` : a.nom || 'Annale'}</h3>
+                <div style={{ fontSize:12, color:'#64748b', marginBottom:12 }}>{a.annee || 'Année inconnue'} · {a.matiere || a.nom || 'Annale'}</div>
                 {a.fichier ? (
                   <a href={a.fichier} target="_blank" rel="noopener noreferrer"
                     style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, padding:'8px', borderRadius:8, background:'linear-gradient(135deg,#7c3aed,#a855f7)', color:'#fff', fontSize:12, fontWeight:700, textDecoration:'none' }}>

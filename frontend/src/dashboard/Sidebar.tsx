@@ -79,22 +79,27 @@ function Sidebar({
       </div>
 
       <nav className="dash-sidebar-nav">
-        {(() => { let lastSection = ''; return menu.map((item) => {
+        {menu.reduce((groups, item) => {
           const section = menuSections[item.id] || '';
-          // Use a local variable instead of useRef to track last section — avoids React anti-pattern of mutating refs during render
-          const showSection = section && section !== lastSection;
-          if (showSection) lastSection = section;
-          return (
-            <div key={item.id}>
-              {showSection && <div className="dash-nav-section">{section}</div>}
-              <button onClick={() => { setActive(item.id); onClose?.(); }} className={`dash-nav-item ${active === item.id ? 'active' : ''}`}>
-                <span style={{ fontSize:15, flexShrink:0 }}>{item.icon}</span>
-                <span>{item.label}</span>
-                {active === item.id && <span className="nav-dot" />}
-              </button>
+          if (!groups.length || groups[groups.length - 1].section !== section) {
+            groups.push({ section, items: [item] });
+          } else {
+            groups[groups.length - 1].items.push(item);
+          }
+          return groups;
+        }, [] as Array<{ section: string; items: typeof menu }>)
+          .map((group) => (
+            <div key={group.section || 'main'}>
+              {group.section && <div className="dash-nav-section">{group.section}</div>}
+              {group.items.map((item) => (
+                <button key={item.id} onClick={() => { setActive(item.id); onClose?.(); }} className={`dash-nav-item ${active === item.id ? 'active' : ''}`}>
+                  <span style={{ fontSize:15, flexShrink:0 }}>{item.icon}</span>
+                  <span>{item.label}</span>
+                  {active === item.id && <span className="nav-dot" />}
+                </button>
+              ))}
             </div>
-          );
-        }); })()}
+          ))}
       </nav>
 
       <div style={{ padding:'12px 20px', borderTop:'1px solid rgba(255,255,255,0.05)', position:'relative', zIndex:1 }}>

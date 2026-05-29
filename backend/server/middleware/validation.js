@@ -1,60 +1,53 @@
-// Input validation middleware using simple schema validation
-const validateSchema = (schema) => {
-  return (req, res, next) => {
-    const error = validateData(req.body, schema);
-    if (error) {
-      return res.status(400).json({ message: `Validation error: ${error}` });
-    }
-    next();
-  };
-};
+// Validation middleware — enforces schemas defined in schemas.js
+const validateSchema = (schema) => (req, res, next) => {
+  const errors = [];
 
-const validateData = (data, schema) => {
-  if (!schema) return null;
-  
-  for (const field in schema) {
-    const rule = schema[field];
-    const value = data[field];
+  for (const [field, rules] of Object.entries(schema)) {
+    const value = req.body[field];
+    const missing = value === undefined || value === null || value === '';
 
-    // Check required
-    if (rule.required && (value === undefined || value === null || value === '')) {
-      return `${field} is required`;
+    if (rules.required && missing) {
+      errors.push({ field, message: `${field} est requis` });
+      continue;
     }
 
-    if (value !== undefined && value !== null) {
-      // Check type
-      if (rule.type && typeof value !== rule.type) {
-        return `${field} must be ${rule.type}`;
+    if (missing) continue; // optional field not provided — skip further checks
+
+    // Type check
+    if (rules.type === 'string' && typeof value !== 'string') {
+      errors.push({ field, message: `${field} doit être une chaîne de caractères` });
+      continue;
+    }
+    if (rules.type === 'number' && (isNaN(Number(value)))) {
+      errors.push({ field, message: `${field} doit être un nombre` });
+      continue;
+    }
+
+    // String-specific checks
+    if (typeof value === 'string') {
+      if (rules.minLength && value.trim().length < rules.minLength) {
+        errors.push({ field, message: `${field} doit contenir au moins ${rules.minLength} caractères` });
       }
 
-      // Check min length
-      if (rule.minLength && value.length < rule.minLength) {
-        return `${field} must be at least ${rule.minLength} characters`;
+      if (rules.email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          errors.push({ field, message: `${field} doit être une adresse email valide` });
+        }
       }
 
-      // Check max length
-      if (rule.maxLength && value.length > rule.maxLength) {
-        return `${field} must be at most ${rule.maxLength} characters`;
-      }
-
-      // Check email
-      if (rule.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        return `${field} must be a valid email`;
-      }
-
-      // Check pattern/regex
-      if (rule.pattern && !rule.pattern.test(value)) {
-        return `${field} format is invalid`;
-      }
-
-      // Check enum
-      if (rule.enum && !rule.enum.includes(value)) {
-        return `${field} must be one of: ${rule.enum.join(', ')}`;
+      // Enum enforcement
+      if (rules.enum && !rules.enum.includes(value)) {
+        errors.push({ field, message: `${field} doit être l'une des valeurs suivantes: ${rules.enum.join(', ')}` });
       }
     }
   }
 
-  return null;
+  if (errors.length > 0) {
+    return res.status(400).json({ message: 'Données invalides', errors });
+  }
+
+  next();
 };
 
-module.exports = { validateSchema, validateData };
+module.exports = { validateSchema };

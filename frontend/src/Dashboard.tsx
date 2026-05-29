@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { User, Notification, apiFetch } from './dashboard/shared';
+import { Notification, apiFetch } from './dashboard/shared';
+import { useAuth } from './AuthContext';
 import OnetTest from './dashboard/OnetTest';
 import Sidebar from './dashboard/Sidebar';
 import { Header } from './dashboard/Layout';
@@ -17,36 +18,36 @@ import ActualitesPage from './dashboard/ActualitesPage';
 import MonProfilPage from './dashboard/MonProfilPage';
 
 export default function Dashboard() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, logout } = useAuth();
   const [active, setActive] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifCount, setNotifCount] = useState(0);
   const [showOnetTest, setShowOnetTest] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
-    if (!stored || !token) { window.location.href = '/'; return; }
-    try {
-      const u = JSON.parse(stored);
-      setUser(u);
-      if (u.role === 'eleve') {
-        apiFetch(`/notifications/${u.id}`)
-          .then((ns: Notification[]) => setNotifCount(ns.filter(n => !n.lu).length))
-          .catch(() => {});
-      }
-    } catch {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/';
-    }
-  }, []);
+    if (!user) return;
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/';
-  };
+    if (user.role === 'eleve') {
+      apiFetch(`/notifications/${user.id}`)
+        .then((ns: Notification[]) => setNotifCount(ns.filter(n => !n.lu).length))
+        .catch(() => {});
+      return;
+    }
+
+    if (user.role === 'parent') {
+      apiFetch('/auth/linked-student')
+        .then(async (r) => {
+          const eleveId = r?.eleve?.id;
+          if (eleveId) {
+            const ns: Notification[] = await apiFetch(`/notifications/${eleveId}`);
+            setNotifCount(ns.filter(n => !n.lu).length);
+          } else {
+            setNotifCount(0);
+          }
+        })
+        .catch(() => setNotifCount(0));
+    }
+  }, [user?.id, user?.role]);
 
   if (!user) return null;
 
@@ -75,7 +76,7 @@ export default function Dashboard() {
   const renderPage = () => {
     if (user.role === 'eleve') {
       switch (active) {
-        case 'dashboard':     return <EleveDashboard user={user} setActive={setActive} onRetakeOnet={handleRetakeOnet} />;
+        case 'dashboard':     return <EleveDashboard user={user} setActive={setActive} onRetakeOnet={handleRetakeOnet} notifCount={notifCount} />;
         case 'profil':        return <MonProfilPage user={user} onRetakeOnet={handleRetakeOnet} />;
         case 'actualites':    return <ActualitesPage />;
         case 'notes':         return <NotesPage user={user} />;
@@ -83,14 +84,14 @@ export default function Dashboard() {
         case 'roadmap':       return <RoadmapPage user={user} />;
         case 'chatbot':       return <ChatbotPage user={user} />;
         case 'concours':      return <ConcoursPage />;
-        case 'annales':       return <ConcoursPage />;
-        case 'notifications': return <NotificationsPage user={user} />;
+        case 'annales':       return <ConcoursPage initialTab="annales" />;
+        case 'notifications': return <NotificationsPage user={user} onUpdateCount={setNotifCount} />;
       }
     }
     if (user.role === 'professeur') {
       switch (active) {
         case 'dashboard':     return <ProfDashboard user={user} />;
-        case 'eleves':        return <ProfDashboard user={user} />;
+        case 'eleves':        return <ProfDashboard user={user} initialTab="eleves" />;
         case 'exercices':     return <ExercicesPage user={user} />;
         case 'notifications': return <NotificationsPage user={user} />;
       }

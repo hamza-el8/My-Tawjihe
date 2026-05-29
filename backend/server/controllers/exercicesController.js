@@ -3,18 +3,29 @@ const ResultatExercice = require('../models/ResultatExercice');
 const Notification = require('../models/Notification');
 const { chatbot } = require('../services/aiService');
 
+const DEFAULT_LIMIT = 50;
+const MAX_LIMIT = 200;
+
 const getExercices = async (req, res) => {
   const where = {};
   if (req.query.matiere) where.matiere = req.query.matiere;
   if (req.query.difficulte) where.difficulte = req.query.difficulte;
   if (req.query.niveau) where.niveau = req.query.niveau;
-  res.json(await Exercice.findAll({ where }));
+
+  const limit = Math.min(parseInt(req.query.limit, 10) || DEFAULT_LIMIT, MAX_LIMIT);
+  const offset = parseInt(req.query.offset, 10) || 0;
+
+  res.json(await Exercice.findAll({ where, limit, offset, order: [['createdAt', 'DESC']] }));
 };
 
 // AI auto-correction — upsert so retries don't inflate count
 const submitExercice = async (req, res) => {
   try {
-    const { reponse, eleveId } = req.body;
+    const { reponse } = req.body;
+
+    // Security: always use the authenticated user's own ID
+    const eleveId = req.user.id;
+
     const exercice = await Exercice.findByPk(req.params.id);
     if (!exercice) return res.status(404).json({ message: 'Exercice introuvable' });
 
@@ -22,13 +33,7 @@ const submitExercice = async (req, res) => {
     let feedback = '';
 
     if (reponse && exercice.correction) {
-      const prompt = `Tu es un professeur corrigeant une copie. Réponds UNIQUEMENT avec un JSON valide sans markdown:
-
-Exercice: ${exercice.contenu}
-Correction officielle: ${exercice.correction}
-Réponse de l'élève: ${reponse}
-
-{"score": <0 à 20>, "feedback": "<commentaire bref et encourageant, max 2 phrases en français>"}`;
+      const prompt = `Tu es un professeur corrigeant une copie. Réponds UNIQUEMENT avec un JSON valide sans markdown:\n\nExercice: ${exercice.contenu}\nCorrection officielle: ${exercice.correction}\nRéponse de l'élève: ${reponse}\n\n{"score": <0 à 20>, "feedback": "<commentaire bref et encourageant, max 2 phrases en français>"}`;
 
       try {
         const aiResponse = await chatbot(prompt, '');
@@ -45,7 +50,6 @@ Réponse de l'élève: ${reponse}
       feedback = '';
     }
 
-    // Upsert — update if already submitted, insert if first time
     const [resultat, created] = await ResultatExercice.upsert({
       score,
       reponse: reponse || '',
@@ -54,7 +58,6 @@ Réponse de l'élève: ${reponse}
       exerciceId: req.params.id,
     }, { returning: true });
 
-    // Notify only on first submission or if score improved
     if (created || score < 10) {
       await Notification.create({
         contenu: score < 10
@@ -62,7 +65,7 @@ Réponse de l'élève: ${reponse}
           : `✅ Exercice de ${exercice.matiere} complété : ${score}/20 !`,
         type: score < 10 ? 'revision' : 'info',
         eleveId,
-      }).catch(() => {}); // silent — don't fail submission if notif fails
+      }).catch(() => {});
     }
 
     res.status(201).json({ resultat, score, feedback, correction: exercice.correction });
@@ -80,8 +83,26 @@ const createExercice = async (req, res) => {
   }
 };
 
+const updateExercice = async (req, res) => {
+  try {
+    const exercice = await Exercice.findByPk(req.params.id);
+    if (!exercice) return res.status(404).json({ message: 'Exercice introuvable' });
+    await exercice.update(req.body);
+    res.json(exercice);
+  } catch (e) {
+    res.status(400).json({ message: e.message });
+  }
+};
+
 const getResultats = async (req, res) => {
-  res.json(await ResultatExercice.findAll({ where: { eleveId: req.params.eleveId } }));
+  const limit = Math.min(parseInt(req.query.limit, 10) || DEFAULT_LIMIT, MAX_LIMIT);
+  const offset = parseInt(req.query.offset, 10) || 0;
+  res.json(await ResultatExercice.findAll({
+    where: { eleveId: req.params.eleveId },
+    limit,
+    offset,
+    order: [['createdAt', 'DESC']],
+  }));
 };
 
 module.exports = { getExercices, submitExercice, createExercice, getResultats };

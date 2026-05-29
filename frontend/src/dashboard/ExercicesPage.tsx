@@ -10,6 +10,7 @@ function ExercicesPage({ user }: { user: User }) {
   const [result, setResult] = useState<{ score: number; feedback: string; correction: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [filterMatiere, setFilterMatiere] = useState('');
   const localDiffColor = (d: string) =>
     d === 'facile' || d === 'Facile' ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
@@ -46,15 +47,16 @@ function ExercicesPage({ user }: { user: User }) {
   const submit = async () => {
     if (!selected) return;
     setSubmitting(true);
+    setSubmitError('');
     try {
       const data = await apiFetch(`/exercices/${selected.id}/submit`, {
         method: 'POST',
-        body: JSON.stringify({ reponse, eleveId: user.id }),
+        body: JSON.stringify({ reponse }),
       });
       setResult({ score: data.score, feedback: data.feedback, correction: data.correction });
       setSubmitted(true);
     } catch (e: any) {
-      alert('Erreur: ' + e.message);
+      setSubmitError(e.message || 'Une erreur est survenue lors de la soumission.');
     } finally {
       setSubmitting(false);
     }
@@ -92,6 +94,11 @@ function ExercicesPage({ user }: { user: User }) {
                   className="dash-input"
                   style={{ resize:'vertical', marginBottom:14 }}
                 />
+                {submitError && (
+                  <div style={{ marginBottom:12, padding:'10px 14px', borderRadius:10, background:'#fef2f2', border:'1px solid #fecaca', color:'#cc1f1a', fontSize:13 }}>
+                    {submitError}
+                  </div>
+                )}
                 <button onClick={submit} disabled={!reponse.trim() || submitting} className="dash-btn dash-btn-primary" style={{ width:'100%', justifyContent:'center', padding:'11px', fontSize:14 }}>
                   {submitting ? '🤖 Correction IA en cours...' : '✅ Soumettre ma réponse'}
                 </button>

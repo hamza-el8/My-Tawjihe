@@ -136,7 +136,7 @@ function AdminDashboard({ user }: { user: User }) {
       setExercices(Array.isArray(ex) ? ex : []);
       setAnnales(Array.isArray(an) ? an : []);
       setConcours(Array.isArray(co) ? co : []);
-    }).catch(console.error);
+    }).catch((e: any) => setError(e.message || 'Impossible de charger les ressources.'));
   }, []);
 
   const deleteUser = async (role: string, id: number) => {
@@ -149,7 +149,7 @@ function AdminDashboard({ user }: { user: User }) {
         profs: Array.isArray(r.profs) ? r.profs : [],
         parents: Array.isArray(r.parents) ? r.parents : [],
       });
-    } catch (e: any) { alert(e.message); }
+    } catch (e: any) { setError(e.message || 'Impossible de supprimer l’utilisateur.'); }
   };
 
   const sendNotif = async (e: React.FormEvent) => {
@@ -162,12 +162,10 @@ function AdminDashboard({ user }: { user: User }) {
     setNotifLoading(true);
     try {
       if (notifForm.sendToAll) {
-        for (const eleve of data.eleves) {
-          await apiFetch('/notifications', { 
-            method: 'POST', 
-            body: JSON.stringify({ contenu: notifForm.contenu, type: notifForm.type, eleveId: eleve.id }) 
-          });
-        }
+        await Promise.all(data.eleves.map((eleve) => apiFetch('/notifications', {
+          method: 'POST',
+          body: JSON.stringify({ contenu: notifForm.contenu, type: notifForm.type, eleveId: eleve.id }),
+        })));
         setNotifMsg('✅ Notification envoyée à tous les étudiants !');
       } else {
         await apiFetch('/notifications', { method: 'POST', body: JSON.stringify(notifForm) });
@@ -430,13 +428,13 @@ function AdminDashboard({ user }: { user: User }) {
 
       {tab === 'exercices' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="mb-4">
             <input 
               type="text" 
               placeholder="Rechercher exercices..." 
               value={exerciceSearch} 
               onChange={(e) => setExerciceSearch(e.target.value)}
-              className="px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-violet-400 focus:ring-2 focus:ring-violet-100 outline-none"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-violet-400 focus:ring-2 focus:ring-violet-100 outline-none"
             />
           </div>
           
@@ -517,13 +515,13 @@ function AdminDashboard({ user }: { user: User }) {
 
       {tab === 'annales' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="mb-4">
             <input 
               type="text" 
               placeholder="Rechercher annales..." 
               value={annaleSearch} 
               onChange={(e) => setAnnaleSearch(e.target.value)}
-              className="px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-violet-400 focus:ring-2 focus:ring-violet-100 outline-none"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-violet-400 focus:ring-2 focus:ring-violet-100 outline-none"
             />
           </div>
 
@@ -593,13 +591,13 @@ function AdminDashboard({ user }: { user: User }) {
 
       {tab === 'concours' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="mb-4">
             <input 
               type="text" 
               placeholder="Rechercher concours..." 
               value={concoursSearch} 
               onChange={(e) => setConcoursSearch(e.target.value)}
-              className="px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-violet-400 focus:ring-2 focus:ring-violet-100 outline-none"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-violet-400 focus:ring-2 focus:ring-violet-100 outline-none"
             />
           </div>
 

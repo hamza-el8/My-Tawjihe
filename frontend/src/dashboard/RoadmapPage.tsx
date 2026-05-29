@@ -8,6 +8,7 @@ function RoadmapPage({ user }: { user: User }) {
   const [fetching, setFetching] = useState(true);
   const [fetchError, setFetchError] = useState('');
   const [generateError, setGenerateError] = useState('');
+  const [confirmingRegenerate, setConfirmingRegenerate] = useState(false);
 
   useEffect(() => {
     apiFetch(`/roadmap/${user.id}`)
@@ -24,10 +25,11 @@ function RoadmapPage({ user }: { user: User }) {
   const generate = async () => {
     setLoading(true);
     setGenerateError('');
+    setConfirmingRegenerate(false);
     try {
       const data = await apiFetch('/roadmap/generate', {
         method: 'POST',
-        body: JSON.stringify({ eleveId: user.id }),
+        body: JSON.stringify({}),
       });
       if (data.result) setRoadmap(data.result);
     } catch (e: any) {
@@ -84,10 +86,19 @@ function RoadmapPage({ user }: { user: User }) {
             <h2 style={{ fontSize:17, fontWeight:900, color:'#0f0c29', margin:0 }}>Roadmap Professionnel IA</h2>
             <p style={{ fontSize:12, color:'#94a3b8', marginTop:3 }}>Généré selon votre profil, vos notes et vos intérêts</p>
           </div>
-          <button onClick={() => { if(window.confirm('Régénérer votre roadmap ? Le roadmap actuel sera remplacé.')) generate(); }}
-            style={{ fontSize:12, color:'#7c3aed', fontWeight:700, background:'rgba(124,58,237,0.08)', border:'1px solid rgba(124,58,237,0.2)', borderRadius:8, padding:'7px 14px', cursor:'pointer' }}>
-            🔄 Régénérer
-          </button>
+          <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+            <button type="button" onClick={() => setConfirmingRegenerate(true)}
+              style={{ fontSize:12, color:'#7c3aed', fontWeight:700, background:'rgba(124,58,237,0.08)', border:'1px solid rgba(124,58,237,0.2)', borderRadius:8, padding:'7px 14px', cursor:'pointer' }}>
+              🔄 Régénérer
+            </button>
+            {confirmingRegenerate && (
+              <div style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 12px', borderRadius:10, background:'#eef2ff', border:'1px solid #c7d2fe' }}>
+                <span style={{ fontSize:12, color:'#334155' }}>Confirmez la régénération du roadmap.</span>
+                <button type="button" onClick={generate} style={{ fontSize:12, color:'#fff', background:'#4f46e5', border:'none', borderRadius:8, padding:'7px 12px', cursor:'pointer' }}>Oui</button>
+                <button type="button" onClick={() => setConfirmingRegenerate(false)} style={{ fontSize:12, color:'#334155', background:'#f8fafc', border:'1px solid #e5e7eb', borderRadius:8, padding:'7px 12px', cursor:'pointer' }}>Annuler</button>
+              </div>
+            )}
+          </div>
         </div>
         <div className="space-y-4">
           {/* Métier */}

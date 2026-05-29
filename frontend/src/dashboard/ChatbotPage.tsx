@@ -36,7 +36,7 @@ export default function ChatbotPage({ user }: { user: User }) {
       const history = newMessages.slice(-20, -1).map(m => ({ role: m.role, content: m.content }));
       const data = await apiFetch('/chatbot/message', {
         method: 'POST',
-        body: JSON.stringify({ message: msg, eleveId: user.id, history }),
+        body: JSON.stringify({ message: msg, history }),
       });
       setMessages(m => [...m, { role: 'assistant', content: data.reply }]);
     } catch {

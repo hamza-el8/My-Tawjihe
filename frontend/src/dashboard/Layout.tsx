@@ -5,7 +5,7 @@ function Header({ title, subtitle, onMenuClick, notifCount }: {
   return (
     <div className="dash-header">
       <div style={{ display:'flex', alignItems:'center', gap:14 }}>
-        <button onClick={onMenuClick} className="lg:hidden" style={{ width:36, height:36, borderRadius:10, background:'#f5f3ff', border:'none', cursor:'pointer', fontSize:16, display:'flex', alignItems:'center', justifyContent:'center', color:'#7c3aed' }}>
+        <button onClick={onMenuClick} className="mobile-menu-toggle" style={{ width:36, height:36, borderRadius:10, background:'#f5f3ff', border:'none', cursor:'pointer', fontSize:16, alignItems:'center', justifyContent:'center', color:'#7c3aed' }}>
           ☰
         </button>
         <div>
@@ -27,7 +27,8 @@ function Header({ title, subtitle, onMenuClick, notifCount }: {
 }
 
 // ─── Stat Card ────────────────────────────────────────────────────────────────
-function StatCard({ icon, label, value, color }: { icon: string; label: string; value: string | number; color: string }) {
+function StatCard({ icon, label, value, color }: { icon: string; label: string; value: string | number | null; color: string }) {
+  const displayValue = value !== null && value !== undefined ? value : '—';
   const bgMap: Record<string, string> = {
     'bg-violet-50 text-violet-600':  'linear-gradient(135deg,rgba(124,58,237,0.12),rgba(168,85,247,0.06))',
     'bg-blue-50 text-blue-600':      'linear-gradient(135deg,rgba(29,78,216,0.1),rgba(59,130,246,0.05))',
@@ -40,7 +41,7 @@ function StatCard({ icon, label, value, color }: { icon: string; label: string; 
   return (
     <div className="dash-stat">
       <div className="dash-stat-icon" style={{ background: iconBg }}>{icon}</div>
-      <div className="dash-stat-value">{value}</div>
+      <div className="dash-stat-value">{displayValue}</div>
       <div className="dash-stat-label">{label}</div>
     </div>
   );

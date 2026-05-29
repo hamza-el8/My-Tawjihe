@@ -2,14 +2,16 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import { getStoredUser, isAuthenticated, logout as apiLogout, login as apiLogin, register as apiRegister } from './api';
 import type { Lang } from './types';
 
-interface UserData {
-  id: string;
+export interface UserData {
+  id: number;
   email: string;
   nom: string;
-  prenom: string;
-  role: string;
+  role: 'eleve' | 'parent' | 'professeur' | 'admin';
   filiere?: string;
   niveau?: string;
+  ville?: string;
+  specialite?: string;
+  eleveId?: number;
 }
 
 interface AuthContextType {
@@ -27,6 +29,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserData | null>(getStoredUser());
   const [language, setLanguage] = useState<Lang>('fr');
+
   const loggedIn = isAuthenticated() && !!user;
 
   const login = async (email: string, password: string) => {
@@ -35,8 +38,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const register = async (data: Record<string, any>) => {
-    const result = await apiRegister(data);
-    setUser(result.user);
+    await apiRegister(data);
+    // Registration doesn't auto-login — user must log in separately
   };
 
   const logout = () => {
