@@ -82,8 +82,8 @@ const ROLES_CONFIG = {
   professeur: { fr: { label: 'Professeur', desc: 'Espace enseignement et suivi' },       ar: { label: 'أستاذ',     desc: 'فضاء التدريس والمتابعة' },                 icon: '👨‍🏫', apiRole: 'professeur' },
 };
 
-export default function Inscription({ onClose, onSwitchToLogin, lang = 'fr' }: { onClose: () => void; onSwitchToLogin: () => void; lang: Lang }) {
-  const [role, setRole] = useState(null);
+export default function Inscription({ onClose, onSwitchToLogin, lang = 'fr', defaultRole }: { onClose: () => void; onSwitchToLogin: () => void; lang: Lang; defaultRole?: 'eleve' | 'parent' | 'professeur' }) {
+  const [role, setRole] = useState<string | null>(defaultRole || null);
   const [form, setForm] = useState({});
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);

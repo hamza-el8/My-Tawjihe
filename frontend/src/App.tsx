@@ -577,7 +577,7 @@ function Navbar({
 
             <button onClick={() => setShowLoginModal(true)} className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-200 ${scrolled ? 'text-purple-700 hover:bg-purple-50' : 'text-white/90 hover:bg-white/10'}`}>{t.nav.login}</button>
 
-            <button onClick={() => setShowSignupModal(true)} className="btn-gradient text-white px-5 py-2 rounded-full text-base font-medium shadow-lg">{t.nav.signup}</button>
+            <button onClick={() => setSignupRole(null)} className="btn-gradient text-white px-5 py-2 rounded-full text-base font-medium shadow-lg">{t.nav.signup}</button>
 
           </div>
 
@@ -615,7 +615,7 @@ function Navbar({
 
               <button onClick={() => setShowLoginModal(true)} className="flex-1 text-center py-2 rounded-full border border-purple-300 text-purple-700 text-sm font-medium">{t.nav.login}</button>
 
-              <button onClick={() => setShowSignupModal(true)} className="flex-1 text-center py-2 rounded-full btn-gradient text-white text-sm font-semibold">{t.nav.signup}</button>
+              <button onClick={() => setSignupRole(null)} className="flex-1 text-center py-2 rounded-full btn-gradient text-white text-sm font-semibold">{t.nav.signup}</button>
 
             </div>
 
@@ -635,7 +635,7 @@ function Navbar({
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
-function HeroSection({ t }: { t: Translation }) {
+function HeroSection({ t, onStudentSignup }: { t: Translation; onStudentSignup: () => void }) {
 
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
@@ -675,7 +675,7 @@ function HeroSection({ t }: { t: Translation }) {
 
             <div className="flex flex-wrap gap-4 mb-12">
 
-              <button onClick={() => scrollTo('contact')} className="btn-gradient text-white px-8 py-4 rounded-full font-bold text-base shadow-xl">{t.hero.button} →</button>
+              <button onClick={() => onStudentSignup} className="btn-gradient text-white px-8 py-4 rounded-full font-bold text-base shadow-xl">{t.hero.button} →</button>
 
               <button onClick={() => scrollTo('news')} className="px-8 py-4 rounded-full font-bold text-base text-white border-2 border-white/30 hover:bg-white/10 transition-all">{t.hero.buttonSecondary}</button>
 
@@ -3708,7 +3708,8 @@ export default function App() {
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const [showSignupModal, setShowSignupModal] = useState(false);
+  const [signupRole, setSignupRole] = useState<'eleve' | 'parent' | 'professeur' | null | false>(false);
+  const showSignupModal = signupRole !== false;
 
   const [showWorldMap, setShowWorldMap] = useState(false);
 
@@ -3742,17 +3743,16 @@ export default function App() {
 
     <div dir={t.direction} lang={language}>
 
-      <Navbar language={language} setLanguage={setLanguage} t={t} setOpenChat={setOpenChat} setShowLoginModal={setShowLoginModal} setShowSignupModal={setShowSignupModal} onOpenWorldMap={() => setShowWorldMap(true)} />
+      <Navbar language={language} setLanguage={setLanguage} t={t} setOpenChat={setOpenChat} setShowLoginModal={setShowLoginModal} setShowSignupModal={(v?: boolean) => setSignupRole(v ? null : null)} onOpenWorldMap={() => setShowWorldMap(true)} />
 
       <main>
 
-        <HeroSection t={t} />
+        <HeroSection t={t} onStudentSignup={() => setSignupRole("eleve")} />
 
 
+        <BacPathSection key={`bac-${language}`} t={t} onSignup={() => setSignupRole(null)} />
 
-        <BacPathSection key={`bac-${language}`} t={t} onSignup={() => setShowSignupModal(true)} />
-
-        <FormationsSection key={language} t={t} onSignup={() => setShowSignupModal(true)} />
+        <FormationsSection key={language} t={t} onSignup={() => setSignupRole(null)} />
 
         <WorldMapTeaserSection lang={language} onOpenMap={() => setShowWorldMap(true)} />
 
@@ -3760,16 +3760,16 @@ export default function App() {
 
         <NewsCarousel t={t} />
 
-        <CTASection t={t} onSignup={() => setShowSignupModal(true)} />
+        <CTASection t={t} onSignup={() => setSignupRole(null)} />
 
         <AIEcosystem
   t={t}
-  onSignup={() => setShowSignupModal(true)}
+  onSignup={setSignupRole}
 />
 
         <SmartChatbot
           language={language}
-          onSignup={() => setShowSignupModal(true)}
+          onSignup={() => setSignupRole(null)}
         />
         {openChat && (
   <div
@@ -3784,7 +3784,7 @@ export default function App() {
 
     <SmartChatbot
       language={language}
-      onSignup={() => setShowSignupModal(true)}
+      onSignup={() => setSignupRole(null)}
     />
   </div>
 )}
@@ -3809,7 +3809,7 @@ export default function App() {
 
         t={t}
 
-        onSwitchToSignup={() => { setShowLoginModal(false); setShowSignupModal(true); }}
+        onSwitchToSignup={() => { setShowLoginModal(false); setSignupRole(null); }}
 
       />
 
@@ -3817,11 +3817,13 @@ export default function App() {
 
         <Inscription
 
-          onClose={() => setShowSignupModal(false)}
+          onClose={() => setSignupRole(false)}
 
-          onSwitchToLogin={() => { setShowSignupModal(false); setShowLoginModal(true); }}
+          onSwitchToLogin={() => { setSignupRole(false); setShowLoginModal(true); }}
 
           lang={language}
+          defaultRole={signupRole}
+
 
         />
 
@@ -3835,7 +3837,7 @@ export default function App() {
 
           onClose={() => setShowWorldMap(false)}
 
-          onSignup={() => { setShowWorldMap(false); setShowSignupModal(true); }}
+          onSignup={() => { setShowWorldMap(false); setSignupRole(null); }}
 
         />
 
@@ -3846,3 +3848,5 @@ export default function App() {
   );
 
 }
+
+

@@ -411,9 +411,7 @@ export default function AIEcosystem({
 
                 {/* BUTTON */}
                 {/* BUTTON */}
-<button
-  onClick={onSignup}
-  style={{
+<button onClick={() => onSignup(index === 0 ? "eleve" : index === 1 ? "parent" : "professeur")} style={{
     marginTop: "30px",
     width: "100%",
     padding: "16px",
