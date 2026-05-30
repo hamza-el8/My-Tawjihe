@@ -105,4 +105,4 @@ const getResultats = async (req, res) => {
   }));
 };
 
-module.exports = { getExercices, submitExercice, createExercice, getResultats };
+module.exports = { getExercices, submitExercice, createExercice, updateExercice, getResultats };
